@@ -6,8 +6,11 @@ namespace JcGame;
 
 public class Game1 : Game
 {
+    Player player;
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
+    private Texture2D playerTexture;
+    
 
     public Game1()
     {
@@ -18,7 +21,7 @@ public class Game1 : Game
 
     protected override void Initialize()
     {
-        // TODO: Add your initialization logic here
+        
 
         base.Initialize();
     }
@@ -27,9 +30,10 @@ public class Game1 : Game
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-        // TODO: use this.Content to load your game content here
+        playerTexture = Content.Load<Texture2D>("player");
+        
+        player = new Player(new Vector2(350, 400), playerTexture, 100, 10, 20, 5);
     }
-
     protected override void Update(GameTime gameTime)
     {
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -44,7 +48,11 @@ public class Game1 : Game
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
 
-        // TODO: Add your drawing code here
+        _spriteBatch.Begin();
+       
+        player.DrawPlayer(_spriteBatch);
+        
+        _spriteBatch.End();
 
         base.Draw(gameTime);
     }
