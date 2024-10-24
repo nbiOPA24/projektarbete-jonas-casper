@@ -7,9 +7,11 @@ namespace JcGame;
 public class Game1 : Game
 {
     Player player;
+    SmallEnemy smallEnemy;
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
     private Texture2D playerTexture;
+    private Texture2D eyelanderTexture;
     
 
     public Game1()
@@ -31,8 +33,10 @@ public class Game1 : Game
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
         playerTexture = Content.Load<Texture2D>("player");
+        eyelanderTexture = Content.Load<Texture2D>("eyelander");
         
         player = new Player(new Vector2(350, 400), playerTexture, 100, 10, 20, 5);
+        smallEnemy = new SmallEnemy(new Vector2(380, 20), eyelanderTexture);
     }
     protected override void Update(GameTime gameTime)
     {
@@ -51,6 +55,7 @@ public class Game1 : Game
         _spriteBatch.Begin();
        
         player.DrawPlayer(_spriteBatch);
+        smallEnemy.DrawSmallEnemy(_spriteBatch);
         
         _spriteBatch.End();
 
