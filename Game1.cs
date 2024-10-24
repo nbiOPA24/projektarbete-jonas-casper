@@ -93,7 +93,7 @@ public class Game1 : Game
             Vector2 projectileStartPosition = new Vector2(player.Position.X + xOffset, player.Position.Y + yOffset);
             
             Vector2 direction = new Vector2(0,-1);
-            projectiles.Add(new Projectile(laserGreenTexture, projectileStartPosition, direction, 300f, 10));
+            projectiles.Add(new Projectile(laserGreenTexture, projectileStartPosition, direction, 500f, 10));
             
         }
         foreach (var projectile in projectiles)

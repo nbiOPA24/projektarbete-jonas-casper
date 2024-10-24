@@ -9,6 +9,6 @@
 - [x]Implementera enemys i spelet
 - [ ]Få enemys att röra sig
 - [ ]Hitboxes?   
-- [ ]göra så spelaren kan skjuta
+- [x]göra så spelaren kan skjuta
 - [ ]redundans? vad kan vi klumpa ihop något som gör samma sak
-- [ ] göra så skotten kommer ifrån rätt ställe ifrån playern
+- [ ]göra så skotten kommer ifrån rätt ställe ifrån playern
