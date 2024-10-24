@@ -61,6 +61,7 @@ public class Game1 : Game
         var playerPosition = player.Position;
         var keyboardState = Keyboard.GetState();
         
+
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
 
@@ -100,6 +101,9 @@ public class Game1 : Game
             projectile.Update(gameTime);
         }
         projectiles.RemoveAll(p => !p.IsActive);
+
+        UtilityMethods utility = new UtilityMethods();
+        player.Position = utility.InsideBorder(playerPosition, playerTexture, _graphics);
 
         base.Update(gameTime);
     }
