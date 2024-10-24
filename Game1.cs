@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -8,10 +9,16 @@ public class Game1 : Game
 {
     Player player;
     SmallEnemy smallEnemy;
+    MediumEnemy mediumEnemy;
+    BigEnemy bigEnemy;
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
     private Texture2D playerTexture;
     private Texture2D eyelanderTexture;
+    private Texture2D antmakerTexture;
+    private Texture2D enemyUFOTexture;
+    private Texture2D laserGreenTexture;
+    private List<Projectile> projectiles;
     
 
     public Game1()
@@ -33,11 +40,18 @@ public class Game1 : Game
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
         playerTexture = Content.Load<Texture2D>("player");
+        laserGreenTexture = Content.Load<Texture2D>("laserGreen");
         eyelanderTexture = Content.Load<Texture2D>("eyelander");
-        
+        antmakerTexture = Content.Load<Texture2D>("antmaker");
+        enemyUFOTexture = Content.Load<Texture2D>("enemyUFO");
+        projectiles = new List<Projectile>();
  
         player = new Player(new Vector2(350, 400), playerTexture, 100, 10, 20, 5);
         smallEnemy = new SmallEnemy(new Vector2(380, 20), eyelanderTexture);
+        mediumEnemy = new MediumEnemy(new Vector2(200,20), antmakerTexture);
+        bigEnemy = new BigEnemy(new Vector2(500,20), enemyUFOTexture);
+        
+        
 
         
 
@@ -70,7 +84,22 @@ public class Game1 : Game
             playerPosition.Y -= player.Speed;
         }
         player.Position = playerPosition;    
-        // TODO: Add your update logic here
+        
+        if (keyboardState.IsKeyDown(Keys.Space))
+        {
+            float xOffset = playerTexture.Width / 2;
+            float yOffset = playerTexture.Height / 2;
+            Vector2 projectileStartPosition = new Vector2(player.Position.X + xOffset, player.Position.Y + yOffset);
+            
+            Vector2 direction = new Vector2(0,-1);
+            projectiles.Add(new Projectile(laserGreenTexture, projectileStartPosition, direction, 300f, 10));
+            
+        }
+        foreach (var projectile in projectiles)
+        {
+            projectile.Update(gameTime);
+        }
+        projectiles.RemoveAll(p => !p.IsActive);
 
         base.Update(gameTime);
     }
@@ -82,7 +111,15 @@ public class Game1 : Game
         _spriteBatch.Begin();
        
         player.DrawPlayer(_spriteBatch);
+        
+        foreach (var projectile in projectiles)
+        {
+            projectile.DrawPlayerAttack(_spriteBatch);
+        }
+       
         smallEnemy.DrawSmallEnemy(_spriteBatch);
+        mediumEnemy.DrawMediumEnemy(_spriteBatch);
+        bigEnemy.DrawBigEnemy(_spriteBatch);
         
         _spriteBatch.End();
 
