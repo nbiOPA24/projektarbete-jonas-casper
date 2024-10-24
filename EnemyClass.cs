@@ -49,7 +49,11 @@ class MediumEnemy : Enemy
     {
         //logik för medium enemy
     }
+    public void DrawMediumEnemy(SpriteBatch spriteBatch)
+        {
 
+            spriteBatch.Draw(Texture, Position, Color.White);
+        }
 
 }
 
@@ -59,8 +63,13 @@ class BigEnemy : Enemy
  public BigEnemy(Vector2 startPosition,Texture2D texture)
       : base (startPosition, texture,"BigEnemy", 150, 20, 15, 5)
     {
-        //logik för bigenemy
+        
     }
+     public void DrawBigEnemy(SpriteBatch spriteBatch)
+        {
+
+            spriteBatch.Draw(Texture, Position, Color.White);
+        }
 
 }
 

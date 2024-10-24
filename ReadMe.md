@@ -4,8 +4,11 @@
 - [x]Sätt en plan, hus ska basfunktionerna i spelet vara? 
 - [x]Sätt ut en spelare i monogames och få den spelaren att röra sig vid input
 - [ ]Sätt "väggar" så att spelaren inte kan åka utanför skärm/spelfönster
-- [ ]Importera pngfiler för enemys
+- [x]Importera pngfiler för enemys
 - [ ]Bestäm grundegenskaper för enemys
-- [ ]Implementera enemys i spelet
+- [x]Implementera enemys i spelet
 - [ ]Få enemys att röra sig
 - [ ]Hitboxes?   
+- [ ]göra så spelaren kan skjuta
+- [ ]redundans? vad kan vi klumpa ihop något som gör samma sak
+- [ ] göra så skotten kommer ifrån rätt ställe ifrån playern
