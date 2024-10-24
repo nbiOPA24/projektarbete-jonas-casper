@@ -46,7 +46,7 @@ public class Game1 : Game
         enemyUFOTexture = Content.Load<Texture2D>("enemyUFO");
         projectiles = new List<Projectile>();
  
-        player = new Player(new Vector2(350, 400), playerTexture, 100, 10, 20, 5);
+        player = new Player(new Vector2(350, 400), playerTexture, 100, 10, 20, 10);
         smallEnemy = new SmallEnemy(new Vector2(380, 20), eyelanderTexture);
         mediumEnemy = new MediumEnemy(new Vector2(200,20), antmakerTexture);
         bigEnemy = new BigEnemy(new Vector2(500,20), enemyUFOTexture);
@@ -61,6 +61,7 @@ public class Game1 : Game
         var playerPosition = player.Position;
         var keyboardState = Keyboard.GetState();
         
+
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
 
@@ -100,6 +101,9 @@ public class Game1 : Game
             projectile.Update(gameTime);
         }
         projectiles.RemoveAll(p => !p.IsActive);
+
+        UtilityMethods utility = new UtilityMethods();
+        player.Position = utility.InsideBorder(playerPosition, playerTexture, _graphics);
 
         base.Update(gameTime);
     }
