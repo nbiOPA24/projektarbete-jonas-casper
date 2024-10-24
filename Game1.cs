@@ -32,13 +32,36 @@ public class Game1 : Game
 
         playerTexture = Content.Load<Texture2D>("player");
         
-        player = new Player(new Vector2(350, 400), playerTexture, 100, 10, 20, 5);
+        player = new Player(new Vector2(350, 400), playerTexture, 100, 10, 20, 10);
     }
     protected override void Update(GameTime gameTime)
     {
+        var playerPosition = player.Position;
+        var keyboardState = Keyboard.GetState();
+        
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
 
+        if (keyboardState.IsKeyDown(Keys.Left))
+        {
+            playerPosition.X -= player.Speed;
+        }
+
+        if (keyboardState.IsKeyDown(Keys.Right))
+        {
+            playerPosition.X += player.Speed;
+        }
+
+        if (keyboardState.IsKeyDown(Keys.Down))
+        {
+            playerPosition.Y += player.Speed;
+        }
+
+        if (keyboardState.IsKeyDown(Keys.Up))
+        {
+            playerPosition.Y -= player.Speed;
+        }
+        player.Position = playerPosition;    
         // TODO: Add your update logic here
 
         base.Update(gameTime);
