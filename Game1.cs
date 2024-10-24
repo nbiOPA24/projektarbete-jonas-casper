@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Runtime.Serialization.DataContracts;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -23,8 +24,6 @@ public class Game1 : Game
 
     protected override void Initialize()
     {
-        
-
         base.Initialize();
     }
 
@@ -35,15 +34,12 @@ public class Game1 : Game
         playerTexture = Content.Load<Texture2D>("player");
         eyelanderTexture = Content.Load<Texture2D>("eyelander");
         
- 
-        player = new Player(new Vector2(350, 400), playerTexture, 100, 10, 20, 5);
+        player = new Player(new Vector2(350, 400), playerTexture, 100, 10, 20, 10);
         smallEnemy = new SmallEnemy(new Vector2(380, 20), eyelanderTexture);
-
-        
-
     }
     protected override void Update(GameTime gameTime)
     {
+        
         var playerPosition = player.Position;
         var keyboardState = Keyboard.GetState();
         
@@ -51,25 +47,20 @@ public class Game1 : Game
             Exit();
 
         if (keyboardState.IsKeyDown(Keys.Left))
-        {
             playerPosition.X -= player.Speed;
-        }
-
+        
         if (keyboardState.IsKeyDown(Keys.Right))
-        {
             playerPosition.X += player.Speed;
-        }
-
+        
         if (keyboardState.IsKeyDown(Keys.Down))
-        {
             playerPosition.Y += player.Speed;
-        }
 
         if (keyboardState.IsKeyDown(Keys.Up))
-        {
             playerPosition.Y -= player.Speed;
-        }
-        player.Position = playerPosition;    
+
+        UtilityMethods utility = new UtilityMethods();
+        player.Position = utility.InsideBorder(playerPosition, playerTexture, _graphics);   
+       
         // TODO: Add your update logic here
 
         base.Update(gameTime);

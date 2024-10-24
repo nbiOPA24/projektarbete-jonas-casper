@@ -17,9 +17,6 @@ public class Player
         public int BaseShield {get; set;}
         public float Speed {get; set;} 
         
-
-        
-       
      public Player(Vector2 startPosition,Texture2D texture, int baseHealth, int baseAttack, int baseShield, float speed)
         {
             Texture = texture;
