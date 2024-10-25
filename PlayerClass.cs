@@ -12,9 +12,10 @@ using Microsoft.Xna.Framework.Input;
 
 public class Player
 {
+    private Game1 game;
     public Vector2 Position {get; set;}
-    private Texture2D Texture { get; set; }
-    public int BaseHealth { get; set;} 
+    private Texture2D Texture { get; set;}
+    public int BaseHealth {get; set;} 
     public int BaseAttack {get; set;}
     public int BaseShield {get; set;}
     public float Speed {get; set;} 
@@ -22,8 +23,9 @@ public class Player
 
     
     
-    public Player(Vector2 startPosition,Texture2D texture, int baseHealth, int baseAttack, int baseShield, float speed)
+    public Player(Game1 game, Vector2 startPosition,Texture2D texture, int baseHealth, int baseAttack, int baseShield, float speed)
     {
+        this.game = game;
         Texture = texture;
         Position = startPosition;   
         BaseHealth = baseHealth;
@@ -34,7 +36,6 @@ public class Player
 
     public void DrawPlayer(SpriteBatch spriteBatch)
     {
-
         spriteBatch.Draw(Texture, Position, Color.White);
     }
     public void PlayerMovement()
@@ -54,8 +55,11 @@ public class Player
         if (keyboardState.IsKeyDown(Keys.Up))
             playerPosition.Y -= Speed;
 
+        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            game.Exit();
+
+        if (keyboardState.IsKeyDown(Keys.Space))
         Position = playerPosition;         
-        
     }
 }
 
