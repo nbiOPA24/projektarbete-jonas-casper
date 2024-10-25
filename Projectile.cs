@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-
 public class Projectile
 {
     public Vector2 Position { get; set; }
@@ -16,7 +15,7 @@ public class Projectile
     public bool IsActive { get; set; }
 
         public Projectile(Texture2D texture, Vector2 position, Vector2 direction, float speed, int damage)
-        {
+    {
         Texture = texture;
         Position = position;
         Direction = direction;
@@ -31,7 +30,6 @@ public class Projectile
         if (Position.X < 0 || Position.X > 800 || Position.Y < 0 || Position.Y > 480)
         {
             IsActive = false;
-
         }
     }
     public void DrawPlayerAttack(SpriteBatch spriteBatch)
@@ -40,9 +38,5 @@ public class Projectile
         {
             spriteBatch.Draw(Texture, Position, Color.White);
         }
-
     }
-
-    
-
 }

@@ -19,7 +19,7 @@ public class Player
     public int BaseAttack {get; set;}
     public int BaseShield {get; set;}
     public float Speed {get; set;} 
-    
+    public Rectangle Hitbox{get; set;}
 
     
     

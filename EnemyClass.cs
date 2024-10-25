@@ -1,4 +1,5 @@
 //konstruktor för klassen enemy
+using System;
 using System.Buffers.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -14,10 +15,6 @@ class Enemy
     public float Speed {get; set;}
     public bool IsActive {get; set;} = true;
 
-    protected Random random = new Random();
-
-    
-
     public Enemy(Vector2 startPosition,Texture2D texture, string name, int health, int attack, int shield, float speed)
     {
         Texture = texture;
@@ -27,54 +24,41 @@ class Enemy
         Attack = attack;
         Shield = shield;
         Speed = speed;
-        
     }
-    public virtual void MovePattern(GameTime gameTime)
-    {
-        // Standard rörelse, kan överskridas av subklasser
-       Position.Y += Speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-    }
-
-    public void Update(GameTime gameTime)
-    {
-        MovePattern(gameTime); 
-        
-        if (Position.Y > 480)
-        {
-            IsActive = false;
-
-        }
-    }
-
-
-    
-    
-    
 }
-    class SmallEnemy : Enemy
+class SmallEnemy : Enemy
 {
-    public SmallEnemy(Vector2 startPosition,Texture2D texture)
-        : base(startPosition, texture, "SmallEnemy", 70, 10, 0, 35)
-    {
+    public SmallEnemy(Vector2 startPosition,Texture2D texture, int screenWidth)
+        : base(startPosition, texture, "SmallEnemy", 70, 10, 0, 10)
         
-    }
-
-    public override void MovePattern(GameTime gametime)
     {
-        base.MovePattern(gametime);
-        Position.X += (float)(random.NextDouble() * 2 - 1);
+        this.screenWidth = screenWidth; //Tar in våran screenWidth
+    }
+    private Random random = new Random();
+    private int screenWidth; // 
+    private float elapsedTime; //E
+    public void MoveDownSmoothly(GameTime gameTime)
+    {
+        elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
+        // Skapar en mjuk rörelse i x-riktning
+        float xMovement = (float)Math.Sin(elapsedTime * 2) * 1.5f; // "2" styr hastigheten och "1.5" amplituden
+        float yMovement = Speed * 0.1f;
+
+        Position = new Vector2
+        (
+            MathHelper.Clamp(Position.X + xMovement, 0, screenWidth - Texture.Width),
+            Position.Y + yMovement
+        );
     }
     public void DrawSmallEnemy(SpriteBatch spriteBatch)
-        {
-
-            spriteBatch.Draw(Texture, Position, Color.White);
-        }
+    {
+        spriteBatch.Draw(Texture, Position, Color.White);
+    }
 }
 
 class MediumEnemy : Enemy
 {
-    
     public MediumEnemy(Vector2 startPosition,Texture2D texture)
          : base (startPosition, texture,"MediumEnemy", 100, 15, 5, 20)
     {
@@ -94,11 +78,10 @@ class BigEnemy : Enemy
     {
         
     }
-     public void DrawBigEnemy(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(Texture, Position, Color.White);
-        }
-
+    public void DrawBigEnemy(SpriteBatch spriteBatch)
+    {
+        spriteBatch.Draw(Texture, Position, Color.White);
+    }
 }
 
 

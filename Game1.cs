@@ -3,6 +3,7 @@ using System.Security.Cryptography.X509Certificates;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace JcGame;
 
@@ -44,11 +45,16 @@ public class Game1 : Game
         antmakerTexture = Content.Load<Texture2D>("antmaker");
         enemyUFOTexture = Content.Load<Texture2D>("enemyUFO");
         projectiles = new List<Projectile>();
- 
+
+        Random rnd = new Random();
+        float smallStart = rnd.Next(20, 780);
+        float mediumStart = rnd.Next(20, 780);
+        float bigStart = rnd.Next(20,780);
+    
         player = new Player(this, new Vector2(350, 400), playerTexture, 100, 10, 20, 5);
-        smallEnemy = new SmallEnemy(new Vector2(380, 20), eyelanderTexture);
-        mediumEnemy = new MediumEnemy(new Vector2(200,20), antmakerTexture);
-        bigEnemy = new BigEnemy(new Vector2(500,20), enemyUFOTexture);
+        smallEnemy = new SmallEnemy(new Vector2(smallStart, 20), eyelanderTexture,  _graphics.PreferredBackBufferWidth); // TODO Sätt "20" till -100 för spawna utanför skärm"
+        mediumEnemy = new MediumEnemy(new Vector2(mediumStart,20), antmakerTexture); // TODOSätt "20" till -100 för spawna utanför skärm"
+        bigEnemy = new BigEnemy(new Vector2(bigStart,20), enemyUFOTexture); // TODO Sätt "20" till -100 för spawna utanför skärm"
     }
     protected override void Update(GameTime gameTime)
     {
@@ -71,10 +77,10 @@ public class Game1 : Game
             projectile.Update(gameTime);
         }
         projectiles.RemoveAll(p => !p.IsActive);
-
+        smallEnemy.MoveDownSmoothly(gameTime); //läser in metoden MoveDownSmoothly med (gametime) som inparameter
         UtilityMethods utility = new UtilityMethods();
         player.Position = utility.InsideBorder(player.Position, playerTexture, _graphics);
-
+        
         base.Update(gameTime);
     }
 
