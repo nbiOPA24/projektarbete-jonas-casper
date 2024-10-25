@@ -21,8 +21,6 @@ public class Player
     public float Speed {get; set;} 
     public Rectangle Hitbox{get; set;}
 
-    
-    
     public Player(Game1 game, Vector2 startPosition,Texture2D texture, int baseHealth, int baseAttack, int baseShield, float speed)
     {
         this.game = game;
