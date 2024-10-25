@@ -12,6 +12,11 @@ class Enemy
     public int Attack {get; set;} 
     public int Shield {get; set;}
     public float Speed {get; set;}
+    public bool IsActive {get; set;} = true;
+
+    protected Random random = new Random();
+
+    
 
     public Enemy(Vector2 startPosition,Texture2D texture, string name, int health, int attack, int shield, float speed)
     {
@@ -22,17 +27,43 @@ class Enemy
         Attack = attack;
         Shield = shield;
         Speed = speed;
-
+        
+    }
+    public virtual void MovePattern(GameTime gameTime)
+    {
+        // Standard rörelse, kan överskridas av subklasser
+       Position.Y += Speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
     }
 
-}
+    public void Update(GameTime gameTime)
+    {
+        MovePattern(gameTime); 
+        
+        if (Position.Y > 480)
+        {
+            IsActive = false;
 
+        }
+    }
+
+
+    
+    
+    
+}
     class SmallEnemy : Enemy
 {
     public SmallEnemy(Vector2 startPosition,Texture2D texture)
         : base(startPosition, texture, "SmallEnemy", 70, 10, 0, 35)
     {
         
+    }
+
+    public override void MovePattern(GameTime gametime)
+    {
+        base.MovePattern(gametime);
+        Position.X += (float)(random.NextDouble() * 2 - 1);
+
     }
     public void DrawSmallEnemy(SpriteBatch spriteBatch)
         {
@@ -50,11 +81,9 @@ class MediumEnemy : Enemy
         //logik för medium enemy
     }
     public void DrawMediumEnemy(SpriteBatch spriteBatch)
-        {
-
-            spriteBatch.Draw(Texture, Position, Color.White);
-        }
-
+    {
+        spriteBatch.Draw(Texture, Position, Color.White);
+    }
 }
 
 class BigEnemy : Enemy
@@ -67,7 +96,6 @@ class BigEnemy : Enemy
     }
      public void DrawBigEnemy(SpriteBatch spriteBatch)
         {
-
             spriteBatch.Draw(Texture, Position, Color.White);
         }
 
