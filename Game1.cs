@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -30,8 +31,6 @@ public class Game1 : Game
 
     protected override void Initialize()
     {
-        
-
         base.Initialize();
     }
 
@@ -58,33 +57,13 @@ public class Game1 : Game
     }
     protected override void Update(GameTime gameTime)
     {
-        var playerPosition = player.Position;
-        var keyboardState = Keyboard.GetState();
+        player.PlayerMovement();
         
+        var keyboardState = Keyboard.GetState();
 
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
 
-        if (keyboardState.IsKeyDown(Keys.Left))
-        {
-            playerPosition.X -= player.Speed;
-        }
-
-        if (keyboardState.IsKeyDown(Keys.Right))
-        {
-            playerPosition.X += player.Speed;
-        }
-
-        if (keyboardState.IsKeyDown(Keys.Down))
-        {
-            playerPosition.Y += player.Speed;
-        }
-
-        if (keyboardState.IsKeyDown(Keys.Up))
-        {
-            playerPosition.Y -= player.Speed;
-        }
-        player.Position = playerPosition;    
         
         if (keyboardState.IsKeyDown(Keys.Space))
         {
@@ -103,7 +82,7 @@ public class Game1 : Game
         projectiles.RemoveAll(p => !p.IsActive);
 
         UtilityMethods utility = new UtilityMethods();
-        player.Position = utility.InsideBorder(playerPosition, playerTexture, _graphics);
+        player.Position = utility.InsideBorder(player.Position, playerTexture, _graphics);
 
         base.Update(gameTime);
     }
