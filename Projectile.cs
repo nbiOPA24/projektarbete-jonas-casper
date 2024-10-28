@@ -31,6 +31,7 @@ public class Projectile
         {
             IsActive = false;
         }
+            
     }
     public void DrawPlayerAttack(SpriteBatch spriteBatch)
     {
@@ -39,4 +40,5 @@ public class Projectile
             spriteBatch.Draw(Texture, Position, Color.White);
         }
     }
+       
 }

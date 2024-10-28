@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Runtime.CompilerServices;
 
 namespace JcGame;
 
@@ -59,31 +60,33 @@ public class Game1 : Game
     protected override void Update(GameTime gameTime)
     {
         player.PlayerMovement();
-
-        var keyboardState = Keyboard.GetState();
-        float projectileSpeed = player.Speed + 2;
         
-        {
+        var keyboardState = Keyboard.GetState();
+        
+        if (keyboardState.IsKeyDown(Keys.Space))
+         {
             float xOffset = playerTexture.Width / 2;
             float yOffset = playerTexture.Height / 2;
             Vector2 projectileStartPosition = new Vector2(player.Position.X + xOffset, player.Position.Y + yOffset);
-            
-            Vector2 direction = new Vector2(0,-1);
+        
+            Vector2 direction = new Vector2(0, -20);
+            float projectileSpeed = player.Speed + 2;
             projectiles.Add(new Projectile(laserGreenTexture, projectileStartPosition, direction, projectileSpeed, 10));
-            
         }
+
         foreach (var projectile in projectiles)
         {
-            projectile.Update(gameTime);
+          projectile.Update(gameTime);
         }
         projectiles.RemoveAll(p => !p.IsActive);
+        
         smallEnemy.MoveDownSmoothly(gameTime); //läser in metoden MoveDownSmoothly med (gametime) som inparameter
         UtilityMethods utility = new UtilityMethods();
         player.Position = utility.InsideBorder(player.Position, playerTexture, _graphics);
         
         base.Update(gameTime);
     }
-
+    
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
@@ -91,6 +94,7 @@ public class Game1 : Game
         _spriteBatch.Begin();
        
         player.DrawPlayer(_spriteBatch);
+        
         
         foreach (var projectile in projectiles)
         {
