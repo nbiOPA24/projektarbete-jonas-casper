@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
+using System.Net.Mime;
 using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using JcGame;
@@ -42,22 +43,23 @@ public class Player
         var keyboardState = Keyboard.GetState();
 
         if (keyboardState.IsKeyDown(Keys.Left))
-            playerPosition.X -= Speed;
+         playerPosition.X -= Speed;
 
         if (keyboardState.IsKeyDown(Keys.Right))
-            playerPosition.X += Speed;
+        playerPosition.X += Speed;
 
         if (keyboardState.IsKeyDown(Keys.Down))
-            playerPosition.Y += Speed;
+        playerPosition.Y += Speed;
 
         if (keyboardState.IsKeyDown(Keys.Up))
-            playerPosition.Y -= Speed;
+        playerPosition.Y -= Speed;
+
+         // Uppdaterar positionen direkt
+        Position = playerPosition;
 
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             game.Exit();
 
-        if (keyboardState.IsKeyDown(Keys.Space))
-        Position = playerPosition;         
     }
 }
 
