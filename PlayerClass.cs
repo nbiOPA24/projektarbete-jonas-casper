@@ -23,6 +23,8 @@ public class Player
     public int BaseShield {get; set;}
     public float Speed {get; set;} 
     public Hitbox Hitbox{get; set;}
+    private float shootCooldown = 0.3f;
+    private float shootTimer = 0;
 
     public Player(Game1 game, Vector2 startPosition,Texture2D texture, int baseHealth, int baseAttack, int baseShield, float speed)
     {
@@ -41,10 +43,12 @@ public class Player
     {
         spriteBatch.Draw(Texture, Position, Color.White);
     }
-    public void PlayerMovement()
+    public void PlayerMovement(List<Projectile> projectiles, Texture2D laserGreenTexture, GameTime gameTime)
     {
         var playerPosition = Position;
         var keyboardState = Keyboard.GetState();
+        shootTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+        
 
         if (keyboardState.IsKeyDown(Keys.Left))
          playerPosition.X -= Speed;
@@ -57,6 +61,18 @@ public class Player
 
         if (keyboardState.IsKeyDown(Keys.Up))
         playerPosition.Y -= Speed;
+
+        if (keyboardState.IsKeyDown(Keys.Space) && shootTimer >= shootCooldown)
+        {
+            shootTimer = 0F;
+            float xOffset = Texture.Width / 2;
+            float yOffset = Texture.Height / 2;
+            Vector2 projectileStartPosition = new Vector2(Position.X + xOffset, Position.Y + yOffset);
+        
+            Vector2 direction = new Vector2(0, -20);
+            float projectileSpeed = Speed + 2;
+            projectiles.Add(new Projectile(laserGreenTexture, projectileStartPosition, direction, projectileSpeed, 10));
+        }
 
          // Uppdaterar positionen direkt
         Position = playerPosition;
