@@ -5,7 +5,7 @@ using System.Data;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-abstract class Enemy
+public abstract class Enemy
 {
     public Vector2 Position {get; set;}
     public Texture2D Texture { get; set; }

@@ -30,6 +30,7 @@ public class Game1 : Game
         IsMouseVisible = true;
     }
 
+    
     protected override void Initialize()
     {
        
@@ -62,6 +63,7 @@ public class Game1 : Game
     }
     protected override void Update(GameTime gameTime)
     {
+        
         player.PlayerMovement(projectiles, laserGreenTexture, gameTime);
         
         var keyboardState = Keyboard.GetState();
