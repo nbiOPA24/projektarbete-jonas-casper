@@ -22,7 +22,8 @@ public class Game1 : Game
     private Texture2D enemyUFOTexture;
     private Texture2D laserGreenTexture;
     private List<Projectile> projectiles;
-    
+    private float shootCooldown = 0.3f;
+    private float shootTimer = 0;
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -63,9 +64,10 @@ public class Game1 : Game
         player.PlayerMovement();
         
         var keyboardState = Keyboard.GetState();
-        
-        if (keyboardState.IsKeyDown(Keys.Space))
+        shootTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+        if (keyboardState.IsKeyDown(Keys.Space) && shootTimer >= shootCooldown)
          {
+            shootTimer = 0F;
             float xOffset = playerTexture.Width / 2;
             float yOffset = playerTexture.Height / 2;
             Vector2 projectileStartPosition = new Vector2(player.Position.X + xOffset, player.Position.Y + yOffset);
