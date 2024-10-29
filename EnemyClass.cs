@@ -38,7 +38,7 @@ abstract class Enemy
 }
 class SmallEnemy : Enemy
 {
-       private int screenWidth; // 
+    private int screenWidth; // 
     private float elapsedTime; //E
     public SmallEnemy(Vector2 startPosition,Texture2D texture, int screenWidth)
         : base(startPosition, texture, "SmallEnemy", 70, 10, 0, 10)
