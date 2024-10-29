@@ -58,7 +58,7 @@ public class Game1 : Game
         player = new Player(this, new Vector2(350, 400), playerTexture, 100, 10, 20, 5);
         smallEnemy = new SmallEnemy(new Vector2(smallStart, 20), eyelanderTexture,  _graphics.PreferredBackBufferWidth); // TODO Sätt "20" till -100 för spawna utanför skärm"
         mediumEnemy = new MediumEnemy(new Vector2(mediumStart,20), antmakerTexture); // TODOSätt "20" till -100 för spawna utanför skärm"
-        bigEnemy = new BigEnemy(new Vector2(bigStart,20), enemyUFOTexture); // TODO Sätt "20" till -100 för spawna utanför skärm"
+        bigEnemy = new BigEnemy(new Vector2(bigStart,20), enemyUFOTexture, _graphics.PreferredBackBufferWidth); // TODO Sätt "20" till -100 för spawna utanför skärm"
     }
     protected override void Update(GameTime gameTime)
     {
@@ -73,6 +73,7 @@ public class Game1 : Game
         projectiles.RemoveAll(p => !p.IsActive);
         
         smallEnemy.MoveDownSmoothly(gameTime); //läser in metoden MoveDownSmoothly med (gametime) som inparameter
+        bigEnemy.MoveSideToSide(gameTime); //läser in metoden MoveSidetoSide för BigEnemy
         UtilityMethods utility = new UtilityMethods();
         player.Position = utility.InsideBorder(player.Position, playerTexture, _graphics);
         
