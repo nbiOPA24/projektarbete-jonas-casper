@@ -1,3 +1,4 @@
+using JcGame;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 public class UtilityMethods
@@ -9,4 +10,11 @@ public class UtilityMethods
         position.Y = MathHelper.Clamp(position.Y, 0, graphics.PreferredBackBufferHeight -texture.Height);
         return position;
     }
+    public bool CheckCollision(Enemy enemy,  Player player)
+    {
+        return enemy.Hitbox.Bounds.Intersects(player.Hitbox.Bounds);
+    }
+
+ 
+
 }

@@ -5,10 +5,12 @@
 - [x]Sätt ut en spelare i monogames och få den spelaren att röra sig vid input
 - [x]Sätt "väggar" så att spelaren inte kan åka utanför skärm/spelfönster
 - [x]Importera pngfiler för enemys
-- [ ]Bestäm grundegenskaper för enemys
+- [x]Bestäm grundegenskaper för enemys
 - [x]Implementera enemys i spelet
-- [ ]Få enemys att röra sig
+- [x]Få enemys att röra sig
 - [ ]Hitboxes?   
 - [x]göra så spelaren kan skjuta
 - [ ]redundans? vad kan vi klumpa ihop något som gör samma sak
-- [ ]göra så skotten kommer ifrån rätt ställe ifrån playern
+- [x]göra så skotten kommer ifrån rätt ställe ifrån playern
+- [ ]Spawna enemies konstant? 
+- [ ]Gör så projektilerna gör skada 

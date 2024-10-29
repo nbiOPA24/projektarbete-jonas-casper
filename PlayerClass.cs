@@ -47,6 +47,7 @@ public class Player
     //Även logik för projektilen , bla hur ofta man kan skjuta
     public void PlayerMovement(List<Projectile> projectiles, Texture2D laserGreenTexture, GameTime gameTime)
     {
+        
         var playerPosition = Position;
         var keyboardState = Keyboard.GetState();
         shootTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
