@@ -25,7 +25,7 @@ public class Player
     public Hitbox Hitbox{get; set;}
     private float shootCooldown = 0.3f;
     private float shootTimer = 0;
-
+    //Konstruktor för PLayer
     public Player(Game1 game, Vector2 startPosition,Texture2D texture, int baseHealth, int baseAttack, int baseShield, float speed)
     {
         this.game = game;
@@ -38,11 +38,13 @@ public class Player
         
         Hitbox = new Hitbox(Position, Texture);
     }
-
+    //Metod för att bestämma hur spelaren ser ut samt vart man ska spawna på skärmen
     public void DrawPlayer(SpriteBatch spriteBatch)
     {
         spriteBatch.Draw(Texture, Position, Color.White);
     }
+    //Metod med logikl för hur man förflyttar spelaren. 
+    //Även logik för projektilen , bla hur ofta man kan skjuta
     public void PlayerMovement(List<Projectile> projectiles, Texture2D laserGreenTexture, GameTime gameTime)
     {
         var playerPosition = Position;
@@ -76,9 +78,9 @@ public class Player
 
          // Uppdaterar positionen direkt
         Position = playerPosition;
-
+        //Uppdaterar Hitboxen utefter splearens position
         Hitbox.Update(Position);
-
+        //Gör att man kan avsluta spelet med "ESC" eller "Back" knappen på en kontroller 
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             game.Exit();
 

@@ -35,12 +35,12 @@ public class Game1 : Game
        
         base.Initialize();
     }
-
+    
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         
-
+        //Här laddas alla .pngfiler in för player, projectile samlt alla enemies  
         playerTexture = Content.Load<Texture2D>("player");
         laserGreenTexture = Content.Load<Texture2D>("laserGreen");
         eyelanderTexture = Content.Load<Texture2D>("eyelander");
@@ -48,11 +48,13 @@ public class Game1 : Game
         enemyUFOTexture = Content.Load<Texture2D>("enemyUFO");
         projectiles = new List<Projectile>();
 
+        //Ger ett randomnummer inannför spelfönstrets skärm som bestämmer var i Y(X?)ledd enemies ska spawna
         Random rnd = new Random();
         float smallStart = rnd.Next(20, 780);
         float mediumStart = rnd.Next(20, 780);
         float bigStart = rnd.Next(20,780);
     
+        //Skapar  player samt alla enemies och änven vart dom ska spawna. Även alla agenskaper, om speed, health, shield 
         player = new Player(this, new Vector2(350, 400), playerTexture, 100, 10, 20, 5);
         smallEnemy = new SmallEnemy(new Vector2(smallStart, 20), eyelanderTexture,  _graphics.PreferredBackBufferWidth); // TODO Sätt "20" till -100 för spawna utanför skärm"
         mediumEnemy = new MediumEnemy(new Vector2(mediumStart,20), antmakerTexture); // TODOSätt "20" till -100 för spawna utanför skärm"
