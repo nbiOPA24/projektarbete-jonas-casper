@@ -75,17 +75,17 @@ class MediumEnemy : Enemy
 {
     private int screenWidth;
     private float elapsedTime;
-    public MediumEnemy(Vector2 startPosition,Texture2D texture)
+    public MediumEnemy(Vector2 startPosition,Texture2D texture, int screenWidth)
          : base (startPosition, texture,"MediumEnemy", 100, 15, 5, 20)
     {
-        //tar in våran screenwidth
+       this.screenWidth = screenWidth; //tar in våran screenwidth
     }
     public void MoveDownSmoothlyFaster(GameTime gameTime)
     {
         elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
         // Skapar en mjuk rörelse i x-riktning
-        float xMovement = (float)Math.Sin(elapsedTime * 2) * 2.5f; 
+        float xMovement = (float)Math.Sin(elapsedTime * 2) * 4.5f; 
         float yMovement = Speed * 0.1f;
 
         Position = new Vector2
