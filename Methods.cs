@@ -13,9 +13,4 @@ public class UtilityMethods
     {
         return enemy.Hitbox.Bounds.Intersects(player.Hitbox.Bounds);
     }
-
-    foreach (var enemy in enemies)
-    {
-        
-    }
 }
