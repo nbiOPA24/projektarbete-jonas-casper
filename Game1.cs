@@ -68,7 +68,7 @@ public class Game1 : Game
         //Skapar  player samt alla enemies och änven vart dom ska spawna. Även alla agenskaper, om speed, health, shield 
         player = new Player(this, new Vector2(350, 400), playerTexture, 100, 10, 20, 5);
         smallEnemy = new SmallEnemy(new Vector2(smallStart, 20), eyelanderTexture,  _graphics.PreferredBackBufferWidth); // TODO Sätt "20" till -100 för spawna utanför skärm"
-        mediumEnemy = new MediumEnemy(new Vector2(mediumStart,20), antmakerTexture); // TODOSätt "20" till -100 för spawna utanför skärm"
+        mediumEnemy = new MediumEnemy(new Vector2(mediumStart,20), antmakerTexture, _graphics.PreferredBackBufferWidth); // TODOSätt "20" till -100 för spawna utanför skärm"
         bigEnemy = new BigEnemy(new Vector2(bigStart,20), enemyUFOTexture, _graphics.PreferredBackBufferWidth); // TODO Sätt "20" till -100 för spawna utanför skärm"
 
         enemies.Add(smallEnemy);
@@ -98,6 +98,10 @@ public class Game1 : Game
             else if (enemy is BigEnemy bigEnemy)
             {
                 bigEnemy.MoveSideToSide(gameTime); //läser in metoden MoveSidetoSide för BigEnemy
+            }
+            else if (enemy is MediumEnemy)
+            {
+                mediumEnemy.MoveDownSmoothlyFaster(gameTime);
             }
             enemy.UpdateHitbox();
         }
