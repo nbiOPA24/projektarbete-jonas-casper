@@ -1,10 +1,11 @@
 //konstruktor för klassen enemy
 using System;
 using System.Buffers.Text;
+using System.Data;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-class Enemy
+abstract class Enemy
 {
     public Vector2 Position {get; set;}
     public Texture2D Texture { get; set; }
@@ -14,6 +15,7 @@ class Enemy
     public int Shield {get; set;}
     public float Speed {get; set;}
     public bool IsActive {get; set;} = true;
+    public Hitbox Hitbox {get; set;}
     
 
     public Enemy(Vector2 startPosition,Texture2D texture, string name, int health, int attack, int shield, float speed)
@@ -25,19 +27,26 @@ class Enemy
         Attack = attack;
         Shield = shield;
         Speed = speed;
+        Hitbox = new Hitbox(Position, Texture);
     }
+
+    public void UpdateHitbox()
+    {
+        Hitbox.Update(Position);
+    }
+
 }
 class SmallEnemy : Enemy
 {
+       private int screenWidth; // 
+    private float elapsedTime; //E
     public SmallEnemy(Vector2 startPosition,Texture2D texture, int screenWidth)
         : base(startPosition, texture, "SmallEnemy", 70, 10, 0, 10)
         
     {
         this.screenWidth = screenWidth; //Tar in våran screenWidth
     }
-    private Random random = new Random();
-    private int screenWidth; // 
-    private float elapsedTime; //E
+ 
     public void MoveDownSmoothly(GameTime gameTime)
     {
         elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -51,8 +60,10 @@ class SmallEnemy : Enemy
             MathHelper.Clamp(Position.X + xMovement, 0, screenWidth - Texture.Width),
             Position.Y + yMovement
         );
+        UpdateHitbox(); 
     }
-    public void DrawSmallEnemy(SpriteBatch spriteBatch)
+    
+     public void DrawSmallEnemy(SpriteBatch spriteBatch)
     {
         spriteBatch.Draw(Texture, Position, Color.White);
     }
