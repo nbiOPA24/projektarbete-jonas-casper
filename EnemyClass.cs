@@ -52,7 +52,7 @@ class SmallEnemy : Enemy
         elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
         // Skapar en mjuk rörelse i x-riktning
-        float xMovement = (float)Math.Sin(elapsedTime * 2) * 1.5f; // "2" styr hastigheten och "1.5" amplituden
+        float xMovement = (float)Math.Sin(elapsedTime * 2) * 1.5f; 
         float yMovement = Speed * 0.1f;
 
         Position = new Vector2
@@ -84,10 +84,30 @@ class MediumEnemy : Enemy
 
 class BigEnemy : Enemy
 {
-
- public BigEnemy(Vector2 startPosition,Texture2D texture)
+    private float elapsedTime;
+    private int screenWidth;
+    public BigEnemy(Vector2 startPosition,Texture2D texture, int screenWidth)
       : base (startPosition, texture,"BigEnemy", 150, 20, 15, 5)
+         {
+             this.screenWidth = screenWidth;
+         }
+
+    public void MoveSideToSide(GameTime gameTime)
     {
+        elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+        // Styr vänster-höger rörelsen längst upp på skärmen
+        elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+        // Skapar en  rörelse i x-riktning utan y-rörelse
+        float xMovement = (float)Math.Sin(elapsedTime) * 1f; 
+
+        Position = new Vector2
+        (
+            MathHelper.Clamp(Position.X + xMovement, 0, screenWidth - Texture.Width),
+            Position.Y 
+        );
+
         
     }
     public void DrawBigEnemy(SpriteBatch spriteBatch)
