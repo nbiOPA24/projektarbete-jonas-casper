@@ -4,6 +4,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Net.Mime;
 using System.Reflection.Metadata.Ecma335;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using JcGame;
 using Microsoft.Xna.Framework;
@@ -13,6 +14,7 @@ using Microsoft.Xna.Framework.Input;
 
 public class Player
 {
+    
     private Game1 game;
     public Vector2 Position {get; set;}
     private Texture2D Texture { get; set;}
@@ -20,7 +22,7 @@ public class Player
     public int BaseAttack {get; set;}
     public int BaseShield {get; set;}
     public float Speed {get; set;} 
-    public Rectangle Hitbox{get; set;}
+    public Hitbox Hitbox{get; set;}
 
     public Player(Game1 game, Vector2 startPosition,Texture2D texture, int baseHealth, int baseAttack, int baseShield, float speed)
     {
@@ -31,6 +33,8 @@ public class Player
         BaseAttack = baseAttack;
         BaseShield = baseShield;
         Speed = speed;
+        
+        Hitbox = new Hitbox(Position, Texture);
     }
 
     public void DrawPlayer(SpriteBatch spriteBatch)
@@ -57,9 +61,10 @@ public class Player
          // Uppdaterar positionen direkt
         Position = playerPosition;
 
+        Hitbox.Update(Position);
+
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             game.Exit();
-
     }
 }
 

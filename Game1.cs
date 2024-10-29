@@ -39,6 +39,7 @@ public class Game1 : Game
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
+        
 
         playerTexture = Content.Load<Texture2D>("player");
         laserGreenTexture = Content.Load<Texture2D>("laserGreen");

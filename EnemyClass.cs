@@ -14,6 +14,7 @@ class Enemy
     public int Shield {get; set;}
     public float Speed {get; set;}
     public bool IsActive {get; set;} = true;
+    
 
     public Enemy(Vector2 startPosition,Texture2D texture, string name, int health, int attack, int shield, float speed)
     {
