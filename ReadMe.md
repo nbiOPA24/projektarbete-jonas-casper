@@ -14,3 +14,4 @@
 - [x]göra så skotten kommer ifrån rätt ställe ifrån playern
 - [ ]Spawna enemies konstant? 
 - [ ]Gör så projektilerna gör skada 
+- [ ]Förbättra hitboxen, gör den mindre så den matcher planet bättre
