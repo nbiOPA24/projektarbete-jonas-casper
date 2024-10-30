@@ -27,7 +27,7 @@ public class Game1 : Game
     private List<Projectile> projectiles;
     private List<Enemy> enemies; 
     private EnemySpawnManager enenemySpawnManager;
-    
+
 
         
     public Game1()
