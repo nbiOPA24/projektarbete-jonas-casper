@@ -16,6 +16,8 @@ public class Game1 : Game
     MediumEnemy mediumEnemy;
     BigEnemy bigEnemy;
     private GraphicsDeviceManager _graphics;
+    private int _nativeWidth = 1920;
+    private int _nativeHeight = 1080;
     private SpriteBatch _spriteBatch;
     private Texture2D playerTexture;
     private Texture2D eyelanderTexture;
@@ -34,6 +36,9 @@ public class Game1 : Game
     {
         _graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
+        _graphics.PreferredBackBufferWidth = _nativeWidth;
+        _graphics.PreferredBackBufferHeight = _nativeHeight;
+        _graphics.ApplyChanges();
         IsMouseVisible = true;
     }
 

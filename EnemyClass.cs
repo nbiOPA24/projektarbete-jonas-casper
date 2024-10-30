@@ -1,6 +1,7 @@
 //konstruktor för klassen enemy
 using System;
 using System.Buffers.Text;
+using System.Collections.Generic;
 using System.Data;
 using System.Runtime.Serialization;
 using Microsoft.VisualBasic.FileIO;
