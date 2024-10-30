@@ -35,6 +35,7 @@ public class Game1 : Game
         _graphics.PreferredBackBufferHeight = _nativeHeight;
         _graphics.ApplyChanges();
         IsMouseVisible = true;
+
     }
 
     protected override void Initialize()
@@ -81,12 +82,14 @@ public class Game1 : Game
             if(utility.CheckCollisionPlayer(enemy, player))
             {
                 enemy.IsActive = false;
+                
             }
             foreach(var projectile in projectiles)
             if (utility.CheckCollisionProjectile(enemy, projectile))
             {
                 enemy.IsActive = false;
                 projectile.IsActive = false;
+                break;
             }
         }
         enemies.RemoveAll(e => !e.IsActive);
