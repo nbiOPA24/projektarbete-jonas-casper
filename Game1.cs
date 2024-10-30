@@ -46,6 +46,7 @@ public class Game1 : Game
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
+       
         //Här laddas alla .pngfiler in för player, projectile samlt alla enemies  
         playerTexture = Content.Load<Texture2D>("player");
         laserGreenTexture = Content.Load<Texture2D>("laserGreen");
@@ -119,7 +120,6 @@ public class Game1 : Game
         player.Position = utility.InsideBorder(player.Position, playerTexture, _graphics);
         
         base.Update(gameTime);
-        
     }
     
     protected override void Draw(GameTime gameTime)

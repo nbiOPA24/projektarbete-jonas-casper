@@ -19,5 +19,4 @@ public class UtilityMethods
     {
         return enemy.Hitbox.Bounds.Intersects(projectile.Hitbox.Bounds);
     }
-
 }
