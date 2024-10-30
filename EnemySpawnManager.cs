@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 public class EnemySpawnManager
@@ -9,6 +10,7 @@ public class EnemySpawnManager
     public float elapsedSpawnTime;
     public Texture2D smallEnemyTexture, mediumEnemyTexture, bigEnemyTexture;
     public int screenWidth;
+    
     
     public EnemySpawnManager(float spawnInterval, int screenWidth, Texture2D smallEnemyTexture, Texture2D mediumEnemyTexture, Texture2D bigEnemyTexture)
     {
@@ -23,11 +25,13 @@ public class EnemySpawnManager
         elapsedSpawnTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
         if (elapsedSpawnTime >= spawnInterval)
         {
+            
             SpawnEnemy();
             elapsedSpawnTime = 0f;
         }
         foreach (Enemy enemy in enemies)
         {
+           
             if(enemy.Health <= 0)
             enemy.IsActive = false;
 
@@ -39,16 +43,18 @@ public class EnemySpawnManager
             
             else if (enemy is BigEnemy bigEnemy)
             bigEnemy.MoveSideToSide(gameTime);
-
-            enemy.UpdateHitbox();
+            
+            enemy.UpdateHitbox();        
         }
         enemies.RemoveAll(e => !e.IsActive);
+        
     }
     private void SpawnEnemy()
     {
         Random rnd = new Random();
         float spawnX = rnd.Next(0, screenWidth - 100);
         Enemy newEnemy;
+        
 
         // Generera ett slumpmässigt tal mellan 0 och 99
         int spawnChance = rnd.Next(0, 100);
@@ -65,14 +71,16 @@ public class EnemySpawnManager
         else // 15% sannolikhet för BigEnemy
         {
         newEnemy = new BigEnemy(new Vector2(spawnX, -100), bigEnemyTexture, screenWidth);
-        }
-
-    enemies.Add(newEnemy);
+        }  
+        
+        enemies.Add(newEnemy);
+    
     }
     public void DrawEnemys(SpriteBatch spriteBatch)
     {
         foreach (var enemy in enemies)
         spriteBatch.Draw(enemy.Texture, enemy.Position, Color.White);
     }
-
+     
+     
 }

@@ -44,6 +44,7 @@ public class Game1 : Game
     protected override void Initialize()
     {
        base.Initialize();
+       
     }
     
     protected override void LoadContent()
@@ -53,7 +54,7 @@ public class Game1 : Game
        
         //Här laddas alla .pngfiler in för player, projectile samlt alla enemies  
         playerTexture = Content.Load<Texture2D>("player");
-        enenemySpawnManager = new EnemySpawnManager(5f, _graphics.PreferredBackBufferWidth, Content.Load<Texture2D>("eyelander"), Content.Load<Texture2D>("antmaker"), Content.Load<Texture2D>("enemyUfo"));
+        enenemySpawnManager = new EnemySpawnManager(2f, _graphics.PreferredBackBufferWidth, Content.Load<Texture2D>("eyelander"), Content.Load<Texture2D>("antmaker"), Content.Load<Texture2D>("enemyUfo"));
         projectiles = new List<Projectile>();
         laserGreenTexture = Content.Load<Texture2D>("laserGreen");
         eyelanderTexture = Content.Load<Texture2D>("eyelander");
