@@ -11,10 +11,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-
 public class Player
 {
-    
     private Game1 game;
     public Vector2 Position {get; set;}
     private Texture2D Texture { get; set;}
@@ -35,7 +33,6 @@ public class Player
         BaseAttack = baseAttack;
         BaseShield = baseShield;
         Speed = speed;
-        
         Hitbox = new Hitbox(Position, Texture);
     }
     //Metod för att bestämma hur spelaren ser ut samt vart man ska spawna på skärmen
@@ -47,13 +44,11 @@ public class Player
     //Även logik för projektilen , bla hur ofta man kan skjuta
     public void PlayerMovement(List<Projectile> projectiles, Texture2D laserGreenTexture, GameTime gameTime)
     {
-        
         var playerPosition = Position;
         var keyboardState = Keyboard.GetState();
         shootTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-        
 
-        if (keyboardState.IsKeyDown(Keys.Left))
+       if (keyboardState.IsKeyDown(Keys.Left))
          playerPosition.X -= Speed;
 
         if (keyboardState.IsKeyDown(Keys.Right))
@@ -74,18 +69,17 @@ public class Player
         
             Vector2 direction = new Vector2(0, -20);
             float projectileSpeed = Speed + 2;
-            projectiles.Add(new Projectile(laserGreenTexture, projectileStartPosition, direction, projectileSpeed, 10));
+            projectiles.Add(new Projectile(laserGreenTexture, projectileStartPosition, direction, projectileSpeed, 10, Hitbox));
         }
 
          // Uppdaterar positionen direkt
         Position = playerPosition;
-        //Uppdaterar Hitboxen utefter splearens position
+        //Uppdaterar Hitboxen utefter spelarens position
         Hitbox.Update(Position);
+        
         //Gör att man kan avsluta spelet med "ESC" eller "Back" knappen på en kontroller 
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             game.Exit();
-
-        
     }
 }
 

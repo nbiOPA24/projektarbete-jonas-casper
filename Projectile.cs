@@ -13,8 +13,9 @@ public class Projectile
     public float Speed { get; set; }
     public int Damage { get; set; }
     public bool IsActive { get; set; }
+    public Hitbox Hitbox {get; set;}
 
-        public Projectile(Texture2D texture, Vector2 position, Vector2 direction, float speed, int damage)
+        public Projectile(Texture2D texture, Vector2 position, Vector2 direction, float speed, int damage, Hitbox hitbox)
     {
         Texture = texture;
         Position = position;
@@ -22,6 +23,7 @@ public class Projectile
         Speed = speed;
         Damage = damage;
         IsActive = true;
+        Hitbox = new Hitbox(Position, Texture);
     }
     public void Update(GameTime gametime)
     {
@@ -31,7 +33,6 @@ public class Projectile
         {
             IsActive = false;
         }
-            
     }
     public void DrawPlayerAttack(SpriteBatch spriteBatch)
     {
@@ -39,6 +40,7 @@ public class Projectile
         {
             spriteBatch.Draw(Texture, Position, Color.White);
         }
+        Hitbox.Update(Position);
     }
        
 }

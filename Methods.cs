@@ -10,11 +10,14 @@ public class UtilityMethods
         position.Y = MathHelper.Clamp(position.Y, 0, graphics.PreferredBackBufferHeight -texture.Height);
         return position;
     }
-    public bool CheckCollision(Enemy enemy,  Player player)
+    public bool CheckCollisionPlayer(Enemy enemy, Player player)
     {
         return enemy.Hitbox.Bounds.Intersects(player.Hitbox.Bounds);
     }
 
- 
+    public bool CheckCollisionProjectile(Enemy enemy, Projectile projectile)
+    {
+        return enemy.Hitbox.Bounds.Intersects(projectile.Hitbox.Bounds);
+    }
 
 }

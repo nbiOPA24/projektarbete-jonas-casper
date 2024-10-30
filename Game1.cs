@@ -81,9 +81,15 @@ public class Game1 : Game
         UtilityMethods utility = new UtilityMethods();
         foreach (var enemy in enemies)
         {
-            if(utility.CheckCollision(enemy, player))
+            if(utility.CheckCollisionPlayer(enemy, player))
             {
                 enemy.IsActive = false;
+            }
+            foreach(var projectile in projectiles)
+            if (utility.CheckCollisionProjectile(enemy, projectile))
+            {
+                enemy.IsActive = false;
+                projectile.IsActive = false;
             }
         }
         enemies.RemoveAll(e => !e.IsActive);
