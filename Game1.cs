@@ -26,6 +26,8 @@ public class Game1 : Game
     private Texture2D laserGreenTexture;
     private List<Projectile> projectiles;
     private List<Enemy> enemies; 
+    private EnemySpawnManager enenemySpawnManager;
+
         
     public Game1()
     {
@@ -50,13 +52,14 @@ public class Game1 : Game
        
         //Här laddas alla .pngfiler in för player, projectile samlt alla enemies  
         playerTexture = Content.Load<Texture2D>("player");
+        enenemySpawnManager = new EnemySpawnManager(5f, _graphics.PreferredBackBufferWidth, Content.Load<Texture2D>("eyelander"), Content.Load<Texture2D>("antmaker"), Content.Load<Texture2D>("enemyUfo"));
+        projectiles = new List<Projectile>();
         laserGreenTexture = Content.Load<Texture2D>("laserGreen");
         eyelanderTexture = Content.Load<Texture2D>("eyelander");
         antmakerTexture = Content.Load<Texture2D>("antmaker");
         enemyUFOTexture = Content.Load<Texture2D>("enemyUFO");
-        projectiles = new List<Projectile>();
         enemies = new List<Enemy>();
-
+        
         //Ger ett randomnummer som representerar en plats inanför spelfönstrets skärm som bestämmer var i Y(X?)ledd enemies ska spawna
         Random rnd = new Random();
         float smallStart = rnd.Next(20, 780);
@@ -94,7 +97,7 @@ public class Game1 : Game
         }
         enemies.RemoveAll(e => !e.IsActive);
         player.PlayerMovement(projectiles, laserGreenTexture, gameTime);
-
+        enenemySpawnManager.Update(gameTime);
         foreach (var enemy in enemies)
         {
             if (enemy is SmallEnemy smallEnemy)
@@ -130,7 +133,7 @@ public class Game1 : Game
         GraphicsDevice.Clear(Color.CornflowerBlue);
 
         _spriteBatch.Begin();
-        
+        enenemySpawnManager.DrawEnemys(_spriteBatch);
         player.DrawPlayer(_spriteBatch);
                                
         foreach (var projectile in projectiles)
