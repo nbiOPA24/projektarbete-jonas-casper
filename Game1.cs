@@ -16,6 +16,8 @@ public class Game1 : Game
     MediumEnemy mediumEnemy;
     BigEnemy bigEnemy;
     private GraphicsDeviceManager _graphics;
+    private int _nativeWidth = 1920;
+    private int _nativeHeight = 1080;
     private SpriteBatch _spriteBatch;
     private Texture2D playerTexture;
     private Texture2D eyelanderTexture;
@@ -24,17 +26,19 @@ public class Game1 : Game
     private Texture2D laserGreenTexture;
     private List<Projectile> projectiles;
     private List<Enemy> enemies; 
-    private Texture2D hitboxTexture; //TODO TAG BORT SENARE, MÅLAR UT HITBOX ********
-    public void DrawRectangle(Rectangle rectangle, Color color) //TODO TAG BORT SENARE, MÅLAR UT HITBOX ********
-{
-    _spriteBatch.Draw(hitboxTexture, rectangle, color); //TODO TAG BORT SENARE, MÅLAR UT HITBOX ********
-}
+    private EnemySpawnManager enenemySpawnManager;
     
+
+        
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
+        _graphics.PreferredBackBufferWidth = _nativeWidth;
+        _graphics.PreferredBackBufferHeight = _nativeHeight;
+        _graphics.ApplyChanges();
         IsMouseVisible = true;
+
     }
 
     protected override void Initialize()
@@ -46,19 +50,17 @@ public class Game1 : Game
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-        
-        hitboxTexture = new Texture2D(GraphicsDevice, 1, 1);//TODO TAG BORT SENARE, MÅLAR UT HITBOX *****
-        hitboxTexture.SetData(new[] { Color.White });//TODO TAG BORT SENARE, MÅLAR UT HITBOX *****
-        
+       
         //Här laddas alla .pngfiler in för player, projectile samlt alla enemies  
         playerTexture = Content.Load<Texture2D>("player");
+        enenemySpawnManager = new EnemySpawnManager(5f, _graphics.PreferredBackBufferWidth, Content.Load<Texture2D>("eyelander"), Content.Load<Texture2D>("antmaker"), Content.Load<Texture2D>("enemyUfo"));
+        projectiles = new List<Projectile>();
         laserGreenTexture = Content.Load<Texture2D>("laserGreen");
         eyelanderTexture = Content.Load<Texture2D>("eyelander");
         antmakerTexture = Content.Load<Texture2D>("antmaker");
         enemyUFOTexture = Content.Load<Texture2D>("enemyUFO");
-        projectiles = new List<Projectile>();
         enemies = new List<Enemy>();
-
+        
         //Ger ett randomnummer som representerar en plats inanför spelfönstrets skärm som bestämmer var i Y(X?)ledd enemies ska spawna
         Random rnd = new Random();
         float smallStart = rnd.Next(20, 780);
@@ -81,14 +83,22 @@ public class Game1 : Game
         UtilityMethods utility = new UtilityMethods();
         foreach (var enemy in enemies)
         {
-            if(utility.CheckCollision(enemy, player))
+            if(utility.CheckCollisionPlayer(enemy, player))
             {
                 enemy.IsActive = false;
+                
+            }
+            foreach(var projectile in projectiles)
+            if (utility.CheckCollisionProjectile(enemy, projectile))
+            {
+                enemy.IsActive = false;
+                projectile.IsActive = false;
+                break;
             }
         }
         enemies.RemoveAll(e => !e.IsActive);
         player.PlayerMovement(projectiles, laserGreenTexture, gameTime);
-
+        enenemySpawnManager.Update(gameTime);
         foreach (var enemy in enemies)
         {
             if (enemy is SmallEnemy smallEnemy)
@@ -117,7 +127,6 @@ public class Game1 : Game
         player.Position = utility.InsideBorder(player.Position, playerTexture, _graphics);
         
         base.Update(gameTime);
-        
     }
     
     protected override void Draw(GameTime gameTime)
@@ -125,17 +134,20 @@ public class Game1 : Game
         GraphicsDevice.Clear(Color.CornflowerBlue);
 
         _spriteBatch.Begin();
-       
+        enenemySpawnManager.DrawEnemys(_spriteBatch);
         player.DrawPlayer(_spriteBatch);
-        DrawRectangle(player.Hitbox.Bounds, Color.Red);
-                       
+                               
         foreach (var projectile in projectiles)
-        {
             projectile.DrawPlayerAttack(_spriteBatch);
-        }
-        smallEnemy.DrawSmallEnemy(_spriteBatch);
-        mediumEnemy.DrawMediumEnemy(_spriteBatch);
-        bigEnemy.DrawBigEnemy(_spriteBatch);
+        
+        if (smallEnemy.IsActive)
+            smallEnemy.DrawSmallEnemy(_spriteBatch);
+        
+        if (mediumEnemy.IsActive)
+            mediumEnemy.DrawMediumEnemy(_spriteBatch);
+        
+        if(bigEnemy.IsActive)
+            bigEnemy.DrawBigEnemy(_spriteBatch);
         
         _spriteBatch.End();
 

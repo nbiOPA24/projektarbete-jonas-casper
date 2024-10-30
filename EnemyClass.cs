@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Graphics;
 public abstract class Enemy
 {
     public Vector2 Position {get; set;}
-    public Texture2D Texture { get; set; }
+    public Texture2D Texture { get; set;}
     public string Name {get; set;}
     public int Health {get; set;}
     public int Attack {get; set;} 
@@ -36,15 +36,14 @@ public abstract class Enemy
     {
         Hitbox.Update(Position);
     }
-
+    
 }
 class SmallEnemy : Enemy
 {
-    private int screenWidth; // 
-    private float elapsedTime; //E
+    private int screenWidth; 
+    private float elapsedTime; 
     public SmallEnemy(Vector2 startPosition,Texture2D texture, int screenWidth)
-        : base(startPosition, texture, "SmallEnemy", 70, 10, 0, 10)
-        
+        : base(startPosition, texture, "SmallEnemy", 40, 10, 0, 10)
     {
         this.screenWidth = screenWidth; //Tar in våran screenWidth
     }
@@ -148,7 +147,7 @@ class BigEnemy : Enemy
     {
         spriteBatch.Draw(Texture, Position, Color.White);
     }
-}
+}    
 
 
 
