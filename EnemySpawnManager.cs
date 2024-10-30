@@ -35,8 +35,6 @@ public class EnemySpawnManager
             smallEnemy.MoveDownSmoothly(gameTime);
             else if (enemy is MediumEnemy mediumEnemy)
             mediumEnemy.MoveDownSmoothlyFaster(gameTime);
-            
-
         }
 
     }
