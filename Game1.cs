@@ -26,6 +26,9 @@ public class Game1 : Game
     private Texture2D laserGreenTexture;
     private List<Projectile> projectiles;
     private List<Enemy> enemies; 
+    private EnemySpawnManager enenemySpawnManager;
+    
+
         
     public Game1()
     {
