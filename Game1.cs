@@ -125,17 +125,21 @@ public class Game1 : Game
         GraphicsDevice.Clear(Color.CornflowerBlue);
 
         _spriteBatch.Begin();
-       
+        
         player.DrawPlayer(_spriteBatch);
         DrawRectangle(player.Hitbox.Bounds, Color.Red);
                        
         foreach (var projectile in projectiles)
-        {
             projectile.DrawPlayerAttack(_spriteBatch);
-        }
-        smallEnemy.DrawSmallEnemy(_spriteBatch);
-        mediumEnemy.DrawMediumEnemy(_spriteBatch);
-        bigEnemy.DrawBigEnemy(_spriteBatch);
+        
+        if (smallEnemy.IsActive)
+            smallEnemy.DrawSmallEnemy(_spriteBatch);
+        
+        if (mediumEnemy.IsActive)
+            mediumEnemy.DrawMediumEnemy(_spriteBatch);
+        
+        if(bigEnemy.IsActive)
+            bigEnemy.DrawBigEnemy(_spriteBatch);
         
         _spriteBatch.End();
 
