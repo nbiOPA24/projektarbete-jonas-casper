@@ -29,7 +29,7 @@ public class Projectile
     {
         Position += Direction * Speed * (float)gametime.ElapsedGameTime.TotalSeconds;
 
-        if (Position.X < 0 || Position.X > 800 || Position.Y < 0 || Position.Y > 480)
+        if (Position.X < 0 || Position.X > 1920 || Position.Y < 0 || Position.Y > 1080)
         {
             IsActive = false;
         }

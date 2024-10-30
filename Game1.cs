@@ -16,6 +16,8 @@ public class Game1 : Game
     MediumEnemy mediumEnemy;
     BigEnemy bigEnemy;
     private GraphicsDeviceManager _graphics;
+    private int _nativeWidth = 1920;
+    private int _nativeHeight = 1080;
     private SpriteBatch _spriteBatch;
     private Texture2D playerTexture;
     private Texture2D eyelanderTexture;
@@ -24,16 +26,14 @@ public class Game1 : Game
     private Texture2D laserGreenTexture;
     private List<Projectile> projectiles;
     private List<Enemy> enemies; 
-    private Texture2D hitboxTexture; //TODO TAG BORT SENARE, MÅLAR UT HITBOX ********
-    public void DrawRectangle(Rectangle rectangle, Color color) //TODO TAG BORT SENARE, MÅLAR UT HITBOX ********
-{
-    _spriteBatch.Draw(hitboxTexture, rectangle, color); //TODO TAG BORT SENARE, MÅLAR UT HITBOX ********
-}
-    
+        
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
+        _graphics.PreferredBackBufferWidth = _nativeWidth;
+        _graphics.PreferredBackBufferHeight = _nativeHeight;
+        _graphics.ApplyChanges();
         IsMouseVisible = true;
     }
 
@@ -46,10 +46,6 @@ public class Game1 : Game
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-        
-        hitboxTexture = new Texture2D(GraphicsDevice, 1, 1);//TODO TAG BORT SENARE, MÅLAR UT HITBOX *****
-        hitboxTexture.SetData(new[] { Color.White });//TODO TAG BORT SENARE, MÅLAR UT HITBOX *****
-        
         //Här laddas alla .pngfiler in för player, projectile samlt alla enemies  
         playerTexture = Content.Load<Texture2D>("player");
         laserGreenTexture = Content.Load<Texture2D>("laserGreen");
@@ -133,8 +129,7 @@ public class Game1 : Game
         _spriteBatch.Begin();
         
         player.DrawPlayer(_spriteBatch);
-        DrawRectangle(player.Hitbox.Bounds, Color.Red);
-                       
+                               
         foreach (var projectile in projectiles)
             projectile.DrawPlayerAttack(_spriteBatch);
         
