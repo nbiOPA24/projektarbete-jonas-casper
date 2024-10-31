@@ -7,6 +7,7 @@ using System;
 using System.Runtime.CompilerServices;
 using Microsoft.VisualBasic;
 
+
 namespace JcGame;
 
 public class Game1 : Game
@@ -52,9 +53,9 @@ public class Game1 : Game
         projectiles = new List<Projectile>();
         laserGreenTexture = Content.Load<Texture2D>("laserGreen");
         enemies = new List<Enemy>();
-                    
+                  
         //Skapar  player samt alla enemies och änven vart dom ska spawna. Även alla agenskaper, om speed, health, shield 
-        player = new Player(this, new Vector2(350, 400), playerTexture, 100, 10, 20, 5);
+        player = new Player(this, new Vector2(940, 1000), playerTexture, 1, 35, 20, 15);//baseHealth, baseDamage, baseShield, speed 
         
         enemySpawnManager = new EnemySpawnManager(2f, _graphics.PreferredBackBufferWidth, Content.Load<Texture2D>("eyelander"), Content.Load<Texture2D>("antmaker"), Content.Load<Texture2D>("enemyUfo"));
     }
@@ -64,19 +65,30 @@ public class Game1 : Game
         foreach (var enemy in enemySpawnManager.enemies)
         {
             if(utility.CheckCollisionPlayer(enemy, player))
-                enemy.IsActive = false;
+                {
+                    player.BaseHealth = player.BaseHealth - 10;
+                    if (player.BaseHealth <= 0)
+                    {
+                        player.IsActive = false;
+                    }
+                }
+                
             
             foreach(var projectile in projectiles)
             {
                 if (utility.CheckCollisionProjectile(enemy, projectile))
                 {
-                    enemy.IsActive = false;
                     projectile.IsActive = false;
+                    enemy.Health = enemy.Health - player.BaseDamage;
+                    if (enemy.Health <= 0) 
+                    {
+                        enemy.IsActive = false;
+                    }
                 }
             }     
         }
-           
-        enemies.RemoveAll(e => !e.IsActive);
+        
+        enemySpawnManager.enemies.RemoveAll(e => !e.IsActive);
         player.PlayerMovement(projectiles, laserGreenTexture, gameTime);
         enemySpawnManager.Update(gameTime);
         foreach (var enemy in enemySpawnManager.enemies)
