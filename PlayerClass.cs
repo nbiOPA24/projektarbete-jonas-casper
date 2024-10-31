@@ -17,20 +17,21 @@ public class Player
     public Vector2 Position {get; set;}
     private Texture2D Texture { get; set;}
     public int BaseHealth {get; set;} 
-    public int BaseAttack {get; set;}
+    public int BaseDamage {get; set;}
     public int BaseShield {get; set;}
     public float Speed {get; set;} 
     public Hitbox Hitbox{get; set;}
     private float shootCooldown = 0.3f;
     private float shootTimer = 0;
+    public bool IsActive {get; set;} =  true; 
     //Konstruktor för PLayer
-    public Player(Game1 game, Vector2 startPosition,Texture2D texture, int baseHealth, int baseAttack, int baseShield, float speed)
+    public Player(Game1 game, Vector2 startPosition,Texture2D texture, int baseHealth, int baseDamage, int baseShield, float speed)
     {
         this.game = game;
         Texture = texture;
         Position = startPosition;   
         BaseHealth = baseHealth;
-        BaseAttack = baseAttack;
+        BaseDamage = baseDamage;
         BaseShield = baseShield;
         Speed = speed;
         Hitbox = new Hitbox(Position, Texture);

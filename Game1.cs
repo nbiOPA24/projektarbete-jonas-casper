@@ -7,28 +7,33 @@ using System;
 using System.Runtime.CompilerServices;
 using Microsoft.VisualBasic;
 
+
 namespace JcGame;
 
 public class Game1 : Game
 {
+    public enum GameState
+    {
+        MainMenu,
+        Playing,
+        Exiting, 
+    }
+    private GameState currentState = GameState.MainMenu;
+    private Texture2D MenyButtonTexture; 
     Player player;
-    SmallEnemy smallEnemy;
-    MediumEnemy mediumEnemy;
-    BigEnemy bigEnemy;
     private GraphicsDeviceManager _graphics;
     private int _nativeWidth = 1920;
     private int _nativeHeight = 1080;
+    private bool isGameOver = false;
     private SpriteBatch _spriteBatch;
     private Texture2D playerTexture;
-    private Texture2D eyelanderTexture;
-    private Texture2D antmakerTexture;
-    private Texture2D enemyUFOTexture;
     private Texture2D laserGreenTexture;
+    private Texture2D laserRedTexture;
+    private Texture2D gameOverTexture;
     private List<Projectile> projectiles;
     private List<Enemy> enemies; 
-    private EnemySpawnManager enenemySpawnManager;
-
-
+    private EnemySpawnManager enemySpawnManager;
+    private Texture2D hitboxTexture; // TODO TA BORT SENARE MÅLAR HITBOX
         
     public Game1()
     {
@@ -38,93 +43,90 @@ public class Game1 : Game
         _graphics.PreferredBackBufferHeight = _nativeHeight;
         _graphics.ApplyChanges();
         IsMouseVisible = true;
-
     }
 
     protected override void Initialize()
     {
        base.Initialize();
-       
     }
     
     protected override void LoadContent()
     {
+        MenyButtonTexture = Content.Load<Texture2D>("StartOptionExitKnapp");
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
+        // Skapa en enkel röd textur för att visualisera hitboxar
+        hitboxTexture = new Texture2D(GraphicsDevice, 1, 1); //TABPRT SENARE MÅLAR HITBOX
+        hitboxTexture.SetData(new[] { Color.Red * 0.5f }); // Halvgenomskinlig röd färg TA BORT SENARE MÅLAR HITBOX
        
         //Här laddas alla .pngfiler in för player, projectile samlt alla enemies  
         playerTexture = Content.Load<Texture2D>("player");
-        enenemySpawnManager = new EnemySpawnManager(2f, _graphics.PreferredBackBufferWidth, Content.Load<Texture2D>("eyelander"), Content.Load<Texture2D>("antmaker"), Content.Load<Texture2D>("enemyUfo"));
+        gameOverTexture = Content.Load<Texture2D>("Gameover");
         projectiles = new List<Projectile>();
         laserGreenTexture = Content.Load<Texture2D>("laserGreen");
-        eyelanderTexture = Content.Load<Texture2D>("eyelander");
-        antmakerTexture = Content.Load<Texture2D>("antmaker");
-        enemyUFOTexture = Content.Load<Texture2D>("enemyUFO");
+        laserRedTexture = Content.Load<Texture2D>("laserRed");
         enemies = new List<Enemy>();
-        
-        //Ger ett randomnummer som representerar en plats inanför spelfönstrets skärm som bestämmer var i Y(X?)ledd enemies ska spawna
-        Random rnd = new Random();
-        float smallStart = rnd.Next(20, 780);
-        float mediumStart = rnd.Next(20, 780);
-        float bigStart = rnd.Next(20,780);
-    
+                  
         //Skapar  player samt alla enemies och änven vart dom ska spawna. Även alla agenskaper, om speed, health, shield 
-        player = new Player(this, new Vector2(350, 400), playerTexture, 100, 10, 20, 5);
-        smallEnemy = new SmallEnemy(new Vector2(smallStart, 20), eyelanderTexture,  _graphics.PreferredBackBufferWidth); // TODO Sätt "20" till -100 för spawna utanför skärm"
-        mediumEnemy = new MediumEnemy(new Vector2(mediumStart,20), antmakerTexture, _graphics.PreferredBackBufferWidth); // TODOSätt "20" till -100 för spawna utanför skärm"
-        bigEnemy = new BigEnemy(new Vector2(bigStart,20), enemyUFOTexture, _graphics.PreferredBackBufferWidth); // TODO Sätt "20" till -100 för spawna utanför skärm"
-
-        enemies.Add(smallEnemy);
-        enemies.Add(smallEnemy);
-        enemies.Add(mediumEnemy);
-        enemies.Add(bigEnemy);
+        player = new Player(this, new Vector2(940, 1000), playerTexture, 1, 35, 20, 15);//baseHealth, baseDamage, baseShield, speed 
+        
+        enemySpawnManager = new EnemySpawnManager(2f, _graphics.PreferredBackBufferWidth, Content.Load<Texture2D>("eyelander"), Content.Load<Texture2D>("antmaker"), Content.Load<Texture2D>("enemyUfo"));
     }
     protected override void Update(GameTime gameTime)
     {
+        if(isGameOver)
+        return;
         UtilityMethods utility = new UtilityMethods();
-        foreach (var enemy in enemies)
+        foreach (var enemy in enemySpawnManager.enemies)
         {
             if(utility.CheckCollisionPlayer(enemy, player))
-            {
-                enemy.IsActive = false;
+                {
+                    player.BaseHealth -= 10;
+                    if (player.BaseHealth <= 0)
+                    {
+                        player.IsActive = false;
+                        isGameOver = true;
+                    }
+                    enemy.IsActive = false;
+                }
                 
-            }
+            
             foreach(var projectile in projectiles)
-            if (utility.CheckCollisionProjectile(enemy, projectile))
             {
-                enemy.IsActive = false;
-                projectile.IsActive = false;
-                break;
-            }
+                if (utility.CheckCollisionProjectile(enemy, projectile))
+                {
+                    projectile.IsActive = false;
+                    enemy.Health = enemy.Health - player.BaseDamage;
+                    if (enemy.Health <= 0) 
+                    {
+                        enemy.IsActive = false;
+                    }
+                }
+            }     
         }
-        enemies.RemoveAll(e => !e.IsActive);
+        
+        enemySpawnManager.enemies.RemoveAll(e => !e.IsActive);
         player.PlayerMovement(projectiles, laserGreenTexture, gameTime);
-        enenemySpawnManager.Update(gameTime);
-        foreach (var enemy in enemies)
+        enemySpawnManager.Update(gameTime);
+        foreach (var enemy in enemySpawnManager.enemies)
         {
             if (enemy is SmallEnemy smallEnemy)
-            {
                 smallEnemy.MoveDownSmoothly(gameTime); //läser in metoden MoveDownSmoothly med (gametime) som inparameter        
-            }
+            
             else if (enemy is BigEnemy bigEnemy)
-            {
                 bigEnemy.MoveSideToSide(gameTime); //läser in metoden MoveSidetoSide för BigEnemy
-            }
-            else if (enemy is MediumEnemy)
-            {
+            
+            else if (enemy is MediumEnemy mediumEnemy)
                 mediumEnemy.MoveDownSmoothlyFaster(gameTime);
-            }
+            
             enemy.UpdateHitbox();
         }
 
         foreach (var projectile in projectiles)
-        {
             projectile.Update(gameTime);
-        }
+        
         projectiles.RemoveAll(p => !p.IsActive);
-        
-        
-       
+              
         player.Position = utility.InsideBorder(player.Position, playerTexture, _graphics);
         
         base.Update(gameTime);
@@ -133,22 +135,24 @@ public class Game1 : Game
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
-
         _spriteBatch.Begin();
-        enenemySpawnManager.DrawEnemys(_spriteBatch);
-        player.DrawPlayer(_spriteBatch);
+        startButton.Draw(SpriteBatch);
+        if (isGameOver)
+        {
+            Vector2 position = new Vector2((_nativeWidth - gameOverTexture.Width) / 2,(_nativeHeight - gameOverTexture.Height) / 2);
+            _spriteBatch.Draw(gameOverTexture, position, Color.White);
+        }
+        else 
+        {
+            enemySpawnManager.DrawEnemys(_spriteBatch);
+            enemySpawnManager.DrawHitboxes(_spriteBatch, hitboxTexture); //TODO TA BORT SENARE MÅLAR HITBOX
+            player.DrawPlayer(_spriteBatch);
                                
-        foreach (var projectile in projectiles)
+            foreach (var projectile in projectiles)
             projectile.DrawPlayerAttack(_spriteBatch);
+
+        }
         
-        if (smallEnemy.IsActive)
-            smallEnemy.DrawSmallEnemy(_spriteBatch);
-        
-        if (mediumEnemy.IsActive)
-            mediumEnemy.DrawMediumEnemy(_spriteBatch);
-        
-        if(bigEnemy.IsActive)
-            bigEnemy.DrawBigEnemy(_spriteBatch);
         
         _spriteBatch.End();
 
