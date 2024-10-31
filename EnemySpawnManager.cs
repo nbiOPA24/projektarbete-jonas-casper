@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-public class EnemySpawnManager
+public class EnemySpawnManager 
 {
     public List<Enemy> enemies = new List<Enemy>();
     public float spawnInterval;
@@ -12,12 +12,12 @@ public class EnemySpawnManager
     public int screenWidth;
     
     
-    public EnemySpawnManager(float spawnInterval, int screenWidth, Texture2D smallEnemyTexture, Texture2D mediumEnemyTexture, Texture2D bigEnemyTexture)
+    public EnemySpawnManager (float spawnInterval, int screenWidth, Texture2D smallEnemyTexture, Texture2D mediumEnemyTexture, Texture2D bigEnemyTexture)
     {
         this.spawnInterval = spawnInterval;
         this.screenWidth = screenWidth;
         this.smallEnemyTexture = smallEnemyTexture;
-        this.mediumEnemyTexture =mediumEnemyTexture;
+        this.mediumEnemyTexture = mediumEnemyTexture;
         this.bigEnemyTexture = bigEnemyTexture;
     }
     public void Update (GameTime gameTime)
@@ -72,14 +72,14 @@ public class EnemySpawnManager
         {
         newEnemy = new BigEnemy(new Vector2(spawnX, -100), bigEnemyTexture, screenWidth);
         }  
-        
+        newEnemy.UpdateHitbox();
         enemies.Add(newEnemy);
-    
+
     }
     public void DrawEnemys(SpriteBatch spriteBatch)
     {
-        foreach (var enemy in enemies)
-        spriteBatch.Draw(enemy.Texture, enemy.Position, Color.White);
+        foreach (var Enemy in enemies)
+        spriteBatch.Draw(Enemy.Texture, Enemy.Position, Color.White);
     }
      
      
