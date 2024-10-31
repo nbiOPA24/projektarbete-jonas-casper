@@ -7,7 +7,7 @@ public class Hitbox
     
     public Hitbox(Vector2 position, Texture2D texture)
     {
-        Bounds = new Rectangle((int)position.X, (int)position.Y, texture.Width -15, texture.Height -10);        
+        Bounds = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);        
     }
     public void Update(Vector2 position)
     {
