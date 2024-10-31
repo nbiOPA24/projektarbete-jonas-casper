@@ -12,13 +12,24 @@ namespace JcGame;
 
 public class Game1 : Game
 {
+    public enum GameState
+    {
+        MainMenu,
+        Playing,
+        Exiting, 
+    }
+    private GameState currentState = GameState.MainMenu;
+    private Texture2D MenyButtonTexture; 
     Player player;
     private GraphicsDeviceManager _graphics;
     private int _nativeWidth = 1920;
     private int _nativeHeight = 1080;
+    private bool isGameOver = false;
     private SpriteBatch _spriteBatch;
     private Texture2D playerTexture;
     private Texture2D laserGreenTexture;
+    private Texture2D laserRedTexture;
+    private Texture2D gameOverTexture;
     private List<Projectile> projectiles;
     private List<Enemy> enemies; 
     private EnemySpawnManager enemySpawnManager;
@@ -41,6 +52,7 @@ public class Game1 : Game
     
     protected override void LoadContent()
     {
+        MenyButtonTexture = Content.Load<Texture2D>("StartOptionExitKnapp");
         _spriteBatch = new SpriteBatch(GraphicsDevice);
 
         // Skapa en enkel röd textur för att visualisera hitboxar
@@ -49,9 +61,10 @@ public class Game1 : Game
        
         //Här laddas alla .pngfiler in för player, projectile samlt alla enemies  
         playerTexture = Content.Load<Texture2D>("player");
-        
+        gameOverTexture = Content.Load<Texture2D>("Gameover");
         projectiles = new List<Projectile>();
         laserGreenTexture = Content.Load<Texture2D>("laserGreen");
+        laserRedTexture = Content.Load<Texture2D>("laserRed");
         enemies = new List<Enemy>();
                   
         //Skapar  player samt alla enemies och änven vart dom ska spawna. Även alla agenskaper, om speed, health, shield 
@@ -61,16 +74,20 @@ public class Game1 : Game
     }
     protected override void Update(GameTime gameTime)
     {
+        if(isGameOver)
+        return;
         UtilityMethods utility = new UtilityMethods();
         foreach (var enemy in enemySpawnManager.enemies)
         {
             if(utility.CheckCollisionPlayer(enemy, player))
                 {
-                    player.BaseHealth = player.BaseHealth - 10;
+                    player.BaseHealth -= 10;
                     if (player.BaseHealth <= 0)
                     {
                         player.IsActive = false;
+                        isGameOver = true;
                     }
+                    enemy.IsActive = false;
                 }
                 
             
@@ -118,14 +135,24 @@ public class Game1 : Game
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
-
         _spriteBatch.Begin();
-        enemySpawnManager.DrawEnemys(_spriteBatch);
-        enemySpawnManager.DrawHitboxes(_spriteBatch, hitboxTexture); //TODO TA BORT SENARE MÅLAR HITBOX
-        player.DrawPlayer(_spriteBatch);
+        startButton.Draw(SpriteBatch);
+        if (isGameOver)
+        {
+            Vector2 position = new Vector2((_nativeWidth - gameOverTexture.Width) / 2,(_nativeHeight - gameOverTexture.Height) / 2);
+            _spriteBatch.Draw(gameOverTexture, position, Color.White);
+        }
+        else 
+        {
+            enemySpawnManager.DrawEnemys(_spriteBatch);
+            enemySpawnManager.DrawHitboxes(_spriteBatch, hitboxTexture); //TODO TA BORT SENARE MÅLAR HITBOX
+            player.DrawPlayer(_spriteBatch);
                                
-        foreach (var projectile in projectiles)
+            foreach (var projectile in projectiles)
             projectile.DrawPlayerAttack(_spriteBatch);
+
+        }
+        
         
         _spriteBatch.End();
 

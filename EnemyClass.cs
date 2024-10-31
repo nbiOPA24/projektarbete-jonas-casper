@@ -1,6 +1,7 @@
 //konstruktor för klassen enemy
 using System;
 using System.Buffers.Text;
+using System.Collections.Generic;
 using System.Data;
 using System.Runtime.Serialization;
 using Microsoft.VisualBasic.FileIO;
@@ -74,10 +75,16 @@ class MediumEnemy : Enemy
 {
     private int screenWidth;
     private float elapsedTime;
-    public MediumEnemy(Vector2 startPosition,Texture2D texture, int screenWidth)
+    private Texture2D laserRedTexture;
+    private List<Projectile> projectiles;
+    private float shootTimer;
+    private float shootInterval = 2f;
+    public MediumEnemy(Vector2 startPosition,Texture2D texture, Texture2D laserRedTexture, int screenWidth)
          : base (startPosition, texture,"MediumEnemy", 100, 15, 5, 20)
     {
        this.screenWidth = screenWidth; //tar in våran screenwidth
+       this.laserRedTexture = laserRedTexture;
+       projectiles = new List<Projectile>();
     }
     public void MoveDownSmoothlyFaster(GameTime gameTime)
     {
@@ -93,6 +100,18 @@ class MediumEnemy : Enemy
             Position.Y + yMovement
         );
         UpdateHitbox(); 
+
+        if (shootTimer >= shootInterval)
+        {
+            Shoot();
+            shootTimer = 0f;
+        }
+    }
+    private void Shoot()
+    {
+        // Skapa en ny projektile som skjuts mot spelaren
+        Vector2 projectilePosition = new Vector2(Position.X + Texture.Width / 2, Position.Y + Texture.Height); // Startposition för projektilet
+        projectiles.Add(new Projectile(projectilePosition, laserRedTexture, 5f)); // Justera hastighet om det behövs
     }
 
     public void DrawMediumEnemy(SpriteBatch spriteBatch)
