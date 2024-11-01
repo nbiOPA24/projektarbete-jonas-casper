@@ -17,9 +17,9 @@ public class Game1 : Game
     {
         MainMenu,
         Playing,
+        GameOver,
+        Exit
     }
-    private SpriteFont font;
-    private GameState currentState = GameState.MainMenu;
     Player player;
     private GraphicsDeviceManager _graphics;
     private int _nativeWidth = 1920;
@@ -47,18 +47,13 @@ public class Game1 : Game
 
     protected override void Initialize()
     {
-        Console.WriteLine("INITIALIZE"); //*******************************************************
-
-       base.Initialize();
+        base.Initialize();
     }
     
     protected override void LoadContent()
     {
-        Console.WriteLine("LOAD CONTENT"); //*******************************************************
-
         _spriteBatch = new SpriteBatch(GraphicsDevice);
-        font = Content.Load<SpriteFont>("Font");
-
+        
         // Skapa en enkel röd textur för att visualisera hitboxar
         hitboxTexture = new Texture2D(GraphicsDevice, 1, 1); //TABPRT SENARE MÅLAR HITBOX
         hitboxTexture.SetData(new[] { Color.Red * 0.5f }); // Halvgenomskinlig röd färg TA BORT SENARE MÅLAR HITBOX
@@ -73,24 +68,11 @@ public class Game1 : Game
                   
         //Skapar  player samt alla enemies och änven vart dom ska spawna. Även alla agenskaper, om speed, health, shield 
         player = new Player(this, new Vector2(940, 1000), playerTexture, 1, 35, 20, 15);//baseHealth, baseDamage, baseShield, speed 
-        
         enemySpawnManager = new EnemySpawnManager(2f, _graphics.PreferredBackBufferWidth, Content.Load<Texture2D>("eyelander"), Content.Load<Texture2D>("antmaker"), Content.Load<Texture2D>("enemyUfo"));
     }
     protected override void Update(GameTime gameTime)
     {
-        Console.WriteLine("Update"); //*******************************************************
-        var keyboardState = Keyboard.GetState();
-
-        /*{
-            if (keyboardState.IsKeyDown(Keys.Enter))
-            {
-                currentState = GameState.Playing;*********************************************
-            }
-        } 
-
-        if(isGameOver)
-        return;*/
-
+       
         UtilityMethods utility = new UtilityMethods();
         foreach (var enemy in enemySpawnManager.enemies)
         {
@@ -118,8 +100,7 @@ public class Game1 : Game
                 }
             }     
         }
-        Console.WriteLine("STATUS 1"); //*******************************************************
-        
+                        
         enemySpawnManager.enemies.RemoveAll(e => !e.IsActive);
         player.PlayerMovement(projectiles, laserGreenTexture, gameTime);
         enemySpawnManager.Update(gameTime);
@@ -141,41 +122,30 @@ public class Game1 : Game
             projectile.Update(gameTime);
         
         projectiles.RemoveAll(p => !p.IsActive);
-              
+            
         player.Position = utility.InsideBorder(player.Position, playerTexture, _graphics);
-        
+
         base.Update(gameTime);
     }
-    
+
+
+       
+     
     protected override void Draw(GameTime gameTime)
     
     {
-        
         GraphicsDevice.Clear(Color.CornflowerBlue);
         _spriteBatch.Begin();
-        
-
-        /*if (currentState == GameState.MainMenu)
+                
         {
-            GraphicsDevice.Clear(Color.Black);
-            _spriteBatch.DrawString(font, "Tryck ENTER för att starta spelet!", new Vector2(100,100), Color.White);
-        }
-        else if (isGameOver)
-        {
-            Vector2 position = new Vector2((_nativeWidth - gameOverTexture.Width) / 2,(_nativeHeight - gameOverTexture.Height) / 2);
-            _spriteBatch.Draw(gameOverTexture, position, Color.White);
-        }*/
-        //else 
-        //{
             enemySpawnManager.DrawEnemys(_spriteBatch);
             enemySpawnManager.DrawHitboxes(_spriteBatch, hitboxTexture); //TODO TA BORT SENARE MÅLAR HITBOX
             player.DrawPlayer(_spriteBatch);
                                
             foreach (var projectile in projectiles)
-            projectile.DrawPlayerAttack(_spriteBatch);
-        //}
-        
-       
+                projectile.DrawPlayerAttack(_spriteBatch);
+        }
+                       
         _spriteBatch.End();
 
         base.Draw(gameTime);
