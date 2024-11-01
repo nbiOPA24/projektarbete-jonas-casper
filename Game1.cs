@@ -67,7 +67,7 @@ public class Game1 : Game
         enemies = new List<Enemy>(); // TA BORT???? GAMLA ENEMIES
                   
         //Skapar  player samt alla enemies och änven vart dom ska spawna. Även alla agenskaper, om speed, health, shield 
-        player = new Player(this, new Vector2(940, 1000), playerTexture, 1, 35, 20, 15);//baseHealth, baseDamage, baseShield, speed 
+        player = new Player(this, new Vector2(940, 1000), playerTexture, 100, 35, 20, 15);//baseHealth, baseDamage, baseShield, speed 
         enemySpawnManager = new EnemySpawnManager(2f, _graphics.PreferredBackBufferWidth, Content.Load<Texture2D>("eyelander"), Content.Load<Texture2D>("antmaker"), Content.Load<Texture2D>("enemyUfo"));
     }
     protected override void Update(GameTime gameTime)
@@ -127,10 +127,7 @@ public class Game1 : Game
 
         base.Update(gameTime);
     }
-
-
-       
-     
+    
     protected override void Draw(GameTime gameTime)
     
     {

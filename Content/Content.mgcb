@@ -49,13 +49,6 @@
 /processorParam:TextureFormat=Color
 /build:eyelander.png
 
-#begin Font.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:Font.spritefont
-
 #begin Gameover.png
 /importer:TextureImporter
 /processor:TextureProcessor
