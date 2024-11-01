@@ -82,7 +82,7 @@ class MediumEnemy : Enemy
     public MediumEnemy(Vector2 startPosition,Texture2D texture, int screenWidth)
          : base (startPosition, texture,"MediumEnemy", 100, 15, 5, 20)
     {
-       
+       this.screenWidth = screenWidth;
     }
     public void MoveDownSmoothlyFaster(GameTime gameTime)
     {
