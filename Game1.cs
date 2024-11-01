@@ -104,6 +104,7 @@ public class Game1 : Game
         enemySpawnManager.enemies.RemoveAll(e => !e.IsActive);
         player.PlayerMovement(projectiles, laserGreenTexture, gameTime);
         enemySpawnManager.Update(gameTime);
+        
         foreach (var enemy in enemySpawnManager.enemies)
         {
             if (enemy is SmallEnemy smallEnemy)
@@ -136,6 +137,18 @@ public class Game1 : Game
                 
         {
             enemySpawnManager.DrawEnemys(_spriteBatch);
+            foreach (var enemy in enemySpawnManager.enemies)
+        {
+            if (enemy is MediumEnemy mediumEnemy)
+            {
+                // Rita projektilerna som MediumEnemy har skjutit
+                foreach (var projectile in mediumEnemy.mediumEnemyProjectiles)
+                {
+                    projectile.DrawPlayerAttack(_spriteBatch);
+                }
+            }
+        }
+            
             enemySpawnManager.DrawHitboxes(_spriteBatch, hitboxTexture); //TODO TA BORT SENARE MÅLAR HITBOX
             player.DrawPlayer(_spriteBatch);
                                
