@@ -86,8 +86,10 @@ class MediumEnemy : Enemy
        this.screenWidth = screenWidth;
        mediumEnemyProjectiles = new List<MediumEnemyProjectile>();
     }
-    public void Update(GameTime gamtime, Vector2 playerPosition, Texture2D laserRedTexture)
+    public void Update(GameTime gametime, Vector2 playerPosition, Texture2D laserRedTexture)
     {
+        timeSinceLastShot += (float)gametime.ElapsedGameTime.TotalSeconds;
+       
         if(timeSinceLastShot >= shootCooldown)
         {
             MediumEnemyShoot(playerPosition, laserRedTexture);
@@ -95,7 +97,7 @@ class MediumEnemy : Enemy
         }
         foreach (var projectile in mediumEnemyProjectiles)
         {
-            projectile.Update(gamtime);
+            projectile.Update(gametime);
 
         }
         mediumEnemyProjectiles.RemoveAll(p => !p.IsActive);
