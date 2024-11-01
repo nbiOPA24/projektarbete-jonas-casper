@@ -20,7 +20,6 @@ public class Game1 : Game
     }
     private SpriteFont font;
     private GameState currentState = GameState.MainMenu;
-    private Texture2D MenyButtonTexture; 
     Player player;
     private GraphicsDeviceManager _graphics;
     private int _nativeWidth = 1920;
@@ -48,11 +47,15 @@ public class Game1 : Game
 
     protected override void Initialize()
     {
+        Console.WriteLine("INITIALIZE"); //*******************************************************
+
        base.Initialize();
     }
     
     protected override void LoadContent()
     {
+        Console.WriteLine("LOAD CONTENT"); //*******************************************************
+
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         font = Content.Load<SpriteFont>("Font");
 
@@ -75,8 +78,19 @@ public class Game1 : Game
     }
     protected override void Update(GameTime gameTime)
     {
+        Console.WriteLine("Update"); //*******************************************************
+        var keyboardState = Keyboard.GetState();
+
+        /*{
+            if (keyboardState.IsKeyDown(Keys.Enter))
+            {
+                currentState = GameState.Playing;*********************************************
+            }
+        } 
+
         if(isGameOver)
-        return;
+        return;*/
+
         UtilityMethods utility = new UtilityMethods();
         foreach (var enemy in enemySpawnManager.enemies)
         {
@@ -104,6 +118,7 @@ public class Game1 : Game
                 }
             }     
         }
+        Console.WriteLine("STATUS 1"); //*******************************************************
         
         enemySpawnManager.enemies.RemoveAll(e => !e.IsActive);
         player.PlayerMovement(projectiles, laserGreenTexture, gameTime);
@@ -133,33 +148,34 @@ public class Game1 : Game
     }
     
     protected override void Draw(GameTime gameTime)
+    
     {
+        
         GraphicsDevice.Clear(Color.CornflowerBlue);
         _spriteBatch.Begin();
-        if (currentState == GameState.MainMenu)
+        
+
+        /*if (currentState == GameState.MainMenu)
         {
             GraphicsDevice.Clear(Color.Black);
-            
             _spriteBatch.DrawString(font, "Tryck ENTER för att starta spelet!", new Vector2(100,100), Color.White);
-            _spriteBatch.End();
         }
         else if (isGameOver)
         {
             Vector2 position = new Vector2((_nativeWidth - gameOverTexture.Width) / 2,(_nativeHeight - gameOverTexture.Height) / 2);
             _spriteBatch.Draw(gameOverTexture, position, Color.White);
-        }
-        else 
-        {
+        }*/
+        //else 
+        //{
             enemySpawnManager.DrawEnemys(_spriteBatch);
             enemySpawnManager.DrawHitboxes(_spriteBatch, hitboxTexture); //TODO TA BORT SENARE MÅLAR HITBOX
             player.DrawPlayer(_spriteBatch);
                                
             foreach (var projectile in projectiles)
             projectile.DrawPlayerAttack(_spriteBatch);
-
-        }
+        //}
         
-        
+       
         _spriteBatch.End();
 
         base.Draw(gameTime);
