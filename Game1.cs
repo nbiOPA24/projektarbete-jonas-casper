@@ -20,6 +20,7 @@ public class Game1 : Game
         GameOver,
         Exit
     }
+    private SpriteFont font;
     Player player;
     private GraphicsDeviceManager _graphics;
     private int _nativeWidth = 1920;
@@ -53,7 +54,7 @@ public class Game1 : Game
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
-        
+        font = Content.Load<SpriteFont>("playerHealth");
         // Skapa en enkel röd textur för att visualisera hitboxar
         hitboxTexture = new Texture2D(GraphicsDevice, 1, 1); //TABPRT SENARE MÅLAR HITBOX
         hitboxTexture.SetData(new[] { Color.Red * 0.5f }); // Halvgenomskinlig röd färg TA BORT SENARE MÅLAR HITBOX
@@ -133,6 +134,8 @@ public class Game1 : Game
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
         _spriteBatch.Begin();
+        string healthText = $"Healt: {player.BaseHealth}";
+        _spriteBatch.DrawString(font, healthText, new Vector2(100,100), Color.White);
                 
         {
             enemySpawnManager.DrawEnemys(_spriteBatch);

@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:Graphics="Microsoft.Xna.Framework.Content.Pipeline.Graphics">
+  <Asset Type="Graphics:FontDescription">
+    <FontName>Arial</FontName> <!-- Typen av teckensnitt -->
+    <Size>14</Size> <!-- Storlek på teckensnittet -->
+    <Spacing>2</Spacing> <!-- Mellanslag mellan bokstäver -->
+    <UseKerning>true</UseKerning>
+    <Style>Regular</Style> <!-- Stil på teckensnittet (t.ex. Regular, Bold) -->
+    <CharacterRegions>
+      <CharacterRegion>
+        <Start>&#32;</Start> <!-- Starttecken (mellanslag) -->
+        <End>&#126;</End> <!-- Sluttecken (~) -->
+      </CharacterRegion>
+    </CharacterRegions>
+  </Asset>
+</XnaContent>

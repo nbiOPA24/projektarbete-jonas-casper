@@ -97,3 +97,10 @@
 /processorParam:TextureFormat=Color
 /build:player.png
 
+#begin playerHealth.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:playerHealth.spritefont
+
