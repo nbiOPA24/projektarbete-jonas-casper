@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using Microsoft.VisualBasic;
 
 
+
 namespace JcGame;
 
 public class Game1 : Game
@@ -16,8 +17,8 @@ public class Game1 : Game
     {
         MainMenu,
         Playing,
-        Exiting, 
     }
+    private SpriteFont font;
     private GameState currentState = GameState.MainMenu;
     private Texture2D MenyButtonTexture; 
     Player player;
@@ -31,7 +32,7 @@ public class Game1 : Game
     private Texture2D laserRedTexture;
     private Texture2D gameOverTexture;
     private List<Projectile> projectiles;
-    private List<Enemy> enemies; 
+    private List<Enemy> enemies; //TA BORT??? GAMLA ENEMIES
     private EnemySpawnManager enemySpawnManager;
     private Texture2D hitboxTexture; // TODO TA BORT SENARE MÅLAR HITBOX
         
@@ -52,8 +53,8 @@ public class Game1 : Game
     
     protected override void LoadContent()
     {
-        MenyButtonTexture = Content.Load<Texture2D>("StartOptionExitKnapp");
         _spriteBatch = new SpriteBatch(GraphicsDevice);
+        font = Content.Load<SpriteFont>("Font");
 
         // Skapa en enkel röd textur för att visualisera hitboxar
         hitboxTexture = new Texture2D(GraphicsDevice, 1, 1); //TABPRT SENARE MÅLAR HITBOX
@@ -65,7 +66,7 @@ public class Game1 : Game
         projectiles = new List<Projectile>();
         laserGreenTexture = Content.Load<Texture2D>("laserGreen");
         laserRedTexture = Content.Load<Texture2D>("laserRed");
-        enemies = new List<Enemy>();
+        enemies = new List<Enemy>(); // TA BORT???? GAMLA ENEMIES
                   
         //Skapar  player samt alla enemies och änven vart dom ska spawna. Även alla agenskaper, om speed, health, shield 
         player = new Player(this, new Vector2(940, 1000), playerTexture, 1, 35, 20, 15);//baseHealth, baseDamage, baseShield, speed 
@@ -89,8 +90,7 @@ public class Game1 : Game
                     }
                     enemy.IsActive = false;
                 }
-                
-            
+                            
             foreach(var projectile in projectiles)
             {
                 if (utility.CheckCollisionProjectile(enemy, projectile))
@@ -136,7 +136,13 @@ public class Game1 : Game
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
         _spriteBatch.Begin();
-        startButton.Draw(SpriteBatch);
+        if (currentState == GameState.MainMenu)
+        {
+            GraphicsDevice.Clear(Color.Black);
+            
+            _spriteBatch.DrawString(font, "Tryck ENTER för att starta spelet!", new Vector2(100,100), Color.White);
+            _spriteBatch.End();
+        }
         if (isGameOver)
         {
             Vector2 position = new Vector2((_nativeWidth - gameOverTexture.Width) / 2,(_nativeHeight - gameOverTexture.Height) / 2);
