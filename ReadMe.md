@@ -10,8 +10,11 @@
 - [x]Få enemys att röra sig
 - [x]Hitboxes?   
 - [x]göra så spelaren kan skjuta
-- [ ]redundans? vad kan vi klumpa ihop något som gör samma sak
 - [x]göra så skotten kommer ifrån rätt ställe ifrån playern
 - [x]Spawna enemies konstant? 
-- [ ]Gör så projektilerna gör skada 
+- [x]Gör så projektilerna gör skada 
 - [ ]Förbättra hitboxen, gör den mindre så den matcher planet bättre
+- [ ]Redundans? vad kan vi klumpa ihop något som gör samma sak
+- [ ]Meny?
+- [ ]Något som ger hp? Ett hjärta? 
+- [ ]

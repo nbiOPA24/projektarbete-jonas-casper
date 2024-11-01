@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using Microsoft.VisualBasic;
 
 
+
 namespace JcGame;
 
 public class Game1 : Game
@@ -16,25 +17,26 @@ public class Game1 : Game
     {
         MainMenu,
         Playing,
-        Exiting, 
+        GameOver,
+        Exit
     }
-    private GameState currentState = GameState.MainMenu;
-    private Texture2D MenyButtonTexture; 
+    private SpriteFont font;
     Player player;
     private GraphicsDeviceManager _graphics;
     private int _nativeWidth = 1920;
     private int _nativeHeight = 1080;
     private bool isGameOver = false;
+    private Texture2D heart;
     private SpriteBatch _spriteBatch;
     private Texture2D playerTexture;
     private Texture2D laserGreenTexture;
     private Texture2D laserRedTexture;
     private Texture2D gameOverTexture;
     private List<Projectile> projectiles;
-    private List<Enemy> enemies; 
     private EnemySpawnManager enemySpawnManager;
     private Texture2D hitboxTexture; // TODO TA BORT SENARE MÅLAR HITBOX
-        
+    private GameState gameState;
+            
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -47,14 +49,13 @@ public class Game1 : Game
 
     protected override void Initialize()
     {
-       base.Initialize();
+        base.Initialize();
     }
     
     protected override void LoadContent()
     {
-        MenyButtonTexture = Content.Load<Texture2D>("StartOptionExitKnapp");
         _spriteBatch = new SpriteBatch(GraphicsDevice);
-
+        font = Content.Load<SpriteFont>("playerHealth");
         // Skapa en enkel röd textur för att visualisera hitboxar
         hitboxTexture = new Texture2D(GraphicsDevice, 1, 1); //TABPRT SENARE MÅLAR HITBOX
         hitboxTexture.SetData(new[] { Color.Red * 0.5f }); // Halvgenomskinlig röd färg TA BORT SENARE MÅLAR HITBOX
@@ -65,32 +66,31 @@ public class Game1 : Game
         projectiles = new List<Projectile>();
         laserGreenTexture = Content.Load<Texture2D>("laserGreen");
         laserRedTexture = Content.Load<Texture2D>("laserRed");
-        enemies = new List<Enemy>();
-                  
+        gameOverTexture = Content.Load<Texture2D>("Gameover");
+                          
         //Skapar  player samt alla enemies och änven vart dom ska spawna. Även alla agenskaper, om speed, health, shield 
-        player = new Player(this, new Vector2(940, 1000), playerTexture, 1, 35, 20, 15);//baseHealth, baseDamage, baseShield, speed 
-        
+        player = new Player(this, new Vector2(940, 1000), playerTexture, 100, 35, 20, 15);//baseHealth, baseDamage, baseShield, speed 
         enemySpawnManager = new EnemySpawnManager(2f, _graphics.PreferredBackBufferWidth, Content.Load<Texture2D>("eyelander"), Content.Load<Texture2D>("antmaker"), Content.Load<Texture2D>("enemyUfo"));
     }
     protected override void Update(GameTime gameTime)
     {
-        if(isGameOver)
-        return;
+       if (player.BaseHealth <= 0)
+       {
+            if (player.BaseHealth <= 0)
+            {
+                Exit();
+            }
+       }
         UtilityMethods utility = new UtilityMethods();
+        
         foreach (var enemy in enemySpawnManager.enemies)
         {
             if(utility.CheckCollisionPlayer(enemy, player))
                 {
                     player.BaseHealth -= 10;
-                    if (player.BaseHealth <= 0)
-                    {
-                        player.IsActive = false;
-                        isGameOver = true;
-                    }
                     enemy.IsActive = false;
                 }
-                
-            
+                            
             foreach(var projectile in projectiles)
             {
                 if (utility.CheckCollisionProjectile(enemy, projectile))
@@ -104,10 +104,11 @@ public class Game1 : Game
                 }
             }     
         }
-        
+                        
         enemySpawnManager.enemies.RemoveAll(e => !e.IsActive);
         player.PlayerMovement(projectiles, laserGreenTexture, gameTime);
         enemySpawnManager.Update(gameTime);
+        
         foreach (var enemy in enemySpawnManager.enemies)
         {
             if (enemy is SmallEnemy smallEnemy)
@@ -126,34 +127,41 @@ public class Game1 : Game
             projectile.Update(gameTime);
         
         projectiles.RemoveAll(p => !p.IsActive);
-              
+            
         player.Position = utility.InsideBorder(player.Position, playerTexture, _graphics);
-        
+
         base.Update(gameTime);
     }
     
     protected override void Draw(GameTime gameTime)
+    
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
         _spriteBatch.Begin();
-        startButton.Draw(SpriteBatch);
-        if (isGameOver)
-        {
-            Vector2 position = new Vector2((_nativeWidth - gameOverTexture.Width) / 2,(_nativeHeight - gameOverTexture.Height) / 2);
-            _spriteBatch.Draw(gameOverTexture, position, Color.White);
-        }
-        else 
+        string healthText = $"Health: {player.BaseHealth}";
+        _spriteBatch.DrawString(font, healthText, new Vector2(100,100), Color.White);
+                
         {
             enemySpawnManager.DrawEnemys(_spriteBatch);
+            foreach (var enemy in enemySpawnManager.enemies)
+        {
+            if (enemy is MediumEnemy mediumEnemy)
+            {
+                // Rita projektilerna som MediumEnemy har skjutit
+                foreach (var projectile in mediumEnemy.mediumEnemyProjectiles)
+                {
+                    projectile.DrawPlayerAttack(_spriteBatch);
+                }
+            }
+        }
+            
             enemySpawnManager.DrawHitboxes(_spriteBatch, hitboxTexture); //TODO TA BORT SENARE MÅLAR HITBOX
             player.DrawPlayer(_spriteBatch);
                                
             foreach (var projectile in projectiles)
-            projectile.DrawPlayerAttack(_spriteBatch);
-
+                projectile.DrawPlayerAttack(_spriteBatch);
         }
-        
-        
+                       
         _spriteBatch.End();
 
         base.Draw(gameTime);
