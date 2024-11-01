@@ -77,11 +77,11 @@ class MediumEnemy : Enemy
 {
     private int screenWidth;
     private float elapsedTime;
-    private List<MediumEnemyProjectile> mediumEnemyProjectiles;
-    private float shootCooldown = 2f;
+    public List<MediumEnemyProjectile> mediumEnemyProjectiles;
+    private float shootCooldown = 0.5f;
     private float timeSinceLastShot = 0f;
     public MediumEnemy(Vector2 startPosition,Texture2D texture, int screenWidth)
-         : base (startPosition, texture,"MediumEnemy", 100, 15, 5, 20)
+         : base (startPosition, texture,"MediumEnemy", 100, 15, 5, 5)
     {
        this.screenWidth = screenWidth;
        mediumEnemyProjectiles = new List<MediumEnemyProjectile>();
@@ -120,7 +120,7 @@ class MediumEnemy : Enemy
 
        
     }
-    private void MediumEnemyShoot(Vector2 playerPosition, Texture2D laserRedTexture)
+    public void MediumEnemyShoot(Vector2 playerPosition, Texture2D laserRedTexture)
     {
         Vector2 projectilePosition = new Vector2(Position.X + Texture.Width / 2, Position.Y + Texture.Height);
         var newProjectile = new MediumEnemyProjectile(laserRedTexture, projectilePosition, playerPosition, 5f, 10);

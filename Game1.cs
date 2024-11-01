@@ -26,16 +26,17 @@ public class Game1 : Game
     private int _nativeWidth = 1920;
     private int _nativeHeight = 1080;
     private bool isGameOver = false;
+    private Texture2D heart;
     private SpriteBatch _spriteBatch;
     private Texture2D playerTexture;
     private Texture2D laserGreenTexture;
     private Texture2D laserRedTexture;
     private Texture2D gameOverTexture;
     private List<Projectile> projectiles;
-    private List<Enemy> enemies; //TA BORT??? GAMLA ENEMIES
     private EnemySpawnManager enemySpawnManager;
     private Texture2D hitboxTexture; // TODO TA BORT SENARE MÅLAR HITBOX
-        
+    private GameState gameState;
+            
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -65,15 +66,21 @@ public class Game1 : Game
         projectiles = new List<Projectile>();
         laserGreenTexture = Content.Load<Texture2D>("laserGreen");
         laserRedTexture = Content.Load<Texture2D>("laserRed");
-        enemies = new List<Enemy>(); // TA BORT???? GAMLA ENEMIES
-                  
+        gameOverTexture = Content.Load<Texture2D>("Gameover");
+                          
         //Skapar  player samt alla enemies och änven vart dom ska spawna. Även alla agenskaper, om speed, health, shield 
         player = new Player(this, new Vector2(940, 1000), playerTexture, 100, 35, 20, 15);//baseHealth, baseDamage, baseShield, speed 
         enemySpawnManager = new EnemySpawnManager(2f, _graphics.PreferredBackBufferWidth, Content.Load<Texture2D>("eyelander"), Content.Load<Texture2D>("antmaker"), Content.Load<Texture2D>("enemyUfo"));
     }
     protected override void Update(GameTime gameTime)
     {
-       
+       if (player.BaseHealth <= 0)
+       {
+            if (player.BaseHealth <= 0)
+            {
+                Exit();
+            }
+       }
         UtilityMethods utility = new UtilityMethods();
         
         foreach (var enemy in enemySpawnManager.enemies)
@@ -81,11 +88,6 @@ public class Game1 : Game
             if(utility.CheckCollisionPlayer(enemy, player))
                 {
                     player.BaseHealth -= 10;
-                    if (player.BaseHealth <= 0)
-                    {
-                          
-                        Exit();
-                    }
                     enemy.IsActive = false;
                 }
                             
@@ -106,6 +108,7 @@ public class Game1 : Game
         enemySpawnManager.enemies.RemoveAll(e => !e.IsActive);
         player.PlayerMovement(projectiles, laserGreenTexture, gameTime);
         enemySpawnManager.Update(gameTime);
+        
         foreach (var enemy in enemySpawnManager.enemies)
         {
             if (enemy is SmallEnemy smallEnemy)
@@ -140,6 +143,18 @@ public class Game1 : Game
                 
         {
             enemySpawnManager.DrawEnemys(_spriteBatch);
+            foreach (var enemy in enemySpawnManager.enemies)
+        {
+            if (enemy is MediumEnemy mediumEnemy)
+            {
+                // Rita projektilerna som MediumEnemy har skjutit
+                foreach (var projectile in mediumEnemy.mediumEnemyProjectiles)
+                {
+                    projectile.DrawPlayerAttack(_spriteBatch);
+                }
+            }
+        }
+            
             enemySpawnManager.DrawHitboxes(_spriteBatch, hitboxTexture); //TODO TA BORT SENARE MÅLAR HITBOX
             player.DrawPlayer(_spriteBatch);
                                
