@@ -75,6 +75,7 @@ public class Game1 : Game
     {
        
         UtilityMethods utility = new UtilityMethods();
+        
         foreach (var enemy in enemySpawnManager.enemies)
         {
             if(utility.CheckCollisionPlayer(enemy, player))
@@ -82,8 +83,8 @@ public class Game1 : Game
                     player.BaseHealth -= 10;
                     if (player.BaseHealth <= 0)
                     {
-                        player.IsActive = false;
-                        isGameOver = true;
+                          
+                        Exit();
                     }
                     enemy.IsActive = false;
                 }
@@ -134,7 +135,7 @@ public class Game1 : Game
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
         _spriteBatch.Begin();
-        string healthText = $"Healt: {player.BaseHealth}";
+        string healthText = $"Health: {player.BaseHealth}";
         _spriteBatch.DrawString(font, healthText, new Vector2(100,100), Color.White);
                 
         {
