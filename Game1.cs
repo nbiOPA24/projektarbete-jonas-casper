@@ -143,7 +143,7 @@ public class Game1 : Game
             _spriteBatch.DrawString(font, "Tryck ENTER för att starta spelet!", new Vector2(100,100), Color.White);
             _spriteBatch.End();
         }
-        if (isGameOver)
+        else if (isGameOver)
         {
             Vector2 position = new Vector2((_nativeWidth - gameOverTexture.Width) / 2,(_nativeHeight - gameOverTexture.Height) / 2);
             _spriteBatch.Draw(gameOverTexture, position, Color.White);
