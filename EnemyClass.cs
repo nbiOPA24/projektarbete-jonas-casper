@@ -126,10 +126,10 @@ class MediumEnemy : Enemy
     {
         Vector2 projectilePosition = new Vector2(Position.X + Texture.Width / 2, Position.Y + Texture.Height);
        
-       Vector2 direction = playerPosition - projectilePosition;
-       direction.Normalize();
-       float speed = 5f;
-       int damage = 10;
+        Vector2 direction = playerPosition - projectilePosition;
+        direction.Normalize();
+        float speed = 5f;
+        int damage = 10;
 
         var newProjectile = new MediumEnemyProjectile(laserRedTexture, projectilePosition, direction, speed, damage);
         mediumEnemyProjectiles.Add(newProjectile);
