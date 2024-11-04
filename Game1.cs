@@ -120,8 +120,11 @@ public class Game1 : Game
                 bigEnemy.MoveSideToSide(gameTime); //läser in metoden MoveSidetoSide för BigEnemy
             
             else if (enemy is MediumEnemy mediumEnemy)
+            {
                 mediumEnemy.MoveDownSmoothlyFaster(gameTime);
-            
+                mediumEnemy.Update(gameTime, player.Position, laserRedTexture);
+            }
+                
             enemy.UpdateHitbox();
         }
 
@@ -150,10 +153,7 @@ public class Game1 : Game
             if (enemy is MediumEnemy mediumEnemy)
             {
                 // Rita projektilerna som MediumEnemy har skjutit
-                foreach (var projectile in mediumEnemy.mediumEnemyProjectiles)
-                {
-                    projectile.DrawPlayerAttack(_spriteBatch);
-                }
+                    mediumEnemy.DrawMediumEnemyAttack(_spriteBatch);
             }
         }
             

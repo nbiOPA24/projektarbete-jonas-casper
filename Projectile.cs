@@ -25,7 +25,7 @@ public class Projectile
         IsActive = true;
         Hitbox = new Hitbox(Position, Texture);
     }
-    public void Update(GameTime gametime)
+    public virtual void Update(GameTime gametime)
     {
         Position += Direction * Speed * (float)gametime.ElapsedGameTime.TotalSeconds;
 
@@ -49,9 +49,14 @@ public class Projectile
         {
             Vector2 direction = playerPosition - position;
             Direction = Vector2.Normalize(direction);
-
+            Speed = speed;
             Hitbox = new Hitbox(position, Texture);
-
+            
+        }
+        public override void Update(GameTime gameTime)
+        {
+            Position += Direction * Speed; // Uppdaterar position varje frame baserat på riktning och hastighet
+            Hitbox.Update(Position); // Uppdaterar hitbox-positionen
         }
 
    }   

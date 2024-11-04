@@ -78,7 +78,7 @@ class MediumEnemy : Enemy
     private int screenWidth;
     private float elapsedTime;
     public List<MediumEnemyProjectile> mediumEnemyProjectiles;
-    private float shootCooldown = 0.5f;
+    private float shootCooldown = 1.5f;
     private float timeSinceLastShot = 0f;
     public MediumEnemy(Vector2 startPosition,Texture2D texture, int screenWidth)
          : base (startPosition, texture,"MediumEnemy", 100, 15, 5, 5)
@@ -125,8 +125,15 @@ class MediumEnemy : Enemy
     public void MediumEnemyShoot(Vector2 playerPosition, Texture2D laserRedTexture)
     {
         Vector2 projectilePosition = new Vector2(Position.X + Texture.Width / 2, Position.Y + Texture.Height);
-        var newProjectile = new MediumEnemyProjectile(laserRedTexture, projectilePosition, playerPosition, 5f, 10);
+       
+       Vector2 direction = playerPosition - projectilePosition;
+       direction.Normalize();
+       float speed = 5f;
+       int damage = 10;
+
+        var newProjectile = new MediumEnemyProjectile(laserRedTexture, projectilePosition, direction, speed, damage);
         mediumEnemyProjectiles.Add(newProjectile);
+       
     }
 
     public void DrawMediumEnemy(SpriteBatch spriteBatch)
@@ -136,9 +143,9 @@ class MediumEnemy : Enemy
     }
     public void DrawMediumEnemyAttack(SpriteBatch spriteBatch)
     {
-        if (IsActive)
+        foreach(var projectile in mediumEnemyProjectiles)
         {
-            spriteBatch.Draw(Texture, Position, Color.White);
+            projectile.DrawPlayerAttack(spriteBatch);
         }
         
         Hitbox.Update(Position);
