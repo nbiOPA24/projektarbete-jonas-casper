@@ -17,4 +17,6 @@
 - [ ]Redundans? vad kan vi klumpa ihop något som gör samma sak
 - [ ]Meny?
 - [ ]Något som ger hp? Ett hjärta? 
-- [ ]
+- [ ]Bakgrund? 
+- [ ]Musik?
+- [ ]Ljudeffekter, laser? 

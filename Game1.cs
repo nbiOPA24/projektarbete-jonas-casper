@@ -61,6 +61,7 @@ public class Game1 : Game
         hitboxTexture.SetData(new[] { Color.Red * 0.5f }); // Halvgenomskinlig röd färg TA BORT SENARE MÅLAR HITBOX
        
         //Här laddas alla .pngfiler in för player, projectile samlt alla enemies  
+        //heartTexture = Content.Load<Texture2D>("heart");
         playerTexture = Content.Load<Texture2D>("player");
         gameOverTexture = Content.Load<Texture2D>("Gameover");
         projectiles = new List<Projectile>();
@@ -70,6 +71,7 @@ public class Game1 : Game
                           
         //Skapar  player samt alla enemies och änven vart dom ska spawna. Även alla agenskaper, om speed, health, shield 
         player = new Player(this, new Vector2(940, 1000), playerTexture, 100, 35, 20, 15);//baseHealth, baseDamage, baseShield, speed 
+           
         enemySpawnManager = new EnemySpawnManager(2f, _graphics.PreferredBackBufferWidth, Content.Load<Texture2D>("eyelander"), Content.Load<Texture2D>("antmaker"), Content.Load<Texture2D>("enemyUfo"));
     }
     protected override void Update(GameTime gameTime)
@@ -118,8 +120,11 @@ public class Game1 : Game
                 bigEnemy.MoveSideToSide(gameTime); //läser in metoden MoveSidetoSide för BigEnemy
             
             else if (enemy is MediumEnemy mediumEnemy)
+            {
                 mediumEnemy.MoveDownSmoothlyFaster(gameTime);
-            
+                mediumEnemy.Update(gameTime, player.Position, laserRedTexture);
+            }
+                
             enemy.UpdateHitbox();
         }
 
@@ -148,11 +153,8 @@ public class Game1 : Game
             if (enemy is MediumEnemy mediumEnemy)
             {
                 // Rita projektilerna som MediumEnemy har skjutit
-                foreach (var projectile in mediumEnemy.mediumEnemyProjectiles)
-                {
-                    projectile.DrawPlayerAttack(_spriteBatch);
-                }
-            }
+                    mediumEnemy.DrawMediumEnemyAttack(_spriteBatch);
+           }
         }
             
             enemySpawnManager.DrawHitboxes(_spriteBatch, hitboxTexture); //TODO TA BORT SENARE MÅLAR HITBOX

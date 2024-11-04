@@ -25,7 +25,7 @@ public class Projectile
         IsActive = true;
         Hitbox = new Hitbox(Position, Texture);
     }
-    public void Update(GameTime gametime)
+    public virtual void Update(GameTime gametime)
     {
         Position += Direction * Speed * (float)gametime.ElapsedGameTime.TotalSeconds;
 
@@ -44,14 +44,17 @@ public class Projectile
     }
    public class MediumEnemyProjectile : Projectile
    {
-        public MediumEnemyProjectile(Texture2D texture, Vector2 position, Vector2 playerPosition, float speed, int damage)
+        public MediumEnemyProjectile(Texture2D texture, Vector2 position, Vector2 direction, float speed, int damage)
             : base (texture, position, Vector2.Zero, speed, damage, null)
         {
-            Vector2 direction = playerPosition - position;
-            Direction = Vector2.Normalize(direction);
-
+            
             Hitbox = new Hitbox(position, Texture);
-
+            
+        }
+        public override void Update(GameTime gameTime)
+        {
+            Position += Direction * Speed * (float)gameTime.ElapsedGameTime.TotalSeconds; // Uppdaterar position varje frame baserat på riktning och hastighet
+            Hitbox.Update(Position); // Uppdaterar hitbox-positionen
         }
 
    }   
