@@ -20,13 +20,13 @@ public class Item
             Size = size;
             ItemRandom = itemRandom;
         }
-        public void SpawnHeart(SpriteBatch SpriteBatch)
+        public void SpawnHeart(SpriteBatch SpriteBatch, Color color)
         {
             int ItemRandomX = ItemRandom.Next(20, 1880);
             int ItemRandomY = ItemRandom.Next(20, 1040);
             Position = new Vector2(ItemRandomX, ItemRandomY);
             Rectangle heartRectangle = new Rectangle(ItemRandomX, ItemRandomY , Size, Size);
-            SpriteBatch.Draw(Texture, heartRectangle, Color.White);
+            SpriteBatch.Draw(Texture, heartRectangle, Color.Red);
         }
     }
 }
