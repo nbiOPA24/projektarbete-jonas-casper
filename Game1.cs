@@ -26,7 +26,7 @@ public class Game1 : Game
     private int _nativeWidth = 1920;
     private int _nativeHeight = 1080;
     private bool isGameOver = false;
-    private Texture2D heart;
+    private Texture2D heartTexture;
     private SpriteBatch _spriteBatch;
     private Texture2D playerTexture;
     private Texture2D laserGreenTexture;
@@ -35,7 +35,7 @@ public class Game1 : Game
     private List<Projectile> projectiles;
     private EnemySpawnManager enemySpawnManager;
     private Texture2D hitboxTexture; // TODO TA BORT SENARE MÅLAR HITBOX
-    private GameState gameState;
+    Item.Heart heart = new Item.Heart();
             
     public Game1()
     {
@@ -45,6 +45,7 @@ public class Game1 : Game
         _graphics.PreferredBackBufferHeight = _nativeHeight;
         _graphics.ApplyChanges();
         IsMouseVisible = true;
+        
     }
 
     protected override void Initialize()
@@ -61,7 +62,7 @@ public class Game1 : Game
         hitboxTexture.SetData(new[] { Color.Red * 0.5f }); // Halvgenomskinlig röd färg TA BORT SENARE MÅLAR HITBOX
        
         //Här laddas alla .pngfiler in för player, projectile samlt alla enemies  
-        //heartTexture = Content.Load<Texture2D>("heart");
+        heartTexture = Content.Load<Texture2D>("heartTexture");
         playerTexture = Content.Load<Texture2D>("player");
         gameOverTexture = Content.Load<Texture2D>("Gameover");
         projectiles = new List<Projectile>();
@@ -141,8 +142,10 @@ public class Game1 : Game
     protected override void Draw(GameTime gameTime)
     
     {
+        
         GraphicsDevice.Clear(Color.CornflowerBlue);
         _spriteBatch.Begin();
+
         string healthText = $"Health: {player.BaseHealth}";
         _spriteBatch.DrawString(font, healthText, new Vector2(100,100), Color.White);
                 
