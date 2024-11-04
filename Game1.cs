@@ -88,14 +88,6 @@ public class Game1 : Game
             if(utility.CheckCollisionPlayer(enemy, player))
                 {
                     player.BaseHealth -= 10;
-<<<<<<< HEAD
-=======
-                    if (player.BaseHealth <= 0)
-                    {
-                          
-                        Exit();
-                    }
->>>>>>> ea5ed464fdd0e9cce67035e01c032c0c40d9c2e4
                     enemy.IsActive = false;
                 }
                             
