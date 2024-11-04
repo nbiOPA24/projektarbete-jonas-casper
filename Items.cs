@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 
 public struct Heart
-    {
+   {
         public Vector2 Position {get; set;} 
         public Texture2D Texture {get; set;}
         public int Size{get; set;}
@@ -17,3 +17,4 @@ public struct Heart
             Size = size;
         }
     }
+    
