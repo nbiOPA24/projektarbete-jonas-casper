@@ -127,6 +127,7 @@ public class Game1 : Game
             }
                 
             enemy.UpdateHitbox();
+            
         }
 
         foreach (var projectile in projectiles)
