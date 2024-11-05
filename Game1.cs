@@ -9,23 +9,24 @@ using Microsoft.VisualBasic;
 
 
 
+
 namespace JcGame;
 
 public class Game1 : Game
 {
-    public enum GameState
+    /*public enum GameState
     {
         MainMenu,
         Playing,
         GameOver,
         Exit
-    }
+    }*/
     private SpriteFont font;
     Player player;
     private GraphicsDeviceManager _graphics;
     private int _nativeWidth = 1920;
     private int _nativeHeight = 1080;
-    private bool isGameOver = false;
+    //private bool isGameOver = false;
     private Texture2D heartTexture;
     private SpriteBatch _spriteBatch;
     private Texture2D playerTexture;
@@ -35,7 +36,9 @@ public class Game1 : Game
     private List<Projectile> projectiles;
     private EnemySpawnManager enemySpawnManager;
     private Texture2D hitboxTexture; // TODO TA BORT SENARE MÅLAR HITBOX
-    Item.Heart heart = new Item.Heart();
+    private Item.Heart heart;
+    private double heartTimer = 0;
+    private double heartInterval = 5000;
             
     public Game1()
     {
@@ -62,6 +65,7 @@ public class Game1 : Game
         hitboxTexture.SetData(new[] { Color.Red * 0.5f }); // Halvgenomskinlig röd färg TA BORT SENARE MÅLAR HITBOX
        
         //Här laddas alla .pngfiler in för player, projectile samlt alla enemies  
+
         heartTexture = Content.Load<Texture2D>("heartTexture");
         playerTexture = Content.Load<Texture2D>("player");
         gameOverTexture = Content.Load<Texture2D>("Gameover");
@@ -72,18 +76,24 @@ public class Game1 : Game
                           
         //Skapar  player samt alla enemies och änven vart dom ska spawna. Även alla agenskaper, om speed, health, shield 
         player = new Player(this, new Vector2(940, 1000), playerTexture, 100, 35, 20, 15);//baseHealth, baseDamage, baseShield, speed 
-           
+        heart = new Item.Heart(Vector2.Zero, heartTexture, 50);
         enemySpawnManager = new EnemySpawnManager(2f, _graphics.PreferredBackBufferWidth, Content.Load<Texture2D>("eyelander"), Content.Load<Texture2D>("antmaker"), Content.Load<Texture2D>("enemyUfo"));
     }
     protected override void Update(GameTime gameTime)
     {
-       if (player.BaseHealth <= 0)
-       {
+        heartTimer += gameTime.ElapsedGameTime.TotalMilliseconds; 
+        if (heartTimer >= heartInterval)  
+        {
+            heart = new Item.Heart(Vector2.Zero, heartTexture, 50);
+        }
+
+        if (player.BaseHealth <= 0)
+        {
             if (player.BaseHealth <= 0)
             {
                 Exit();
             }
-       }
+        }
         UtilityMethods utility = new UtilityMethods();
         
         foreach (var enemy in enemySpawnManager.enemies)
@@ -142,10 +152,9 @@ public class Game1 : Game
     protected override void Draw(GameTime gameTime)
     
     {
-        
         GraphicsDevice.Clear(Color.CornflowerBlue);
         _spriteBatch.Begin();
-
+        heart.DrawHeart(_spriteBatch, Color.White);
         string healthText = $"Health: {player.BaseHealth}";
         _spriteBatch.DrawString(font, healthText, new Vector2(100,100), Color.White);
                 
