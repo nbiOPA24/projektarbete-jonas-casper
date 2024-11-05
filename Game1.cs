@@ -38,7 +38,7 @@ public class Game1 : Game
     private Texture2D hitboxTexture; // TODO TA BORT SENARE MÅLAR HITBOX
     private Item.Heart heart;
     private double heartTimer = 0;
-    private double heartInterval = 5000;
+    private bool heartExist = false;
             
     public Game1()
     {
@@ -82,9 +82,11 @@ public class Game1 : Game
     protected override void Update(GameTime gameTime)
     {
         heartTimer += gameTime.ElapsedGameTime.TotalMilliseconds; 
-        if (heartTimer >= heartInterval)  
+        if (heartExist || heartTimer > 5000)  
         {
             heart = new Item.Heart(Vector2.Zero, heartTexture, 50);
+            heartExist = false; 
+            heartTimer = 0;
         }
 
         if (player.BaseHealth <= 0)
