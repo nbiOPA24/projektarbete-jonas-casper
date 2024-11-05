@@ -28,7 +28,6 @@ public class Game1 : Game
     private int _nativeHeight = 1080;
     //private bool isGameOver = false;
     private Texture2D heartTexture;
-    private Texture2D backgroundTexture;
     private SpriteBatch _spriteBatch;
     private Texture2D playerTexture;
     private Texture2D laserGreenTexture;
@@ -70,7 +69,7 @@ public class Game1 : Game
         hitboxTexture.SetData(new[] { Color.Red * 0.5f }); // Halvgenomskinlig röd färg TA BORT SENARE MÅLAR HITBOX
        
         //Här laddas alla .pngfiler in för player, projectile samlt alla enemies  
-        backgroundTexture = Content.Load<Texture2D>("SpaceBackground");
+        //Skapar  player samt alla enemies och änven vart dom ska spawna. Även alla agenskaper, om speed, health, shield 
         heartTexture = Content.Load<Texture2D>("heartTexture");
         heart = new Item.Heart(Vector2.Zero, heartTexture, 0);
         
@@ -85,7 +84,7 @@ public class Game1 : Game
         randomHeartTimer = random.Next(5000, 15000);         
        
         enemySpawnManager = new EnemySpawnManager(2f, _graphics.PreferredBackBufferWidth, Content.Load<Texture2D>("eyelander"), Content.Load<Texture2D>("antmaker"), Content.Load<Texture2D>("enemyUfo"));
-        backGroundManager = new BackGroundManager(backgroundTexture, 2f);
+        
     }
     protected override void Update(GameTime gameTime)
     {
