@@ -9,6 +9,12 @@ public class Hitbox
     {
         Bounds = new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);        
     }
+
+    public Hitbox(Vector2 position, int width, int higth)
+    {
+        Bounds = new Rectangle((int)position.X, (int)position.Y, width, higth) ;
+    }
+
     public void Update(Vector2 position)
     {
         Bounds = new Rectangle((int)position.X, (int)position.Y, Bounds.Width, Bounds.Height);

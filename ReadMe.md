@@ -20,3 +20,4 @@
 - [ ]Bakgrund?
 - [ ]Musik
 - [ ]Ljudeffekter, laser
+- [ ]Fler items? attackspeed m.m

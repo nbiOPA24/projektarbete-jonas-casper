@@ -48,7 +48,6 @@ public class Game1 : Game
         _graphics.PreferredBackBufferHeight = _nativeHeight;
         _graphics.ApplyChanges();
         IsMouseVisible = true;
-        
     }
 
     protected override void Initialize()
@@ -172,7 +171,7 @@ public class Game1 : Game
                     mediumEnemy.DrawMediumEnemyAttack(_spriteBatch);
            }
         }
-            
+           
             enemySpawnManager.DrawHitboxes(_spriteBatch, hitboxTexture); //TODO TA BORT SENARE MÅLAR HITBOX
             player.DrawPlayer(_spriteBatch);
                                
