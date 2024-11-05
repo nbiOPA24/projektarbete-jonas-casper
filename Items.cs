@@ -23,10 +23,10 @@ public class Item
             HeartHitbox = new Hitbox(Position, Texture);
         
         }
-        public void DrawHeart(SpriteBatch SpriteBatch, Color color)
+        public void DrawHeart(SpriteBatch SpriteBatch)
         {
             Rectangle heartRectangle = new Rectangle((int)Position.X, (int)Position.Y , Size, Size);
-            SpriteBatch.Draw(Texture, heartRectangle, Color.Red);
+            SpriteBatch.Draw(Texture, heartRectangle, Color.White);
         }
         
     }

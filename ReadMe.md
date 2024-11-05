@@ -15,8 +15,8 @@
 - [x]Gör så projektilerna gör skada 
 - [ ]Förbättra hitboxen, gör den mindre så den matcher planet bättre
 - [ ]Redundans? vad kan vi klumpa ihop något som gör samma sak
-- [ ]Meny?
-- [ ]Något som ger hp? Ett hjärta? 
-- [ ]Bakgrund? 
-- [ ]Musik?
-- [ ]Ljudeffekter, laser? 
+- [ ]Meny
+- [ ]Något som ger hp? Ett hjärta 
+- [ ]Bakgrund?
+- [ ]Musik
+- [ ]Ljudeffekter, laser

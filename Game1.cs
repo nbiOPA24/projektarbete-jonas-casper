@@ -158,7 +158,7 @@ public class Game1 : Game
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
         _spriteBatch.Begin();
-        heart.DrawHeart(_spriteBatch, Color.White);
+        heart.DrawHeart(_spriteBatch);
         string healthText = $"Health: {player.BaseHealth}";
         _spriteBatch.DrawString(font, healthText, new Vector2(100,100), Color.White);
                 
