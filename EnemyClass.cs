@@ -103,6 +103,7 @@ class MediumEnemy : Enemy
         mediumEnemyProjectiles.RemoveAll(p => !p.IsActive);
         
         UpdateHitbox();
+        Position = playerPosition;
 
     }
     public void MoveDownSmoothlyFaster(GameTime gameTime)
@@ -149,6 +150,7 @@ class MediumEnemy : Enemy
         }
         
         Hitbox.Update(Position);
+        
     }
 }
 
