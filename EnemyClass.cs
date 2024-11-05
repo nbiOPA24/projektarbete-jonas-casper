@@ -78,7 +78,7 @@ class MediumEnemy : Enemy
     private int screenWidth;
     private float elapsedTime;
     public List<MediumEnemyProjectile> mediumEnemyProjectiles;
-    private float shootCooldown = 1.5f;
+    private float shootCooldown = 2f;
     private float timeSinceLastShot = 0f;
     public MediumEnemy(Vector2 startPosition,Texture2D texture, int screenWidth)
          : base (startPosition, texture,"MediumEnemy", 100, 15, 5, 5)
@@ -86,7 +86,7 @@ class MediumEnemy : Enemy
        this.screenWidth = screenWidth;
        mediumEnemyProjectiles = new List<MediumEnemyProjectile>();
     }
-    public void Update(GameTime gametime, Vector2 playerPosition, Texture2D laserRedTexture)
+    public void Update(GameTime gametime, Player player, Vector2 playerPosition, Texture2D laserRedTexture)
     {
         timeSinceLastShot += (float)gametime.ElapsedGameTime.TotalSeconds;
        
@@ -98,11 +98,18 @@ class MediumEnemy : Enemy
         foreach (var projectile in mediumEnemyProjectiles)
         {
             projectile.Update(gametime);
+            
+            if(projectile.Hitbox.Bounds.Intersects(player.Hitbox.Bounds))
+            {
+                player.BaseHealth -= projectile.Damage;
+                projectile.IsActive = false;
+            }
 
         }
         mediumEnemyProjectiles.RemoveAll(p => !p.IsActive);
         
         UpdateHitbox();
+        
 
     }
     public void MoveDownSmoothlyFaster(GameTime gameTime)
@@ -128,10 +135,10 @@ class MediumEnemy : Enemy
        
         Vector2 direction = playerPosition - projectilePosition;
         direction.Normalize();
-        float speed = 5f;
+        float speed = 300f;
         int damage = 10;
 
-        var newProjectile = new MediumEnemyProjectile(laserRedTexture, projectilePosition, direction, speed, damage);
+        var newProjectile = new MediumEnemyProjectile(laserRedTexture, projectilePosition, direction, speed, damage, Hitbox);
         mediumEnemyProjectiles.Add(newProjectile);
        
     }
@@ -149,6 +156,7 @@ class MediumEnemy : Enemy
         }
         
         Hitbox.Update(Position);
+        
     }
 }
 
