@@ -19,6 +19,10 @@ public class UtilityMethods
     {
         return enemy.Hitbox.Bounds.Intersects(projectile.Hitbox.Bounds);
     }
-    
+
+    /*public bool CheckCollisionHeart(Item heart, Player player)
+    {
+
+    }*/
 
 }
