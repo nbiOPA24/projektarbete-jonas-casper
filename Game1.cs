@@ -31,11 +31,11 @@ public class Game1 : Game
     private Texture2D playerTexture;
     private Texture2D laserGreenTexture;
     private Texture2D laserRedTexture;
-    private Texture2D gameOverTexture;
+    //private Texture2D gameOverTexture;
     private List<Projectile> projectiles;
     private EnemySpawnManager enemySpawnManager;
     private Texture2D hitboxTexture; // TODO TA BORT SENARE MÅLAR HITBOX
-    Item.Heart heart = new Item.Heart();
+    //Item.Heart heart = new Item.Heart();
             
     public Game1()
     {
@@ -62,13 +62,13 @@ public class Game1 : Game
         hitboxTexture.SetData(new[] { Color.Red * 0.5f }); // Halvgenomskinlig röd färg TA BORT SENARE MÅLAR HITBOX
        
         //Här laddas alla .pngfiler in för player, projectile samlt alla enemies  
-        heartTexture = Content.Load<Texture2D>("heartTexture");
+        //heartTexture = Content.Load<Texture2D>("heartTexture");
         playerTexture = Content.Load<Texture2D>("player");
-        gameOverTexture = Content.Load<Texture2D>("Gameover");
+        //gameOverTexture = Content.Load<Texture2D>("Gameover");
         projectiles = new List<Projectile>();
         laserGreenTexture = Content.Load<Texture2D>("laserGreen");
         laserRedTexture = Content.Load<Texture2D>("laserRed");
-        gameOverTexture = Content.Load<Texture2D>("Gameover");
+        //gameOverTexture = Content.Load<Texture2D>("Gameover");
                           
         //Skapar  player samt alla enemies och änven vart dom ska spawna. Även alla agenskaper, om speed, health, shield 
         player = new Player(this, new Vector2(940, 1000), playerTexture, 100, 35, 20, 15);//baseHealth, baseDamage, baseShield, speed 
@@ -90,7 +90,7 @@ public class Game1 : Game
         {
             if(utility.CheckCollisionPlayer(enemy, player))
                 {
-                    player.BaseHealth -= 10;
+                    player.BaseHealth = player.BaseHealth - enemy.Attack;
                     enemy.IsActive = false;
                 }
                             
@@ -123,7 +123,8 @@ public class Game1 : Game
             else if (enemy is MediumEnemy mediumEnemy)
             {
                 mediumEnemy.MoveDownSmoothlyFaster(gameTime);
-                mediumEnemy.Update(gameTime, player.Position, laserRedTexture);
+                mediumEnemy.Update(gameTime, player, player.Position, laserRedTexture);
+                
             }
                 
             enemy.UpdateHitbox();

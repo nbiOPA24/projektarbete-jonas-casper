@@ -44,9 +44,10 @@ public class Projectile
     }
    public class MediumEnemyProjectile : Projectile
    {
-        public MediumEnemyProjectile(Texture2D texture, Vector2 position, Vector2 direction, float speed, int damage)
+        public MediumEnemyProjectile(Texture2D texture, Vector2 position, Vector2 direction, float speed, int damage, Hitbox hitbox)
             : base (texture, position, direction, speed, damage, null)
         {
+            Direction = direction;
             
             Hitbox = new Hitbox(position, Texture);
             
