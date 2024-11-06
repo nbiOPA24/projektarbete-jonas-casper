@@ -21,3 +21,4 @@
 - [ ]Musik
 - [ ]Ljudeffekter, laser
 - [ ]Fler items? attackspeed m.m
+- [ ]Enemies ska "dö" när dom åker utanför skärmen
