@@ -39,10 +39,10 @@ public class BackgroundLayer
 
     public void Update()
     {
-        position.X -= speed;
-        if (position.X <= -texture.Height)
+        position.Y += speed;
+        if (position.Y >= texture.Height)
         {
-            position.X = 0;
+            position.Y = 0;
         }
     }
 
