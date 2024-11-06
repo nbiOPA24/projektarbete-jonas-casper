@@ -1,19 +1,33 @@
-using System.Dynamic;
-using System.Numerics;
-using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
+using System;
+using System.Dynamic;
+using System.Data;
 
 
-public struct Heart
+public class Item
+{
+    public struct Heart
     {
-        public Vector2 Position {get; set;} 
+        public Vector2 Position {get;set;}
         public Texture2D Texture {get; set;}
         public int Size{get; set;}
+        private Random ItemRandom = new Random();
+        private Hitbox HeartHitbox {get;set;}
 
-        public Heart(Vector2 positioin, Texture2D texture, int size)
+        public Heart(Vector2 position, Texture2D texture, int size)
         {
-            Position = Position;
+            Position = new Vector2(ItemRandom.Next(20, 1880), ItemRandom.Next(20, 500));
             Texture = texture;
             Size = size;
+            HeartHitbox = new Hitbox(Position, Texture);
+        
         }
+        public void DrawHeart(SpriteBatch SpriteBatch)
+        {
+            Rectangle heartRectangle = new Rectangle((int)Position.X, (int)Position.Y , Size, Size);
+            SpriteBatch.Draw(Texture, heartRectangle, Color.White);
+        }
+        
     }
+}

@@ -78,7 +78,7 @@ class MediumEnemy : Enemy
     private int screenWidth;
     private float elapsedTime;
     public List<MediumEnemyProjectile> mediumEnemyProjectiles;
-    private float shootCooldown = 0.5f;
+    private float shootCooldown = 2f;
     private float timeSinceLastShot = 0f;
     public MediumEnemy(Vector2 startPosition,Texture2D texture, int screenWidth)
          : base (startPosition, texture,"MediumEnemy", 100, 15, 5, 5)
@@ -86,7 +86,7 @@ class MediumEnemy : Enemy
        this.screenWidth = screenWidth;
        mediumEnemyProjectiles = new List<MediumEnemyProjectile>();
     }
-    public void Update(GameTime gametime, Vector2 playerPosition, Texture2D laserRedTexture)
+    public void Update(GameTime gametime, Player player, Vector2 playerPosition, Texture2D laserRedTexture)
     {
         timeSinceLastShot += (float)gametime.ElapsedGameTime.TotalSeconds;
        
@@ -98,11 +98,18 @@ class MediumEnemy : Enemy
         foreach (var projectile in mediumEnemyProjectiles)
         {
             projectile.Update(gametime);
+            
+            if(projectile.Hitbox.Bounds.Intersects(player.Hitbox.Bounds))
+            {
+                player.BaseHealth -= projectile.Damage;
+                projectile.IsActive = false;
+            }
 
         }
         mediumEnemyProjectiles.RemoveAll(p => !p.IsActive);
         
         UpdateHitbox();
+        
 
     }
     public void MoveDownSmoothlyFaster(GameTime gameTime)
@@ -125,8 +132,15 @@ class MediumEnemy : Enemy
     public void MediumEnemyShoot(Vector2 playerPosition, Texture2D laserRedTexture)
     {
         Vector2 projectilePosition = new Vector2(Position.X + Texture.Width / 2, Position.Y + Texture.Height);
-        var newProjectile = new MediumEnemyProjectile(laserRedTexture, projectilePosition, playerPosition, 5f, 10);
+       
+        Vector2 direction = playerPosition - projectilePosition;
+        direction.Normalize();
+        float speed = 300f;
+        int damage = 10;
+
+        var newProjectile = new MediumEnemyProjectile(laserRedTexture, projectilePosition, direction, speed, damage, Hitbox);
         mediumEnemyProjectiles.Add(newProjectile);
+       
     }
 
     public void DrawMediumEnemy(SpriteBatch spriteBatch)
@@ -136,12 +150,13 @@ class MediumEnemy : Enemy
     }
     public void DrawMediumEnemyAttack(SpriteBatch spriteBatch)
     {
-        if (IsActive)
+        foreach(var projectile in mediumEnemyProjectiles)
         {
-            spriteBatch.Draw(Texture, Position, Color.White);
+            projectile.DrawPlayerAttack(spriteBatch);
         }
         
         Hitbox.Update(Position);
+        
     }
 }
 
