@@ -8,7 +8,7 @@ public class UtilityMethods
     public Vector2 InsideBorder(Vector2 position, Texture2D texture, GraphicsDeviceManager graphics)
     {
         position.X = MathHelper.Clamp(position.X, 0, graphics.PreferredBackBufferWidth - texture.Width);
-        position.Y = MathHelper.Clamp(position.Y, 0, graphics.PreferredBackBufferHeight -texture.Height);
+        position.Y = MathHelper.Clamp(position.Y, 0, graphics.PreferredBackBufferHeight - texture.Height);
         return position;
     }
     public bool CheckCollisionPlayer(Enemy enemy, Player player)
@@ -20,10 +20,4 @@ public class UtilityMethods
     {
         return enemy.Hitbox.Bounds.Intersects(projectile.Hitbox.Bounds);
     }
-
-    /*public bool CheckCollisionHeart(Item heart, Player player)
-    {
-        
-    }*/
-
 }

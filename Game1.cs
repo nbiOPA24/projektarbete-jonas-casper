@@ -3,9 +3,9 @@ using System.Security.Cryptography.X509Certificates;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
-using System.Runtime.CompilerServices;
+
 using Microsoft.VisualBasic;
+using System;
 
 
 
@@ -41,6 +41,9 @@ public class Game1 : Game
     private Item.Heart heart;
     private double heartTimer = 0;
     private bool heartExist = false;
+    private double randomHeartTimer;
+    private Random heartRandom = new Random();
+   
             
     public Game1()
     {
@@ -50,6 +53,7 @@ public class Game1 : Game
         _graphics.PreferredBackBufferHeight = _nativeHeight;
         _graphics.ApplyChanges();
         IsMouseVisible = true;
+        
     }
 
     protected override void Initialize()
@@ -68,28 +72,40 @@ public class Game1 : Game
         //Här laddas alla .pngfiler in för player, projectile samlt alla enemies  
         backgroundTexture = Content.Load<Texture2D>("SpaceBackground");
         heartTexture = Content.Load<Texture2D>("heartTexture");
+        heart = new Item.Heart(Vector2.Zero, heartTexture, 0);
+        
         playerTexture = Content.Load<Texture2D>("player");
+        player = new Player(this, new Vector2(940, 1000), playerTexture, 100, 35, 20, 15);//baseHealth, baseDamage, baseShield, speed 
         //gameOverTexture = Content.Load<Texture2D>("Gameover");
         projectiles = new List<Projectile>();
         laserGreenTexture = Content.Load<Texture2D>("laserGreen");
         laserRedTexture = Content.Load<Texture2D>("laserRed");
         //gameOverTexture = Content.Load<Texture2D>("Gameover");
-                          
-        //Skapar  player samt alla enemies och änven vart dom ska spawna. Även alla agenskaper, om speed, health, shield 
-        player = new Player(this, new Vector2(940, 1000), playerTexture, 100, 35, 20, 15);//baseHealth, baseDamage, baseShield, speed 
-        heart = new Item.Heart(Vector2.Zero, heartTexture, 50);
+        Random random = new Random();
+        randomHeartTimer = random.Next(5000, 15000);         
+       
         enemySpawnManager = new EnemySpawnManager(2f, _graphics.PreferredBackBufferWidth, Content.Load<Texture2D>("eyelander"), Content.Load<Texture2D>("antmaker"), Content.Load<Texture2D>("enemyUfo"));
         backGroundManager = new BackGroundManager(backgroundTexture, 2f);
     }
     protected override void Update(GameTime gameTime)
     {
+        
         heartTimer += gameTime.ElapsedGameTime.TotalMilliseconds; 
-        if (heartExist || heartTimer > 5000)  
+        if (!heartExist && heartTimer >= randomHeartTimer)
         {
             heart = new Item.Heart(Vector2.Zero, heartTexture, 50);
+            heartExist = true; 
+            heartTimer = 0;
+            randomHeartTimer = heartRandom.Next(5000, 15000);
+        }
+
+        if (heartExist && player.Hitbox.Bounds.Intersects(heart.HeartHitbox))
+        {
+            player.BaseHealth += 10;
             heartExist = false; 
             heartTimer = 0;
-        }
+            randomHeartTimer = heartRandom.Next(5000, 15000);
+        } 
 
         if (player.BaseHealth <= 0)
         {

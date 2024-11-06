@@ -13,21 +13,24 @@ public class Item
         public Texture2D Texture {get; set;}
         public int Size{get; set;}
         private Random ItemRandom = new Random();
-        private Hitbox HeartHitbox {get;set;}
-
+        
         public Heart(Vector2 position, Texture2D texture, int size)
         {
             Position = new Vector2(ItemRandom.Next(20, 1880), ItemRandom.Next(20, 500));
             Texture = texture;
             Size = size;
-            HeartHitbox = new Hitbox(Position, Texture);
-        
+        }
+        public Rectangle HeartHitbox
+        {
+            get
+            {
+                return new Rectangle((int)Position.X, (int)Position.Y, Size, Size);
+            }
         }
         public void DrawHeart(SpriteBatch SpriteBatch)
         {
             Rectangle heartRectangle = new Rectangle((int)Position.X, (int)Position.Y , Size, Size);
             SpriteBatch.Draw(Texture, heartRectangle, Color.White);
         }
-        
     }
 }
