@@ -32,6 +32,7 @@ public class Game1 : Game
     private Texture2D playerTexture;
     private Texture2D laserGreenTexture;
     private Texture2D laserRedTexture;
+    private Texture2D backgroundTexture;
     //private Texture2D gameOverTexture;
     private List<Projectile> projectiles;
     private EnemySpawnManager enemySpawnManager;
@@ -53,6 +54,7 @@ public class Game1 : Game
         _graphics.ApplyChanges();
         IsMouseVisible = true;
         
+        
     }
 
     protected override void Initialize()
@@ -67,18 +69,20 @@ public class Game1 : Game
         // Skapa en enkel röd textur för att visualisera hitboxar
         hitboxTexture = new Texture2D(GraphicsDevice, 1, 1); //TABPRT SENARE MÅLAR HITBOX
         hitboxTexture.SetData(new[] { Color.Red * 0.5f }); // Halvgenomskinlig röd färg TA BORT SENARE MÅLAR HITBOX
-       
         //Här laddas alla .pngfiler in för player, projectile samlt alla enemies  
-        //Skapar  player samt alla enemies och änven vart dom ska spawna. Även alla agenskaper, om speed, health, shield 
+        backgroundTexture = Content.Load<Texture2D>("SpaceBackground");
+        backGroundManager = new BackGroundManager(backgroundTexture, 2f);
         heartTexture = Content.Load<Texture2D>("heartTexture");
         heart = new Item.Heart(Vector2.Zero, heartTexture, 0);
         
         playerTexture = Content.Load<Texture2D>("player");
         player = new Player(this, new Vector2(940, 1000), playerTexture, 100, 35, 20, 15);//baseHealth, baseDamage, baseShield, speed 
+        
         //gameOverTexture = Content.Load<Texture2D>("Gameover");
         projectiles = new List<Projectile>();
         laserGreenTexture = Content.Load<Texture2D>("laserGreen");
         laserRedTexture = Content.Load<Texture2D>("laserRed");
+        
         //gameOverTexture = Content.Load<Texture2D>("Gameover");
         Random random = new Random();
         randomHeartTimer = random.Next(5000, 15000);         
@@ -88,7 +92,7 @@ public class Game1 : Game
     }
     protected override void Update(GameTime gameTime)
     {
-        
+        backGroundManager.Update();
         heartTimer += gameTime.ElapsedGameTime.TotalMilliseconds; 
         if (!heartExist && heartTimer >= randomHeartTimer)
         {
@@ -175,6 +179,9 @@ public class Game1 : Game
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
         _spriteBatch.Begin();
+       
+        backGroundManager.Draw(_spriteBatch);
+       
         heart.DrawHeart(_spriteBatch);
         string healthText = $"Health: {player.BaseHealth}";
         _spriteBatch.DrawString(font, healthText, new Vector2(100,100), Color.White);
