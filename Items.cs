@@ -31,8 +31,8 @@ public abstract class Item
     {
         public int HealthBoost {get; set;}
 
-        public HeartItem(Vector2 position, Texture2D texture, int healthboost)
-            : base(position, texture)
+        public HeartItem(Vector2 position, Texture2D texture, int healthboost) : base(position, texture)
+           
         {
             HealthBoost = healthboost;        
         }
@@ -43,6 +43,20 @@ public abstract class Item
             SpriteBatch.Draw(Texture, heartRectangle, Color.White);
         }
     }
+
+    /*public class AttackSpeedItem : Item
+    {
+        public int AttackSpeedBoost {get; set;}
+    }
+    public AttackSpeedItem(Vector2 position, Texture2D texture, int attackSpeedBoost) : base(position, texture)
+    {
+        AttackSpeedBoost = attackSpeedBoost
+    }
+    public void DrawAttackSpeedItem(SpriteBatch SpriteBatch)
+        {
+            Rectangle AttackSpeedRectangle = new Rectangle((int)Position.X, (int)Position.Y , ItemSize, ItemSize);
+            SpriteBatch.Draw(Texture, AttackSpeedRectangle, Color.White);
+        }*/
 }
         
                 
