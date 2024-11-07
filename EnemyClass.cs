@@ -6,13 +6,16 @@ using System.Data;
 using System.Runtime.Serialization;
 using Microsoft.VisualBasic.FileIO;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using static Projectile;
 
 
 public abstract class Enemy
 {
+    
     public Vector2 Position {get; set;}
+    
     public Texture2D Texture { get; set;}
     public string Name {get; set;}
     public int Health {get; set;}
@@ -80,12 +83,19 @@ class MediumEnemy : Enemy
     public List<MediumEnemyProjectile> mediumEnemyProjectiles;
     private float shootCooldown = 2f;
     private float timeSinceLastShot = 0f;
+
+    public Vector2 Vector2 { get; }
+    public Texture2D MediumEnemyTexture { get; }
+
     public MediumEnemy(Vector2 startPosition,Texture2D texture, int screenWidth)
          : base (startPosition, texture,"MediumEnemy", 100, 15, 5, 5)
     {
        this.screenWidth = screenWidth;
        mediumEnemyProjectiles = new List<MediumEnemyProjectile>();
     }
+
+   
+
     public void Update(GameTime gametime, Player player, Vector2 playerPosition, Texture2D laserRedTexture)
     {
         timeSinceLastShot += (float)gametime.ElapsedGameTime.TotalSeconds;
@@ -140,6 +150,7 @@ class MediumEnemy : Enemy
 
         var newProjectile = new MediumEnemyProjectile(laserRedTexture, projectilePosition, direction, speed, damage, Hitbox);
         mediumEnemyProjectiles.Add(newProjectile);
+        
        
     }
 
