@@ -16,9 +16,10 @@
 - [ ]Förbättra hitboxen, gör den mindre så den matcher planet bättre
 - [ ]Redundans? vad kan vi klumpa ihop något som gör samma sak
 - [ ]Meny
-- [ ]Något som ger hp? Ett hjärta 
-- [ ]Bakgrund?
+- [x]Något som ger hp? Ett hjärta 
+- [x]Bakgrund
 - [ ]Musik
 - [ ]Ljudeffekter, laser
 - [ ]Fler items? attackspeed m.m
 - [ ]Enemies ska "dö" när dom åker utanför skärmen
+- [ ]Fixa skarven som uppstår när nästa bakgrund laddas in
