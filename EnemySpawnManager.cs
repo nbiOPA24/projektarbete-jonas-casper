@@ -11,18 +11,18 @@ public class EnemySpawnManager
     public float elapsedSpawnTime;
     public Texture2D smallEnemyTexture, mediumEnemyTexture, bigEnemyTexture;
     public int screenWidth;
-    public SoundEffect laserSoundEffect;
+    public SoundEffect shootSound;
     
     
     
-    public EnemySpawnManager (float spawnInterval, int screenWidth, Texture2D smallEnemyTexture, Texture2D mediumEnemyTexture, Texture2D bigEnemyTexture, SoundEffect laserSoundEffect)
+    public EnemySpawnManager (float spawnInterval, int screenWidth, Texture2D smallEnemyTexture, Texture2D mediumEnemyTexture, Texture2D bigEnemyTexture, SoundEffect shootSound)
     {
         this.spawnInterval = spawnInterval;
         this.screenWidth = screenWidth;
         this.smallEnemyTexture = smallEnemyTexture;
         this.mediumEnemyTexture = mediumEnemyTexture;
         this.bigEnemyTexture = bigEnemyTexture;
-         this.laserSoundEffect = laserSoundEffect;
+        this.shootSound = shootSound;
         
     }
     public void Update (GameTime gameTime)
@@ -65,7 +65,7 @@ public class EnemySpawnManager
             newEnemy = new SmallEnemy(new Vector2(spawnX, 100), smallEnemyTexture, screenWidth);
         
         else if (spawnChance < 850) // 25% sannolikhet för MediumEnemy
-            newEnemy = new MediumEnemy(new Vector2(spawnX, 100), mediumEnemyTexture, screenWidth, laserSoundEffect);
+            newEnemy = new MediumEnemy(new Vector2(spawnX, 100), mediumEnemyTexture, screenWidth, shootSound);
         
         else // 15% sannolikhet för BigEnemy
             newEnemy = new BigEnemy(new Vector2(spawnX, 100), bigEnemyTexture, screenWidth);
