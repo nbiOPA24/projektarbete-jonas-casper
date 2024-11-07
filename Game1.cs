@@ -60,6 +60,9 @@ public class Game1 : Game
     
     protected override void LoadContent()
     {
+        backgroundTexture = Content.Load<Texture2D>("SpaceBackground");
+        backGroundManager = new BackGroundManager(backgroundTexture, 1f);
+
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         font = Content.Load<SpriteFont>("playerHealth");
         // Skapa en enkel röd textur för att visualisera hitboxar
@@ -69,11 +72,11 @@ public class Game1 : Game
         //Skapar  player samt alla enemies och änven vart dom ska spawna. Även alla agenskaper, om speed, health, shield 
         heartTexture = Content.Load<Texture2D>("heartTexture");
         heart = new Item.Heart(Vector2.Zero, heartTexture, 0);
-        
         heart = new Item.Heart(Vector2.Zero, heartTexture, 0);
         
         playerTexture = Content.Load<Texture2D>("player");
         player = new Player(this, new Vector2(940, 1000), playerTexture, 100, 35, 20, 15);//baseHealth, baseDamage, baseShield, speed 
+        
         //gameOverTexture = Content.Load<Texture2D>("Gameover");
         projectiles = new List<Projectile>();
         laserGreenTexture = Content.Load<Texture2D>("laserGreen");
@@ -87,7 +90,7 @@ public class Game1 : Game
     }
     protected override void Update(GameTime gameTime)
     {
-        
+        backGroundManager.Update();
         heartTimer += gameTime.ElapsedGameTime.TotalMilliseconds; 
         if (!heartExist && heartTimer >= randomHeartTimer)
         
