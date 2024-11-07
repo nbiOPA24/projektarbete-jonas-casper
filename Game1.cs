@@ -36,7 +36,7 @@ public class Game1 : Game
     private EnemySpawnManager enemySpawnManager;
     private BackGroundManager backGroundManager;
     private Texture2D hitboxTexture; // TODO TA BORT SENARE MÅLAR HITBOX
-    private Item.Heart heart;
+    private Item.HeartItem heart;
     private double heartTimer = 0;
     private double randomHeartTimer;
     private Random heartRandom = new Random();
@@ -70,8 +70,11 @@ public class Game1 : Game
         //Här laddas alla .pngfiler in för player, projectile samlt alla enemies  
         //Skapar  player samt alla enemies och änven vart dom ska spawna. Även alla agenskaper, om speed, health, shield 
         heartTexture = Content.Load<Texture2D>("heartTexture");
-        heart = new Item.Heart(Vector2.Zero, heartTexture, 0);
-                
+        heart = new Item.HeartItem(Vector2.Zero, heartTexture, 10);
+        heart.IsActive = false;
+        Random random = new Random();
+        randomHeartTimer = random.Next(5000, 15000);        
+        
         playerTexture = Content.Load<Texture2D>("player");
         player = new Player(this, new Vector2(940, 1000), playerTexture, 100, 35, 20, 15);//baseHealth, baseDamage, baseShield, speed 
         
@@ -81,8 +84,7 @@ public class Game1 : Game
         laserRedTexture = Content.Load<Texture2D>("laserRed");
         
         //gameOverTexture = Content.Load<Texture2D>("Gameover");
-        Random random = new Random();
-        randomHeartTimer = random.Next(5000, 15000);         
+         
 
         enemySpawnManager = new EnemySpawnManager(2f, _graphics.PreferredBackBufferWidth, Content.Load<Texture2D>("eyelander"), Content.Load<Texture2D>("antmaker"), Content.Load<Texture2D>("enemyUfo"));
     }
@@ -93,7 +95,7 @@ public class Game1 : Game
         if (heartTimer >= randomHeartTimer)
         
         {
-            heart = new Item.Heart(Vector2.Zero, heartTexture, 50);
+            Item.HeartItem heart = new Item.HeartItem(Vector2.Zero, heartTexture, 50);
             heart.IsActive = true; 
             heartTimer = 0;
             randomHeartTimer = heartRandom.Next(5000, 15000);

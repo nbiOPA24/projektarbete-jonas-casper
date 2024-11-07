@@ -5,33 +5,47 @@ using System.Dynamic;
 using System.Data;
 
 
-public class Item
+
+public abstract class Item
 {
-    public struct Heart
+    private Random ItemRandom = new Random();
+    public int ItemSize = 20;
+    public Vector2 Position {get;set;}
+    public Texture2D Texture {get; set;}
+    public bool IsActive {get; set;} = true;
+
+    public Rectangle HeartHitbox
     {
-        public Vector2 Position {get;set;}
-        public Texture2D Texture {get; set;}
-        public int Size{get; set;}
-        private Random ItemRandom = new Random();
-        public bool IsActive {get; set;} = true;
+        get
+        {
+            return new Rectangle((int)Position.X, (int)Position.Y, ItemSize, ItemSize);
+        }
+    }
+
+    public Item(Vector2 position, Texture2D texture)
+    {
+        Position = position;
+        Texture = texture;
+    }
+    public class HeartItem : Item
+    {
+        public int HealthBoost {get; set;}
+
+        public HeartItem(Vector2 position, Texture2D texture, int healthboost)
+            : base(position, texture)
+        {
+            HealthBoost = healthboost;        
+        }
         
-        public Heart(Vector2 position, Texture2D texture, int size)
-        {
-            Position = new Vector2(ItemRandom.Next(20, 1880), ItemRandom.Next(20, 500));
-            Texture = texture;
-            Size = size;
-        }
-        public Rectangle HeartHitbox
-        {
-            get
-            {
-                return new Rectangle((int)Position.X, (int)Position.Y, Size, Size);
-            }
-        }
         public void DrawHeart(SpriteBatch SpriteBatch)
         {
-            Rectangle heartRectangle = new Rectangle((int)Position.X, (int)Position.Y , Size, Size);
+            Rectangle heartRectangle = new Rectangle((int)Position.X, (int)Position.Y , ItemSize, ItemSize);
             SpriteBatch.Draw(Texture, heartRectangle, Color.White);
         }
     }
 }
+        
+                
+    
+    
+        
