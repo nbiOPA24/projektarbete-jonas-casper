@@ -76,7 +76,8 @@ public class Game1 : Game
         heart.IsActive = false;
         Random random = new Random();
         randomHeartTimer = random.Next(5000, 15000);        
-playerLaserSound = Content.Load<SoundEffect>("laserSound");        
+        
+        playerLaserSound = Content.Load<SoundEffect>("laserSound");        
         playerTexture = Content.Load<Texture2D>("player");
         player = new Player(this, new Vector2(940, 1000), playerTexture, 100, 35, 20, 15, playerLaserSound);//baseHealth, baseDamage, baseShield, speed 
         
