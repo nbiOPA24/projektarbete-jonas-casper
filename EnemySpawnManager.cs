@@ -10,7 +10,7 @@ public class EnemySpawnManager
     public float elapsedSpawnTime;
     public Texture2D smallEnemyTexture, mediumEnemyTexture, bigEnemyTexture;
     public int screenWidth;
-    private GraphicsDeviceManager graphicsDeviceManager;
+    
     
     
     public EnemySpawnManager (float spawnInterval, int screenWidth, Texture2D smallEnemyTexture, Texture2D mediumEnemyTexture, Texture2D bigEnemyTexture)
@@ -33,11 +33,6 @@ public class EnemySpawnManager
         }
         foreach (Enemy enemy in enemies)
         {
-           //if (enemy.Position.Y > _graphics.PreferredBackBufferHeight || enemy.Position.Y < 0)
-        {
-            enemy.IsActive = false;
-        }
-
             if(enemy.Health <= 0)
             enemy.IsActive = false;
 

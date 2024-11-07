@@ -135,6 +135,15 @@ public class Game1 : Game
                     {
                         enemy.IsActive = false;
                     }
+                    
+                }
+                if (enemy.Position.Y > GraphicsDevice.Viewport.Height || enemy.Position.Y < 0)
+                {
+                    enemy.IsActive = false; // Fienden har lämnat skärmen vertikalt                   
+                }
+                if(projectile.Position.Y > GraphicsDevice.Viewport.Height  || projectile.Position.Y < 0)
+                {
+                    projectile.IsActive = false;
                 }
             }     
         }
@@ -176,7 +185,7 @@ public class Game1 : Game
     
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
-        _spriteBatch.Begin();
+        _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
        
         backGroundManager.Draw(_spriteBatch);
         if (heart.IsActive)
