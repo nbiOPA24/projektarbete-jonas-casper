@@ -4,11 +4,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+
 using Microsoft.VisualBasic;
 using System;
-
-
-
 
 namespace JcGame;
 
@@ -32,16 +30,18 @@ public class Game1 : Game
     private Texture2D playerTexture;
     private Texture2D laserGreenTexture;
     private Texture2D laserRedTexture;
-    //private Texture2D gameOverTexture;
+    private Texture2D backgroundTexture;
+    private Texture2D gameOverTexture;
     private List<Projectile> projectiles;
     private EnemySpawnManager enemySpawnManager;
+    private BackGroundManager backGroundManager;
     private Texture2D hitboxTexture; // TODO TA BORT SENARE MÅLAR HITBOX
     private Item.Heart heart;
     private double heartTimer = 0;
     private bool heartExist = false;
     private double randomHeartTimer;
     private Random heartRandom = new Random();
-   
+    
             
     public Game1()
     {
@@ -51,7 +51,6 @@ public class Game1 : Game
         _graphics.PreferredBackBufferHeight = _nativeHeight;
         _graphics.ApplyChanges();
         IsMouseVisible = true;
-        
     }
 
     protected override void Initialize()
@@ -66,10 +65,11 @@ public class Game1 : Game
         // Skapa en enkel röd textur för att visualisera hitboxar
         hitboxTexture = new Texture2D(GraphicsDevice, 1, 1); //TABPRT SENARE MÅLAR HITBOX
         hitboxTexture.SetData(new[] { Color.Red * 0.5f }); // Halvgenomskinlig röd färg TA BORT SENARE MÅLAR HITBOX
-       
         //Här laddas alla .pngfiler in för player, projectile samlt alla enemies  
         //Skapar  player samt alla enemies och änven vart dom ska spawna. Även alla agenskaper, om speed, health, shield 
         heartTexture = Content.Load<Texture2D>("heartTexture");
+        heart = new Item.Heart(Vector2.Zero, heartTexture, 0);
+        
         heart = new Item.Heart(Vector2.Zero, heartTexture, 0);
         
         playerTexture = Content.Load<Texture2D>("player");
@@ -78,18 +78,19 @@ public class Game1 : Game
         projectiles = new List<Projectile>();
         laserGreenTexture = Content.Load<Texture2D>("laserGreen");
         laserRedTexture = Content.Load<Texture2D>("laserRed");
+        
         //gameOverTexture = Content.Load<Texture2D>("Gameover");
         Random random = new Random();
         randomHeartTimer = random.Next(5000, 15000);         
-       
+
         enemySpawnManager = new EnemySpawnManager(2f, _graphics.PreferredBackBufferWidth, Content.Load<Texture2D>("eyelander"), Content.Load<Texture2D>("antmaker"), Content.Load<Texture2D>("enemyUfo"));
-        
     }
     protected override void Update(GameTime gameTime)
     {
         
         heartTimer += gameTime.ElapsedGameTime.TotalMilliseconds; 
         if (!heartExist && heartTimer >= randomHeartTimer)
+        
         {
             heart = new Item.Heart(Vector2.Zero, heartTexture, 50);
             heartExist = true; 
@@ -100,10 +101,11 @@ public class Game1 : Game
         if (heartExist && player.Hitbox.Bounds.Intersects(heart.HeartHitbox))
         {
             player.BaseHealth += 10;
-            heartExist = false; 
+            heartExist = true; 
             heartTimer = 0;
             randomHeartTimer = heartRandom.Next(5000, 15000);
-        } 
+        }
+           
 
         if (player.BaseHealth <= 0)
         {
@@ -174,6 +176,9 @@ public class Game1 : Game
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
         _spriteBatch.Begin();
+       
+        backGroundManager.Draw(_spriteBatch);
+       
         heart.DrawHeart(_spriteBatch);
         string healthText = $"Health: {player.BaseHealth}";
         _spriteBatch.DrawString(font, healthText, new Vector2(100,100), Color.White);
