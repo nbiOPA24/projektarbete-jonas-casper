@@ -76,7 +76,7 @@ public class Game1 : Game
         heart.IsActive = false;
         Random random = new Random();
         randomHeartTimer = random.Next(5000, 15000);        
-        
+playerLaserSound = Content.Load<SoundEffect>("laserSound");        
         playerTexture = Content.Load<Texture2D>("player");
         player = new Player(this, new Vector2(940, 1000), playerTexture, 100, 35, 20, 15, playerLaserSound);//baseHealth, baseDamage, baseShield, speed 
         
@@ -87,7 +87,7 @@ public class Game1 : Game
         //gameOverTexture = Content.Load<Texture2D>("Gameover");
          
 
-        enemySpawnManager = new EnemySpawnManager(2f, _graphics.PreferredBackBufferWidth, Content.Load<Texture2D>("eyelander"), Content.Load<Texture2D>("antmaker"), Content.Load<Texture2D>("enemyUfo"));
+        enemySpawnManager = new EnemySpawnManager(2f, _graphics.PreferredBackBufferWidth, Content.Load<Texture2D>("eyelander"), Content.Load<Texture2D>("antmaker"), Content.Load<Texture2D>("enemyUfo"), playerLaserSound);
     }
     protected override void Update(GameTime gameTime)
     {
