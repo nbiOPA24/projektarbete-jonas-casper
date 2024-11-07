@@ -97,6 +97,12 @@
 /processorParam:TextureFormat=Color
 /build:laserRed.png
 
+#begin laserSound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:laserSound.wav
+
 #begin player.png
 /importer:TextureImporter
 /processor:TextureProcessor

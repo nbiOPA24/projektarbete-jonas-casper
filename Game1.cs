@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Input;
 
 using Microsoft.VisualBasic;
 using System;
+using Microsoft.Xna.Framework.Audio;
 
 namespace JcGame;
 
@@ -32,6 +33,7 @@ public class Game1 : Game
     private Texture2D laserRedTexture;
     private Texture2D backgroundTexture;
     private Texture2D gameOverTexture;
+    private SoundEffect playerLaserSound;
     private List<Projectile> projectiles;
     private EnemySpawnManager enemySpawnManager;
     private BackGroundManager backGroundManager;
@@ -76,13 +78,12 @@ public class Game1 : Game
         randomHeartTimer = random.Next(5000, 15000);        
         
         playerTexture = Content.Load<Texture2D>("player");
-        player = new Player(this, new Vector2(940, 1000), playerTexture, 100, 35, 20, 15);//baseHealth, baseDamage, baseShield, speed 
+        player = new Player(this, new Vector2(940, 1000), playerTexture, 100, 35, 20, 15, playerLaserSound);//baseHealth, baseDamage, baseShield, speed 
         
         //gameOverTexture = Content.Load<Texture2D>("Gameover");
         projectiles = new List<Projectile>();
         laserGreenTexture = Content.Load<Texture2D>("laserGreen");
         laserRedTexture = Content.Load<Texture2D>("laserRed");
-        
         //gameOverTexture = Content.Load<Texture2D>("Gameover");
          
 

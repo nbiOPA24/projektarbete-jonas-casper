@@ -21,5 +21,5 @@
 - [ ]Musik
 - [ ]Ljudeffekter, laser
 - [ ]Fler items? attackspeed m.m
-- [ ]Enemies ska "dö" när dom åker utanför skärmen
+- [x]Enemies ska "dö" när dom åker utanför skärmen
 - [ ]Fixa skarven som uppstår när nästa bakgrund laddas in
