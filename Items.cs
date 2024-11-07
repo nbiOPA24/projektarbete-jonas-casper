@@ -13,6 +13,7 @@ public class Item
         public Texture2D Texture {get; set;}
         public int Size{get; set;}
         private Random ItemRandom = new Random();
+        public bool IsActive {get; set;} = true;
         
         public Heart(Vector2 position, Texture2D texture, int size)
         {

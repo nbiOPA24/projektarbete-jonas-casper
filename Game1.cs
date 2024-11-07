@@ -38,7 +38,6 @@ public class Game1 : Game
     private Texture2D hitboxTexture; // TODO TA BORT SENARE MÅLAR HITBOX
     private Item.Heart heart;
     private double heartTimer = 0;
-    private bool heartExist = false;
     private double randomHeartTimer;
     private Random heartRandom = new Random();
     
@@ -72,8 +71,7 @@ public class Game1 : Game
         //Skapar  player samt alla enemies och änven vart dom ska spawna. Även alla agenskaper, om speed, health, shield 
         heartTexture = Content.Load<Texture2D>("heartTexture");
         heart = new Item.Heart(Vector2.Zero, heartTexture, 0);
-        heart = new Item.Heart(Vector2.Zero, heartTexture, 0);
-        
+                
         playerTexture = Content.Load<Texture2D>("player");
         player = new Player(this, new Vector2(940, 1000), playerTexture, 100, 35, 20, 15);//baseHealth, baseDamage, baseShield, speed 
         
@@ -92,23 +90,23 @@ public class Game1 : Game
     {
         backGroundManager.Update();
         heartTimer += gameTime.ElapsedGameTime.TotalMilliseconds; 
-        if (!heartExist && heartTimer >= randomHeartTimer)
+        if (heartTimer >= randomHeartTimer)
         
         {
             heart = new Item.Heart(Vector2.Zero, heartTexture, 50);
-            heartExist = true; 
+            heart.IsActive = true; 
             heartTimer = 0;
             randomHeartTimer = heartRandom.Next(5000, 15000);
         }
 
-        if (heartExist && player.Hitbox.Bounds.Intersects(heart.HeartHitbox))
+        if (heart.IsActive && player.Hitbox.Bounds.Intersects(heart.HeartHitbox))
         {
             player.BaseHealth += 10;
-            heartExist = true; 
+            heart.IsActive = false; 
             heartTimer = 0;
             randomHeartTimer = heartRandom.Next(5000, 15000);
         }
-           
+          
 
         if (player.BaseHealth <= 0)
         {
@@ -181,8 +179,11 @@ public class Game1 : Game
         _spriteBatch.Begin();
        
         backGroundManager.Draw(_spriteBatch);
-       
-        heart.DrawHeart(_spriteBatch);
+        if (heart.IsActive)
+        {
+            heart.DrawHeart(_spriteBatch);
+        }
+        
         string healthText = $"Health: {player.BaseHealth}";
         _spriteBatch.DrawString(font, healthText, new Vector2(100,100), Color.White);
                 

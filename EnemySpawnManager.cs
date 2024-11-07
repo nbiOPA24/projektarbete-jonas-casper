@@ -31,7 +31,6 @@ public class EnemySpawnManager
         }
         foreach (Enemy enemy in enemies)
         {
-           
             if(enemy.Health <= 0)
             enemy.IsActive = false;
 
@@ -76,12 +75,12 @@ public class EnemySpawnManager
         spriteBatch.Draw(Enemy.Texture, Enemy.Position, Color.White);
     }
      public void DrawHitboxes(SpriteBatch spriteBatch, Texture2D hitboxTexture) //TODO TA BORT SENARE MÅLAR HITBOX
-{                                                                               //TODO TA BORT SENARE MÅLAR HITBOX
-    foreach (var enemy in enemies)                                              //TODO TA BORT SENARE MÅLAR HITBOX
-    {                                                                           //TODO TA BORT SENARE MÅLAR HITBOX
-        // Ritar ut fiendens hitbox som en halvgenomskinlig rektangel           //TODO TA BORT SENARE MÅLAR HITBOX
-        spriteBatch.Draw(hitboxTexture, enemy.Hitbox.Bounds, Color.Red * 0.5f); //TODO TA BORT SENARE MÅLAR HITBOX
+    {                                                                               //TODO TA BORT SENARE MÅLAR HITBOX
+        foreach (var enemy in enemies)                                              //TODO TA BORT SENARE MÅLAR HITBOX
+        {                                                                           //TODO TA BORT SENARE MÅLAR HITBOX
+            // Ritar ut fiendens hitbox som en halvgenomskinlig rektangel           //TODO TA BORT SENARE MÅLAR HITBOX
+            spriteBatch.Draw(hitboxTexture, enemy.Hitbox.Bounds, Color.Red * 0.5f); //TODO TA BORT SENARE MÅLAR HITBOX
+        }
     }
-}
      
 }
