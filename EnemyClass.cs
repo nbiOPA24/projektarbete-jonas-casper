@@ -83,14 +83,15 @@ class MediumEnemy : Enemy
     public List<MediumEnemyProjectile> mediumEnemyProjectiles;
     private float shootCooldown = 2f;
     private float timeSinceLastShot = 0f;
-
+    private SoundEffect shootSound;
     public Vector2 Vector2 { get; }
     public Texture2D MediumEnemyTexture { get; }
 
-    public MediumEnemy(Vector2 startPosition,Texture2D texture, int screenWidth)
+    public MediumEnemy(Vector2 startPosition,Texture2D texture, int screenWidth, SoundEffect shootsound)
          : base (startPosition, texture,"MediumEnemy", 100, 15, 5, 5)
     {
        this.screenWidth = screenWidth;
+       this.shootSound = shootsound;
        mediumEnemyProjectiles = new List<MediumEnemyProjectile>();
     }
 
@@ -150,6 +151,7 @@ class MediumEnemy : Enemy
 
         var newProjectile = new MediumEnemyProjectile(laserRedTexture, projectilePosition, direction, speed, damage, Hitbox);
         mediumEnemyProjectiles.Add(newProjectile);
+        shootSound.Play();
         
        
     }
