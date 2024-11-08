@@ -93,11 +93,11 @@ public class Game1 : Game
     {
         backGroundManager.Update();
         heartTimer += gameTime.ElapsedGameTime.TotalMilliseconds; 
-        
-        if (heartTimer >= 5000 || heartTimer >= randomHeartTimer)
+        Console.WriteLine("Hej");
+        if (heartTimer >= randomHeartTimer)
         
         {
-            Item.HeartItem heart = new Item.HeartItem(Vector2.Zero, heartTexture, 50);
+            heart.Position = new Vector2(heartRandom.Next(20, 1880), heartRandom.Next(20, 550));
             heart.IsActive = true; 
             heartTimer = 0;
             randomHeartTimer = heartRandom.Next(5000, 15000);
@@ -105,7 +105,7 @@ public class Game1 : Game
 
         if (heart.IsActive && player.Hitbox.Bounds.Intersects(heart.HeartHitbox))
         {
-            player.BaseHealth += 10;
+            player.BaseHealth += heart.HealthBoost;
             heart.IsActive = false; 
             heartTimer = 0;
             randomHeartTimer = heartRandom.Next(5000, 15000);

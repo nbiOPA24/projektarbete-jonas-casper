@@ -9,7 +9,7 @@ using System.Data;
 public abstract class Item
 {
     private Random ItemRandom = new Random();
-    public int ItemSize = 20;
+    public int ItemSize = 50;
     public Vector2 Position {get;set;}
     public Texture2D Texture {get; set;}
     public bool IsActive {get; set;} = true;
