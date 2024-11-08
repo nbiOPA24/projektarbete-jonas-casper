@@ -32,7 +32,7 @@ public class Game1 : Game
     private Texture2D laserGreenTexture;
     private Texture2D laserRedTexture;
     private Texture2D backgroundTexture;
-    private Texture2D gameOverTexture;
+    //private Texture2D gameOverTexture;
     public SoundEffect shootSound;
     private List<Projectile> projectiles;
     private EnemySpawnManager enemySpawnManager;
@@ -93,7 +93,8 @@ public class Game1 : Game
     {
         backGroundManager.Update();
         heartTimer += gameTime.ElapsedGameTime.TotalMilliseconds; 
-        if (heartTimer >= randomHeartTimer)
+        
+        if (heartTimer >= 5000 || heartTimer >= randomHeartTimer)
         
         {
             Item.HeartItem heart = new Item.HeartItem(Vector2.Zero, heartTexture, 50);
