@@ -27,6 +27,7 @@ public class Game1 : Game
     private int _nativeHeight = 1080;
     //private bool isGameOver = false;
     private Texture2D heartTexture;
+    private Texture2D attackSpeedTexture;
     private SpriteBatch _spriteBatch;
     private Texture2D playerTexture;
     private Texture2D laserGreenTexture;
@@ -93,7 +94,7 @@ public class Game1 : Game
     {
         backGroundManager.Update();
         heartTimer += gameTime.ElapsedGameTime.TotalMilliseconds; 
-        Console.WriteLine("Hej");
+        
         if (heartTimer >= randomHeartTimer)
         
         {
@@ -189,10 +190,14 @@ public class Game1 : Game
         _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
        
         backGroundManager.Draw(_spriteBatch);
+        /*if (attackSpeed.IsActive)
+        {
+            attackSpeed.DrawAttackSpeedItem(_spriteBatch);
+        }
         if (heart.IsActive)
         {
-            heart.DrawHeart(_spriteBatch);
-        }
+            heart.DrawHeartItem(_spriteBatch);
+        }*/
         
         string healthText = $"Health: {player.BaseHealth}";
         _spriteBatch.DrawString(font, healthText, new Vector2(100,100), Color.White);

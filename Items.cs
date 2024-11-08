@@ -37,7 +37,7 @@ public abstract class Item
             HealthBoost = healthboost;        
         }
         
-        public void DrawHeart(SpriteBatch SpriteBatch)
+        public void DrawHeartItem(SpriteBatch SpriteBatch)
         {
             Rectangle heartRectangle = new Rectangle((int)Position.X, (int)Position.Y , ItemSize, ItemSize);
             SpriteBatch.Draw(Texture, heartRectangle, Color.White);
