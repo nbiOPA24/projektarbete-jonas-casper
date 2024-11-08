@@ -86,8 +86,7 @@ public class Game1 : Game
         laserGreenTexture = Content.Load<Texture2D>("laserGreen");
         laserRedTexture = Content.Load<Texture2D>("laserRed");
         //gameOverTexture = Content.Load<Texture2D>("Gameover");
-         
-
+        
         enemySpawnManager = new EnemySpawnManager(2f, _graphics.PreferredBackBufferWidth, Content.Load<Texture2D>("eyelander"), Content.Load<Texture2D>("antmaker"), Content.Load<Texture2D>("enemyUfo"), shootSound);
     }
     protected override void Update(GameTime gameTime)
@@ -110,8 +109,7 @@ public class Game1 : Game
             heartTimer = 0;
             randomHeartTimer = heartRandom.Next(5000, 15000);
         }
-          
-
+        
         if (player.BaseHealth <= 0)
         {
             if (player.BaseHealth <= 0)
@@ -139,7 +137,6 @@ public class Game1 : Game
                     {
                         enemy.IsActive = false;
                     }
-                    
                 }
                 if (enemy.Position.Y > GraphicsDevice.Viewport.Height || enemy.Position.Y < 0)
                 {
@@ -168,9 +165,8 @@ public class Game1 : Game
             {
                 mediumEnemy.MoveDownSmoothlyFaster(gameTime);
                 mediumEnemy.Update(gameTime, player, player.Position, laserRedTexture);
-                
             }
-                
+               
             enemy.UpdateHitbox();
             
         }
@@ -210,8 +206,7 @@ public class Game1 : Game
                     mediumEnemy.DrawMediumEnemyAttack(_spriteBatch);
            }
         }
-           
-            enemySpawnManager.DrawHitboxes(_spriteBatch, hitboxTexture); //TODO TA BORT SENARE MÅLAR HITBOX
+           enemySpawnManager.DrawHitboxes(_spriteBatch, hitboxTexture); //TODO TA BORT SENARE MÅLAR HITBOX
             player.DrawPlayer(_spriteBatch);
                                
             foreach (var projectile in projectiles)
