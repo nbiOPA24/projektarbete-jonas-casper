@@ -193,11 +193,11 @@ public class Game1 : Game
         /*if (attackSpeed.IsActive)
         {
             attackSpeed.DrawAttackSpeedItem(_spriteBatch);
-        }
+        }*/
         if (heart.IsActive)
         {
             heart.DrawHeartItem(_spriteBatch);
-        }*/
+        }
         
         string healthText = $"Health: {player.BaseHealth}";
         _spriteBatch.DrawString(font, healthText, new Vector2(100,100), Color.White);
