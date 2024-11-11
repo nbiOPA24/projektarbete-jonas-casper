@@ -28,6 +28,7 @@ public class Game1 : Game
     //private bool isGameOver = false;
     private Texture2D heartTexture;
     private Texture2D attackSpeedTexture;
+    private Item.AttackSpeedItem attackSpeed;
     private SpriteBatch _spriteBatch;
     private Texture2D playerTexture;
     private Texture2D laserGreenTexture;
@@ -40,7 +41,7 @@ public class Game1 : Game
     private BackGroundManager backGroundManager;
     private Texture2D hitboxTexture; // TODO TA BORT SENARE MÅLAR HITBOX
     private Item.HeartItem heart;
-    private double heartTimer = 0;
+    private double spawnTimer = 0;
     private double randomHeartTimer;
     private Random heartRandom = new Random();
     
@@ -75,6 +76,9 @@ public class Game1 : Game
         heartTexture = Content.Load<Texture2D>("heartTexture");
         heart = new Item.HeartItem(Vector2.Zero, heartTexture, 10);
         heart.IsActive = false;
+        attackSpeedTexture = Content.Load<Texture2D>("attackSpeedTexture");
+        attackSpeed = new Item.AttackSpeedItem(Vector2.Zero, attackSpeedTexture, 2);
+        attackSpeed.IsActive = false;
         Random random = new Random();
         randomHeartTimer = random.Next(5000, 15000);        
         
@@ -93,14 +97,14 @@ public class Game1 : Game
     protected override void Update(GameTime gameTime)
     {
         backGroundManager.Update();
-        heartTimer += gameTime.ElapsedGameTime.TotalMilliseconds; 
+        spawnTimer += gameTime.ElapsedGameTime.TotalMilliseconds; 
         
-        if (heartTimer >= randomHeartTimer)
+        if (spawnTimer >= randomHeartTimer)
         
         {
             heart.Position = new Vector2(heartRandom.Next(20, 1880), heartRandom.Next(20, 550));
             heart.IsActive = true; 
-            heartTimer = 0;
+            spawnTimer = 0;
             randomHeartTimer = heartRandom.Next(5000, 15000);
         }
 
@@ -108,7 +112,7 @@ public class Game1 : Game
         {
             player.BaseHealth += heart.HealthBoost;
             heart.IsActive = false; 
-            heartTimer = 0;
+            spawnTimer = 0;
             randomHeartTimer = heartRandom.Next(5000, 15000);
         }
         
@@ -190,10 +194,10 @@ public class Game1 : Game
         _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
        
         backGroundManager.Draw(_spriteBatch);
-        /*if (attackSpeed.IsActive)
+        if (attackSpeed.IsActive)
         {
             attackSpeed.DrawAttackSpeedItem(_spriteBatch);
-        }*/
+        }
         if (heart.IsActive)
         {
             heart.DrawHeartItem(_spriteBatch);
