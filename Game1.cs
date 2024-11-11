@@ -100,7 +100,6 @@ public class Game1 : Game
         spawnTimer += gameTime.ElapsedGameTime.TotalMilliseconds; 
         attackSpeed.IsActive = true;
         if (spawnTimer >= randomHeartTimer)
-        
         {
             heart.Position = new Vector2(heartRandom.Next(20, 1880), heartRandom.Next(20, 550));
             heart.IsActive = true; 
