@@ -98,7 +98,7 @@ public class Game1 : Game
     {
         backGroundManager.Update();
         spawnTimer += gameTime.ElapsedGameTime.TotalMilliseconds; 
-        
+        attackSpeed.IsActive = true;
         if (spawnTimer >= randomHeartTimer)
         
         {
