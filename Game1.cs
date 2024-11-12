@@ -204,7 +204,7 @@ public class Game1 : Game
         if (attackSpeed.IsActive)
         {
             attackSpeed.DrawAttackSpeedItem(_spriteBatch);
-        }*/
+        }
         //Om heart är aktivt så målas ett hjärta ut någonstans på skärmern
         if (heart.IsActive)
         {

@@ -11,7 +11,8 @@ public class UtilityMethods
         position.Y = MathHelper.Clamp(position.Y, 0, graphics.PreferredBackBufferHeight - texture.Height);
         return position;
     }
-    public bool CheckCollisionPlayer(Enemy enemy, Player player)
+    public bool CheckCollisionPlayer(Enemy enemy, Player player) 
+    //kollar om en fiendes och spelarenssamt projektilens hitboxar överlappar varandra. Om de gör det returneras true, vilket imnebär en kollision.
     {
         return enemy.Hitbox.Bounds.Intersects(player.Hitbox.Bounds);
     }
