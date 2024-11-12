@@ -8,42 +8,46 @@ namespace JcGame;
 public class BackGroundManager
 {
     private BackgroundLayer backgroundLayer;
+    //KOnstruktor som tar en textur och en hastighet för att skapa en bakgrund som rör sig
     public BackGroundManager(Texture2D texture, float speed)
     {
         backgroundLayer = new BackgroundLayer(texture, speed);
     }
 
+    //Uppdaterar background 60ggr per sekund
     public void Update()
     {
         backgroundLayer.Update();
     }
 
+    //Målar ut bakgrunden
     public void Draw(SpriteBatch spriteBatch)
     {
         backgroundLayer.Draw(spriteBatch);
     }
-    
 }
 public class BackgroundLayer
 {
+    //egenskaper för Bakgrund
     private Texture2D texture;
     private Vector2 position1;
     private Vector2 position2;
     private float speed;
     
-
+    //Konstruktor för bakgrund 
     public BackgroundLayer(Texture2D texture, float speed)
     {
+        
         this.texture = texture;
-        this.position1 = new Vector2(0, 0);
-        // +1 för att få en överlapp, tabort skarven mellan bilderna
-        this.position2 = new Vector2(0, -texture.Height);
+        position1 = new Vector2(0, 0);//Första bakgrundsbilden börjar vid pixel 0.0
+        position2 = new Vector2(0, -texture.Height);//Andra bakgrundsbilden börjar direkt efter den första
         this.speed = speed;
         
     }
 
     public void Update()
     {
+        //Hanterar hur fort bakgrunden ska röra sig
         position1.Y += speed;
         position2.Y += speed;
 
@@ -58,7 +62,7 @@ public class BackgroundLayer
             position2.Y = position1.Y - texture.Height; // Flytta position2 ovanför position1
         }
     }
-
+    //Målar ut båda bilderna av bakgrunden i följd
     public void Draw(SpriteBatch spriteBatch)
     {
         spriteBatch.Draw(texture, position1, Color.White);
