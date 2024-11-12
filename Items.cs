@@ -5,32 +5,78 @@ using System.Dynamic;
 using System.Data;
 
 
-public class Item
+
+public abstract class Item
 {
-    public struct Heart
+    public int ItemSize = 50;
+    public Vector2 Position {get;set;}
+    public Texture2D Texture {get; set;}
+    public bool IsActive {get; set;} = true;
+
+    public Rectangle HeartHitbox
     {
-        public Vector2 Position {get;set;}
-        public Texture2D Texture {get; set;}
-        public int Size{get; set;}
-        private Random ItemRandom = new Random();
+        get
+        {
+            return new Rectangle((int)Position.X, (int)Position.Y, ItemSize, ItemSize);
+        }
+    }
+
+    public Item(Vector2 position, Texture2D texture)
+    {
+        Position = position;
+        Texture = texture;
+    }
+    public class HeartItem : Item
+    {
+        public int HealthBoost {get; set;}
+
+        public HeartItem(Vector2 position, Texture2D texture, int healthboost) : base(position, texture)
+           
+        {
+            HealthBoost = healthboost;        
+        }
         
-        public Heart(Vector2 position, Texture2D texture, int size)
+        public void DrawHeartItem(SpriteBatch SpriteBatch)
         {
-            Position = new Vector2(ItemRandom.Next(20, 1880), ItemRandom.Next(20, 500));
-            Texture = texture;
-            Size = size;
-        }
-        public Rectangle HeartHitbox
-        {
-            get
-            {
-                return new Rectangle((int)Position.X, (int)Position.Y, Size, Size);
-            }
-        }
-        public void DrawHeart(SpriteBatch SpriteBatch)
-        {
-            Rectangle heartRectangle = new Rectangle((int)Position.X, (int)Position.Y , Size, Size);
+            Rectangle heartRectangle = new Rectangle((int)Position.X, (int)Position.Y , ItemSize, ItemSize);
             SpriteBatch.Draw(Texture, heartRectangle, Color.White);
         }
     }
+
+    public class AttackSpeedItem : Item
+    {
+        public int AttackSpeedBoost {get; set;}
+    
+        public AttackSpeedItem(Vector2 position, Texture2D texture, int attackSpeedBoost) : base(position, texture)
+        {
+            AttackSpeedBoost = attackSpeedBoost;
+        }
+    public void DrawAttackSpeedItem(SpriteBatch SpriteBatch)
+        {
+            Rectangle AttackSpeedRectangle = new Rectangle((int)Position.X, (int)Position.Y , ItemSize, ItemSize);
+            SpriteBatch.Draw(Texture, AttackSpeedRectangle, Color.White);
+        }
+    }
+
+    /*public class AttackPowerItem : Item
+    {
+        public int AttackPowerBoost {get; set;}
+    
+        public AttackPowerItem(Vector2 position, Texture2D texture, int attackPowerBoost) : base (position, texture)
+        {
+            AttackPowerBoost = attackPowerBoost;
+        }
+
+    public void DrawAttackPowerItem(SpriteBatch spriteBatch)
+        {
+            Rectangle AttackPowerRectangle = new Rectangle((int) Position.X, (int) Position.Y, ItemSize, ItemSize);
+            SpriteBatch.Draw(Texture, AttackPowerRectangle, Color.White);
+        }
+    }*/
+    
 }
+        
+                
+    
+    
+        
