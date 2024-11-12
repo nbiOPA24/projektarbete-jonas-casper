@@ -35,7 +35,7 @@ public class Game1 : Game
     private Texture2D laserRedTexture;
     private Texture2D backgroundTexture;
     //private Texture2D gameOverTexture;
-    public SoundEffect shootSound;
+    //public SoundEffect shootSound;
     private List<Projectile> projectiles;
     private EnemySpawnManager enemySpawnManager;
     private BackGroundManager backGroundManager;
@@ -90,7 +90,7 @@ public class Game1 : Game
         projectiles = new List<Projectile>();
         laserGreenTexture = Content.Load<Texture2D>("laserGreen");
         laserRedTexture = Content.Load<Texture2D>("laserRed");
-        shootSound = Content.Load<SoundEffect>("laserSound"); 
+        //shootSound = Content.Load<SoundEffect>("laserSound"); 
 
         //spelaren       
         playerTexture = Content.Load<Texture2D>("player");
@@ -217,13 +217,13 @@ public class Game1 : Game
         {
             enemySpawnManager.DrawEnemys(_spriteBatch);
             foreach (var enemy in enemySpawnManager.enemies)
-        {
-            if (enemy is MediumEnemy mediumEnemy)
             {
-                // Rita projektilerna som MediumEnemy har skjutit
-                mediumEnemy.DrawMediumEnemyAttack(_spriteBatch);
+                if (enemy is MediumEnemy mediumEnemy)
+                {
+                    // Rita projektilerna som MediumEnemy har skjutit
+                    mediumEnemy.DrawMediumEnemyAttack(_spriteBatch);
+                }
             }
-        }
             enemySpawnManager.DrawHitboxes(_spriteBatch, hitboxTexture); //TODO TA BORT SENARE MÅLAR HITBOX
             player.DrawPlayer(_spriteBatch);
             //går igenom listan med projektiler och målar ut dom                    

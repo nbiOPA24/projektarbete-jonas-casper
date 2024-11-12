@@ -12,36 +12,36 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-public class Player
-{
-    private Game1 game;
-    public Vector2 Position {get; set;}
-    public SoundEffect shootSound;
-    private Texture2D Texture { get; set;}
-    public int BaseHealth {get; set;} 
-    public int BaseDamage {get; set;}
-    public int BaseShield {get; set;}
-    public float Speed {get; set;} 
-    public Hitbox Hitbox{get; set;}
-    //Cooldown för projektilerna
-    private float shootCooldown = 0.3f;
-    private float shootTimer = 0;
-    public bool IsActive {get; set;} =  true; 
+//public class Player
+//{
+    // private Game1 game;
+    // public Vector2 Position {get; set;}
+    // public SoundEffect shootSound;
+    // private Texture2D Texture { get; set;}
+    // //public int BaseHealth {get; set;} 
+    // public int BaseDamage {get; set;}
+    // public int BaseShield {get; set;}
+    // public float Speed {get; set;} 
+    // public Hitbox Hitbox{get; set;}
+    // //Cooldown för projektilerna
+    // private float shootCooldown = 0.3f;
+    // private float shootTimer = 0;
+    // public bool IsActive {get; set;} =  true; 
     //Konstruktor för PLayer
-    public Player(Game1 game, Vector2 startPosition,Texture2D texture, int baseHealth, int baseDamage, int baseShield, float speed, SoundEffect shootSound)
-    {
-        //Spelaren egenskaper
-        this.game = game;
-        this.shootSound = shootSound;
-        Texture = texture;
-        Position = startPosition;   
-        BaseHealth = baseHealth;
-        BaseDamage = baseDamage;
-        BaseShield = baseShield;
-        Speed = speed;
-        //Hitbox
-        Hitbox = new Hitbox(Position, Texture);
-    }
+    // public Player(Game1 game, Vector2 startPosition,Texture2D texture, int baseHealth, int baseDamage, int baseShield, float speed, SoundEffect shootSound)
+    // {
+    //     // //Spelaren egenskaper
+    //     // this.game = game;
+    //     // this.shootSound = shootSound;
+    //     // Texture = texture;
+    //     // Position = startPosition;   
+    //     // //BaseHealth = baseHealth;
+    //     // BaseDamage = baseDamage;
+    //     // BaseShield = baseShield;
+    //     // Speed = speed;
+    //     // //Hitbox
+    //     // Hitbox = new Hitbox(Position, Texture);
+    // }
     //målar ut spelaren vid den aktuella positionen
     public void DrawPlayer(SpriteBatch spriteBatch)
     {
