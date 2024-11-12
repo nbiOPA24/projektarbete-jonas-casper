@@ -30,11 +30,11 @@ public class EnemySpawnManager
         elapsedSpawnTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
         if (elapsedSpawnTime >= spawnInterval)
         {
-            
+            //Kollar hur lång tid senast en Enemy har spawnat, har spaw time större eller likamed SpawnInter val spawnar en Enemy
             SpawnEnemy();
             elapsedSpawnTime = 0f;
         }
-        foreach (Enemy enemy in enemies)
+        foreach (Enemy enemy in enemies) //Kollar vilken enemy det är som spawnar, om enemys liv är noll raderas den specefika enemyn 
         {
             if(enemy.Health <= 0)
             enemy.IsActive = false;
@@ -52,7 +52,7 @@ public class EnemySpawnManager
         enemies.RemoveAll(e => !e.IsActive);
         
     }
-    private void SpawnEnemy()
+    private void SpawnEnemy() // Spawn-metod med en Random som ger olika sannolikheter baserat på Enemyns storlek(Svagast störst chans att spawna)
     {
         Random rnd = new Random();
         float spawnX = rnd.Next(0, screenWidth - 100);
@@ -74,7 +74,7 @@ public class EnemySpawnManager
         enemies.Add(newEnemy);
 
     }
-    public void DrawEnemys(SpriteBatch spriteBatch)
+    public void DrawEnemys(SpriteBatch spriteBatch) // Metod för att rita ut enemys.
     {
         foreach (var Enemy in enemies)
         spriteBatch.Draw(Enemy.Texture, Enemy.Position, Color.White);
