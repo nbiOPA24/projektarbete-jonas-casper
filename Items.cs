@@ -8,7 +8,6 @@ using System.Data;
 
 public abstract class Item
 {
-    private Random ItemRandom = new Random();
     public int ItemSize = 50;
     public Vector2 Position {get;set;}
     public Texture2D Texture {get; set;}
@@ -48,16 +47,33 @@ public abstract class Item
     {
         public int AttackSpeedBoost {get; set;}
     
-    public AttackSpeedItem(Vector2 position, Texture2D texture, int attackSpeedBoost) : base(position, texture)
-    {
-        AttackSpeedBoost = attackSpeedBoost;
-    }
+        public AttackSpeedItem(Vector2 position, Texture2D texture, int attackSpeedBoost) : base(position, texture)
+        {
+            AttackSpeedBoost = attackSpeedBoost;
+        }
     public void DrawAttackSpeedItem(SpriteBatch SpriteBatch)
         {
             Rectangle AttackSpeedRectangle = new Rectangle((int)Position.X, (int)Position.Y , ItemSize, ItemSize);
             SpriteBatch.Draw(Texture, AttackSpeedRectangle, Color.White);
         }
     }
+
+    /*public class AttackPowerItem : Item
+    {
+        public int AttackPowerBoost {get; set;}
+    
+        public AttackPowerItem(Vector2 position, Texture2D texture, int attackPowerBoost) : base (position, texture)
+        {
+            AttackPowerBoost = attackPowerBoost;
+        }
+
+    public void DrawAttackPowerItem(SpriteBatch spriteBatch)
+        {
+            Rectangle AttackPowerRectangle = new Rectangle((int) Position.X, (int) Position.Y, ItemSize, ItemSize);
+            SpriteBatch.Draw(Texture, AttackPowerRectangle, Color.White);
+        }
+    }*/
+    
 }
         
                 

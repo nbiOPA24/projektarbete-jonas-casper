@@ -24,3 +24,4 @@
 - [x]Enemies ska "dö" när dom åker utanför skärmen
 - [ ]Fixa skarven som uppstår när nästa bakgrund laddas in
 - [ ]En itemmanagerklass?
+- [ ]Kommentera koden! VIKTIG!!
