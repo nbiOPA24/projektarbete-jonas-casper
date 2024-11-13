@@ -179,7 +179,7 @@ public class MediumEnemy : GameObject
     public SoundEffect LaserSound {get; set;}
     public float shootCooldown = 2f;
     public float timeSinceLastShot = 0f;
-    public List<MediumEnemyProjectile> mediumEnemyProjectiles;
+    //public List<MediumEnemyProjectile> mediumEnemyProjectiles;
     public Texture2D projectileTexture;
     public MediumEnemy(int textureSize, Texture2D texture, Vector2 position, int baseHealth, int baseDamage, int speed, int screenWidth, float elapsedTime, SoundEffect laserSound)
     : base (textureSize, texture, position)
@@ -190,7 +190,7 @@ public class MediumEnemy : GameObject
         ScreenWidth = screenWidth;
         ElapsedTime = elapsedTime;
         LaserSound = laserSound;
-        mediumEnemyProjectiles = new List<MediumEnemyProjectile>();
+        //mediumEnemyProjectiles = new List<MediumEnemyProjectile>();
     }
     public override void LoadContent(ContentManager content)
     {
@@ -200,7 +200,70 @@ public class MediumEnemy : GameObject
     }
     public override void Update(GameTime gameTime)
     {
+        ElapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+         // Rörelsemönster för M-E samma som för S-E bara att den rör sig i saktare tempo vertikalt.
+         float xMovement = (float)Math.Sin(ElapsedTime * 2) * 4.5f; 
+         float yMovement = Speed * 0.1f;
+         Position = new Vector2
+         (
+             MathHelper.Clamp(Position.X + xMovement, 0, ScreenWidth - Texture.Width),
+             Position.Y + yMovement
+         );
+         //UpdateHitbox(); 
+    }
+}
+#endregion
+#region BigEnemy Class
+public class BigEnemy : GameObject
+{
+    public int BaseHealth { get; set; }
+    public int BaseDamage { get; set;} 
+    public int Speed { get; set; }
+    public int ScreenWidth { get; set; }
+    public float ElapsedTime { get; set; }
+    private bool movingRight = true;
+    public BigEnemy(int textureSize, Texture2D texture, Vector2 position, int baseHealth, int baseDamage, int speed, int screenWidth, float elapsedTime)
+    : base(textureSize, texture, position)
+    {
+        BaseHealth = baseHealth;
+        BaseDamage = baseDamage;
+        Speed = speed;
+        ScreenWidth = screenWidth;
+        ElapsedTime = elapsedTime;
         
+    }
+    public override void LoadContent(ContentManager content)
+    {
+        Texture = content.Load<Texture2D>("enemyUFO");
+    }
+    public override void Update(GameTime gameTime)
+    {
+        ElapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+         
+         if (movingRight)
+         {
+         // Flytta till höger
+         Position = new Vector2(Position.X + Speed, Position.Y); // Skapa en ny Vector2
+         // Kontrollera om den når högra kanten
+         if (Position.X + Texture.Width >= ScreenWidth)
+         {
+             Position = new Vector2(ScreenWidth - Texture.Width, Position.Y); // går till högra kanten
+             movingRight = false; // Byt riktning
+         }
+         }
+         else 
+         {
+         // Flytta till vänster
+         Position = new Vector2(Position.X - Speed, Position.Y); // Skapa en ny Vector2
+         // Kontrollera om den når vänstra kanten
+         if (Position.X <= 0)
+         {
+             Position = new Vector2(0, Position.Y); // går till vänstra kanten
+             movingRight = true; // Byt riktning
+         }
+         }
+         //UpdateHitbox();
     }
 }
 #endregion
