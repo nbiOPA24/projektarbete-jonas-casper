@@ -72,23 +72,26 @@ public class Player : GameObject
 
     public override void Update(GameTime gameTime)
     {
-         //Sparar va spelaren är 
+        float movementSpeed = Speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+        //Sparar var spelaren är 
         var playerPosition = Position;
         //Läser av vilken tangentsom trycks ned
         var keyboardState = Keyboard.GetState();
        
         //Hur man styr spelaren
         if (keyboardState.IsKeyDown(Keys.Left))
-        playerPosition.X -= Speed;
+        playerPosition.X -= movementSpeed;
 
         if (keyboardState.IsKeyDown(Keys.Right))
-        playerPosition.X += Speed;
+        playerPosition.X += movementSpeed;
 
         if (keyboardState.IsKeyDown(Keys.Down))
-        playerPosition.Y += Speed;
+        playerPosition.Y += movementSpeed;
+
+        if (keyboardState.IsKeyDown(Keys.Up))
+        playerPosition.Y += movementSpeed;
 
         ShootTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-        if (keyboardState.IsKeyDown(Keys.Up))
         
         //Kod för hur man skjuter samt skapandet av projektiler och hur de beter sig
         if (keyboardState.IsKeyDown(Keys.Space) && ShootTimer >= ShootCooldown)
@@ -101,12 +104,16 @@ public class Player : GameObject
             
             //Projektilens riktning samt hastighet
             Vector2 direction = new Vector2(0, -20);
-            float projectileSpeed = Speed + 2;
+            float projectileSpeed = 50;
             //Lägger till projektilen i listan projectiles
             projectiles.Add(new Projectile(projectileTexture, projectileStartPosition, direction, projectileSpeed, 10));
             //Spelar skjutljudet
             LaserSound.Play();
         }
+        foreach (var projectile in projectiles)
+            projectile.Update(gameTime);
+
+        projectiles.RemoveAll(p => !p.IsActive);
     }
 
     public override void Draw(SpriteBatch spriteBatch)
@@ -129,6 +136,7 @@ public class SmallEnemy : GameObject
     public int Speed {get; set;}
     public int ScreenWidth {get; set;}
     public float ElapsedTime {get; set;}
+    
         
     public SmallEnemy(int textureSize, Texture2D texture, Vector2 position, int baseHealth, int baseDamage, int speed, int screenWidth, float elapsedTime)
     : base(textureSize, texture, position)
@@ -169,6 +177,30 @@ public class MediumEnemy : GameObject
     public int ScreenWidth {get; set;}
     public float ElapsedTime {get; set;}
     public SoundEffect LaserSound {get; set;}
-    public MediumEnemy(int baseHealth)
+    public float shootCooldown = 2f;
+    public float timeSinceLastShot = 0f;
+    public List<MediumEnemyProjectile> mediumEnemyProjectiles;
+    public Texture2D projectileTexture;
+    public MediumEnemy(int textureSize, Texture2D texture, Vector2 position, int baseHealth, int baseDamage, int speed, int screenWidth, float elapsedTime, SoundEffect laserSound)
+    : base (textureSize, texture, position)
+    {
+        BaseHealth = baseHealth;
+        BaseDamage = baseDamage;
+        Speed = speed;
+        ScreenWidth = screenWidth;
+        ElapsedTime = elapsedTime;
+        LaserSound = laserSound;
+        mediumEnemyProjectiles = new List<MediumEnemyProjectile>();
+    }
+    public override void LoadContent(ContentManager content)
+    {
+        Texture = content.Load<Texture2D>("antmaker");
+        LaserSound = content.Load<SoundEffect>("laserSound");
+        projectileTexture = content.Load<Texture2D>("laserRed");
+    }
+    public override void Update(GameTime gameTime)
+    {
+        
+    }
 }
 #endregion
