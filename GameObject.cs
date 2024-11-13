@@ -4,6 +4,8 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 using System.Collections.Generic;
+using System;
+#region GameObject Class
 
 public abstract class GameObject
 {
@@ -37,20 +39,21 @@ public abstract class GameObject
         }
     }
 }
-
+#endregion
+#region Player Class
 public class Player : GameObject
 {
     public int BaseHealth{get; set;}
     public int BaseDamage {get; set;}
     public int BaseShield {get; set;}
     public float Speed {get; set;}
-    public SoundEffect ShootSound {get; set;}
-    public float ShootCooldown{get; set;}
-    public float ShootTimer{get; set;}
+    public SoundEffect LaserSound {get; set;}
+    public float ShootCooldown{get; set;} = 0.3f;
+    public float ShootTimer{get; set;} = 0;
     private List<Projectile> projectiles = new List<Projectile>();
     private Texture2D projectileTexture;
 
-    public Player(int textureSize, Texture2D texture, Vector2 position,  int baseHealth, int baseDamage, int baseShield, float speed, SoundEffect shootSound, float shootCooldown, float shootTimer)
+    public Player(int textureSize, Texture2D texture, Vector2 position,  int baseHealth, int baseDamage, int baseShield, float speed, SoundEffect laserSound)
     : base(textureSize, texture, position)
 
     {
@@ -58,14 +61,12 @@ public class Player : GameObject
         BaseDamage = baseDamage;
         BaseShield = baseShield;
         Speed = speed;
-        ShootSound = shootSound;
-        ShootCooldown = shootCooldown;
-        ShootTimer = shootTimer;
+        LaserSound = laserSound;
     }
     public override void LoadContent(ContentManager content)
     {
         Texture = content.Load<Texture2D>("player");
-        ShootSound = content.Load<SoundEffect>("ShootSound");
+        LaserSound = content.Load<SoundEffect>("laserSound");
         projectileTexture = content.Load<Texture2D>("laserGreen");
     }
 
@@ -104,7 +105,7 @@ public class Player : GameObject
             //Lägger till projektilen i listan projectiles
             projectiles.Add(new Projectile(projectileTexture, projectileStartPosition, direction, projectileSpeed, 10));
             //Spelar skjutljudet
-            ShootSound.Play();
+            LaserSound.Play();
         }
     }
 
@@ -119,3 +120,55 @@ public class Player : GameObject
     }
     
 }
+#endregion
+#region SmallEnemy Class
+public class SmallEnemy : GameObject
+{
+    public int BaseHealth {get; set;}
+    public int BaseDamage {get; set;}
+    public int Speed {get; set;}
+    public int ScreenWidth {get; set;}
+    public float ElapsedTime {get; set;}
+        
+    public SmallEnemy(int textureSize, Texture2D texture, Vector2 position, int baseHealth, int baseDamage, int speed, int screenWidth, float elapsedTime)
+    : base(textureSize, texture, position)
+    {
+        BaseHealth = baseHealth;
+        BaseDamage = baseDamage;
+        Speed = speed;
+        ScreenWidth = screenWidth;
+        ElapsedTime = elapsedTime;
+        }
+        public override void LoadContent(ContentManager content)
+        {
+            Texture = content.Load<Texture2D>("eyelander");   
+        }
+        public override void Update(GameTime gameTime)
+        {
+            ElapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            //SmalEnemys rörelseemönster, Math.Sin skapar en mjukvågrörelse. 
+            float xMovement = (float)Math.Sin(ElapsedTime * 2) * 1.5f;
+            float yMovement = Speed * 0.1f;
+
+            Position = new Vector2 //här skapas även en ny Vector, och anävder en MathHelper som ser till att Enemyn inte kan lämna skärmen på Y-axeln
+            (
+             MathHelper.Clamp(Position.X + xMovement, 0, ScreenWidth - Texture.Width),
+             Position.Y + yMovement
+            );
+         //UpdateHitbox();  Kolla på detta 
+        }
+    }
+#endregion
+#region MediumEnemy Class
+public class MediumEnemy : GameObject
+{
+    public int BaseHealth {get; set;}
+    public int BaseDamage {get; set;}
+    public int Speed {get; set;}
+    public int ScreenWidth {get; set;}
+    public float ElapsedTime {get; set;}
+    public SoundEffect LaserSound {get; set;}
+    public MediumEnemy(int baseHealth)
+}
+#endregion

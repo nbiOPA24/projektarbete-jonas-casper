@@ -20,33 +20,35 @@ public class Game1 : Game
         GameOver,
         Exit
     }*/
-    private SpriteFont font;
+    // private SpriteFont font;
     private Player player;
     private GraphicsDeviceManager _graphics;
-    private int _nativeWidth = 1920;
-    private int _nativeHeight = 1080;
-    //private bool isGameOver = false;
-    private Texture2D heartTexture;
-    private Texture2D attackSpeedTexture;
-    private Item.AttackSpeedItem attackSpeed;
+    // private int _nativeWidth = 1920;
+    // private int _nativeHeight = 1080;
+    // // //private bool isGameOver = false;
+    // // private Texture2D heartTexture;
+    // // private Texture2D attackSpeedTexture;
+    // // private Item.AttackSpeedItem attackSpeed;
     private SpriteBatch _spriteBatch;
-    private Texture2D playerTexture;
-    private Texture2D laserGreenTexture;
-    private SoundEffect shootSound;
-    private Texture2D laserRedTexture;
-    private Texture2D backgroundTexture;
-    //private Texture2D gameOverTexture;
-    //public SoundEffect shootSound;
-    //private List<Projectile> projectiles;
-    //private EnemySpawnManager enemySpawnManager;
-    private BackGroundManager backGroundManager;
-    private Texture2D hitboxTexture; // TODO TA BORT SENARE MÅLAR HITBOX
-    private Item.HeartItem heart;
-    private double spawnTimer = 0;
-    private double randomHeartTimer;
-    private Random heartRandom = new Random();
-    private float shootCooldown = 0.3f;
-    private float shootTimer = 0;
+    // // private Texture2D playerTexture;
+    // // private Texture2D laserGreenTexture;
+    // // private SoundEffect shootSound;
+    // // private Texture2D laserRedTexture;
+    // // private Texture2D backgroundTexture;
+    // // //private Texture2D gameOverTexture;
+    // public SoundEffect shootSound;
+    // //private List<Projectile> projectiles;
+    // //private EnemySpawnManager enemySpawnManager;
+    // private BackGroundManager backGroundManager;
+    // private Texture2D hitboxTexture; // TODO TA BORT SENARE MÅLAR HITBOX
+    // private Item.HeartItem heart;
+    // private double spawnTimer = 0;
+    // private double randomHeartTimer;
+    // private Random heartRandom = new Random();
+    // public float shootCooldown = 0.3f;
+    // private float shootTimer = 0;
+    // int textureSize = 64; 
+    
     //UtilityMethods utility = new UtilityMethods();
     
             
@@ -54,8 +56,8 @@ public class Game1 : Game
     {
         _graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
-        _graphics.PreferredBackBufferWidth = _nativeWidth;
-        _graphics.PreferredBackBufferHeight = _nativeHeight;
+        _graphics.PreferredBackBufferWidth = 1920;
+        _graphics.PreferredBackBufferHeight = 1080;
         _graphics.ApplyChanges();
         IsMouseVisible = true;
     }
@@ -63,15 +65,18 @@ public class Game1 : Game
     protected override void Initialize()
     {
         int textureSize = 64; 
-        float shootCooldown = 0.3f;
-        float shootTimer = 0f;
-        player = new Player(textureSize, playerTexture, new Vector2(940, 1000),  100, 35, 20, 15, shootSound, shootCooldown, shootTimer);//baseHealth, baseDamage, baseShield, speed
+        player = new Player(textureSize, null, new Vector2(940, 1000),  100, 35, 20, 15, null);//baseHealth, baseDamage, baseShield, speed
         base.Initialize();
     }
     //I LoadContent så laddas allt vi lägger in, tex player skin, item skins, bakgrund osv
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
+        player.Texture = Content.Load<Texture2D>("player");
+        player.LaserSound = Content.Load<SoundEffect>("laserSound");
+                
+        player.LoadContent(Content);       
+        base.LoadContent();
     ///////////////////////////////////////////////////////////////////////////////
         //bakgrund
         // backgroundTexture = Content.Load<Texture2D>("SpaceBackground");
@@ -110,9 +115,21 @@ public class Game1 : Game
         //I update har vi allt som uppdateras i spelet, allt här updaterars 60ggr per sekund
         protected override void Update(GameTime gameTime)
     {
-        backGroundManager.Update();
+        player.Update(gameTime);
+        base.Update(gameTime);
+
+        // Spelaren dör om health är lika med eller mindre än 0. Nu avslutas spelet, men tanken är att man ska hamna i en meny!
+        // if (player.BaseHealth <= 0)
+        // {
+        //     if (player.BaseHealth <= 0)
+        //     {
+        //         Exit();
+        //     }
+        // }
+
         
         ///////////////////////////////////////////////////////////////////
+        //backGroundManager.Update();
         // //logik för när hjärtat ska spawna
         // spawnTimer += gameTime.ElapsedGameTime.TotalMilliseconds; 
         // if (spawnTimer >= randomHeartTimer)
@@ -131,14 +148,8 @@ public class Game1 : Game
         //     spawnTimer = 0;
         //     randomHeartTimer = heartRandom.Next(5000, 15000);
         // }
-        // Spelaren dör om health är lika med eller mindre än 0. Nu avslutas spelet, men tanken är att man ska hamna i en meny!
-        if (player.BaseHealth <= 0)
-        {
-            if (player.BaseHealth <= 0)
-            {
-                Exit();
-            }
-        }
+        
+        
         
         //Om spelaren och en enemy kolliderar så förlorar spelaren health som är lika enemy.Attack. och enemien dör
         // foreach (var enemy in enemySpawnManager.enemies)
@@ -202,28 +213,39 @@ public class Game1 : Game
         // //Kontrollerar så att spelaren inte kan åka utenför fönstrets kanter.    
         // player.Position = utility.InsideBorder(player.Position, playerTexture, _graphics);
 
-        base.Update(gameTime);
+        
     }
     //Draw målar in alla textures i spelet
     protected override void Draw(GameTime gameTime)
     
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
-        _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+
+        _spriteBatch.Begin();
+
+        // Rita spelaren
+        player.Draw(_spriteBatch);
+
+        _spriteBatch.End();
+
+        base.Draw(gameTime);
+        
+        // GraphicsDevice.Clear(Color.CornflowerBlue);
+        // _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
        
-        backGroundManager.Draw(_spriteBatch);
-        if (attackSpeed.IsActive)
-        {
-            attackSpeed.DrawAttackSpeedItem(_spriteBatch);
-        }
-        //Om heart är aktivt så målas ett hjärta ut någonstans på skärmern
-        if (heart.IsActive)
-        {
-            heart.DrawHeartItem(_spriteBatch);
-        }
-        //Målar ut en healthtect längst upp till vänster i spelfönstret
-        string healthText = $"Health: {player.BaseHealth}";
-        _spriteBatch.DrawString(font, healthText, new Vector2(100,100), Color.White);
+        // backGroundManager.Draw(_spriteBatch);
+        // if (attackSpeed.IsActive)
+        // {
+        //     attackSpeed.DrawAttackSpeedItem(_spriteBatch);
+        // }
+        // //Om heart är aktivt så målas ett hjärta ut någonstans på skärmern
+        // if (heart.IsActive)
+        // {
+        //     heart.DrawHeartItem(_spriteBatch);
+        // }
+        // //Målar ut en healthtect längst upp till vänster i spelfönstret
+        // string healthText = $"Health: {player.BaseHealth}";
+        // _spriteBatch.DrawString(font, healthText, new Vector2(100,100), Color.White);
                 
         // {
         //     enemySpawnManager.DrawEnemys(_spriteBatch);
@@ -242,8 +264,6 @@ public class Game1 : Game
         //         projectile.DrawPlayerAttack(_spriteBatch);
         // }
                        
-        _spriteBatch.End();
-
-        base.Draw(gameTime);
+        
     }
 }

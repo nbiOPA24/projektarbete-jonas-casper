@@ -55,19 +55,19 @@
 //     }
  
 //     public void MoveDownSmoothly(GameTime gameTime)
-//     {
-//         elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+      //{
+        //  elapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-//         //SmalEnemys rörelseemönster, Math.Sin skapar en mjukvågrörelse. 
-//         float xMovement = (float)Math.Sin(elapsedTime * 2) * 1.5f;
-//         float yMovement = Speed * 0.1f;
+        //  //SmalEnemys rörelseemönster, Math.Sin skapar en mjukvågrörelse. 
+        //  float xMovement = (float)Math.Sin(elapsedTime * 2) * 1.5f;
+        //  float yMovement = Speed * 0.1f;
 
-//         Position = new Vector2 //här skapas även en ny Vector, och anävder en MathHelper som ser till att Enemyn inte kan lämna skärmen på Y-axeln
-//         (
-//             MathHelper.Clamp(Position.X + xMovement, 0, screenWidth - Texture.Width),
-//             Position.Y + yMovement
-//         );
-//         UpdateHitbox(); 
+        //  Position = new Vector2 //här skapas även en ny Vector, och anävder en MathHelper som ser till att Enemyn inte kan lämna skärmen på Y-axeln
+        //  (
+        //      MathHelper.Clamp(Position.X + xMovement, 0, screenWidth - Texture.Width),
+        //      Position.Y + yMovement
+        //  );
+        //  UpdateHitbox(); 
 //     }
     
      
