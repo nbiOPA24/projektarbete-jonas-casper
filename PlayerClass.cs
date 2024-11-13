@@ -16,7 +16,7 @@ using Microsoft.Xna.Framework.Input;
 //{
     // private Game1 game;
     // public Vector2 Position {get; set;}
-    // public SoundEffect shootSound;
+   
     // private Texture2D Texture { get; set;}
     // //public int BaseHealth {get; set;} 
     // public int BaseDamage {get; set;}
@@ -43,57 +43,57 @@ using Microsoft.Xna.Framework.Input;
     //     // Hitbox = new Hitbox(Position, Texture);
     // }
     //målar ut spelaren vid den aktuella positionen
-    public void DrawPlayer(SpriteBatch spriteBatch)
-    {
-        spriteBatch.Draw(Texture, Position, Color.White);
-    }
+    // public void DrawPlayer(SpriteBatch spriteBatch)
+    // {
+    //     spriteBatch.Draw(Texture, Position, Color.White);
+    // }
     //hanterar hur man förflyttar spelaren. 
-    public void PlayerMovement(List<Projectile> projectiles, Texture2D laserGreenTexture, GameTime gameTime)
+    //public void PlayerMovement(List<Projectile> projectiles, Texture2D laserGreenTexture, GameTime gameTime)
     {
-        //Sparar va spelaren är 
-        var playerPosition = Position;
-        //Läser av vilken tangentsom trycks ned
-        var keyboardState = Keyboard.GetState();
-        shootTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-        //Hur man styr spelaren
-        if (keyboardState.IsKeyDown(Keys.Left))
-        playerPosition.X -= Speed;
+        // //Sparar va spelaren är 
+        // var playerPosition = Position;
+        // //Läser av vilken tangentsom trycks ned
+        // var keyboardState = Keyboard.GetState();
+        // shootTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+        // //Hur man styr spelaren
+        // if (keyboardState.IsKeyDown(Keys.Left))
+        // playerPosition.X -= Speed;
 
-        if (keyboardState.IsKeyDown(Keys.Right))
-        playerPosition.X += Speed;
+        // if (keyboardState.IsKeyDown(Keys.Right))
+        // playerPosition.X += Speed;
 
-        if (keyboardState.IsKeyDown(Keys.Down))
-        playerPosition.Y += Speed;
+        // if (keyboardState.IsKeyDown(Keys.Down))
+        // playerPosition.Y += Speed;
 
-        if (keyboardState.IsKeyDown(Keys.Up))
-        playerPosition.Y -= Speed;
-        //Kod för hur man skjuter samt skapandet av projektiler och hur de beter sig
-        if (keyboardState.IsKeyDown(Keys.Space) && shootTimer >= shootCooldown)
-        {
-            shootTimer = 0F;
-            //Ser till så att projektilen skjuts ifrån mitten av spelaren
-            float xOffset = Texture.Width / 2;
-            float yOffset = Texture.Height / 2;
-            Vector2 projectileStartPosition = new Vector2(Position.X + xOffset, Position.Y + yOffset);
+        // if (keyboardState.IsKeyDown(Keys.Up))
+        // playerPosition.Y -= Speed;
+        // //Kod för hur man skjuter samt skapandet av projektiler och hur de beter sig
+        // if (keyboardState.IsKeyDown(Keys.Space) && shootTimer >= shootCooldown)
+        // {
+        //     shootTimer = 0F;
+        //     //Ser till så att projektilen skjuts ifrån mitten av spelaren
+        //     float xOffset = Texture.Width / 2;
+        //     float yOffset = Texture.Height / 2;
+        //     Vector2 projectileStartPosition = new Vector2(Position.X + xOffset, Position.Y + yOffset);
             
-            //Projektilens riktning samt hastighet
-            Vector2 direction = new Vector2(0, -20);
-            float projectileSpeed = Speed + 2;
-            //Lägger till projektilen i listan projectiles
-            projectiles.Add(new Projectile(laserGreenTexture, projectileStartPosition, direction, projectileSpeed, 10, Hitbox));
-            //Spelar skjutljudet
-            shootSound.Play();
-        }
+        //     //Projektilens riktning samt hastighet
+        //     Vector2 direction = new Vector2(0, -20);
+        //     float projectileSpeed = Speed + 2;
+        //     //Lägger till projektilen i listan projectiles
+        //     projectiles.Add(new Projectile(laserGreenTexture, projectileStartPosition, direction, projectileSpeed, 10, Hitbox));
+        //     //Spelar skjutljudet
+        //     shootSound.Play();
+        // }
         
         // Uppdaterar positionen direkt
-        Position = playerPosition;
-        //Uppdaterar Hitboxen utefter spelarens position
-        Hitbox.Update(Position);
+    //     Position = playerPosition;
+    //     //Uppdaterar Hitboxen utefter spelarens position
+    //     Hitbox.Update(Position);
         
-        //Gör att man kan avsluta spelet med "ESC" eller "Back" knappen på en kontroller 
-        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-            game.Exit();
-    }
+    //     //Gör att man kan avsluta spelet med "ESC" eller "Back" knappen på en kontroller 
+    //     if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+    //         game.Exit();
+    // }
 }
 
 

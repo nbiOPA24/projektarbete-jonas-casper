@@ -13,9 +13,9 @@ public class Projectile
     public float Speed { get; set; }
     public int Damage { get; set; }
     public bool IsActive { get; set; }
-    public Hitbox Hitbox {get; set;}
+    
 
-        public Projectile(Texture2D texture, Vector2 position, Vector2 direction, float speed, int damage, Hitbox hitbox)
+        public Projectile(Texture2D texture, Vector2 position, Vector2 direction, float speed, int damage)
     {
         Texture = texture;
         Position = position;
@@ -23,7 +23,7 @@ public class Projectile
         Speed = speed;
         Damage = damage;
         IsActive = true;
-        Hitbox = new Hitbox(Position, Texture);
+        
     }
     public virtual void Update(GameTime gametime) 
     {// Updatera position baserat på riktning och hastighet, om projektilen åker utanför sätts IsActive till false
@@ -34,30 +34,30 @@ public class Projectile
             IsActive = false;
         }
     }
-    public void DrawPlayerAttack(SpriteBatch spriteBatch) //Ritar ut projectilerna.
+    public void DrawProjectile(SpriteBatch spriteBatch) //Ritar ut projectilerna.
     // OBS:för både Player och Enemys projectiler, Behöver byta namn för mer klarhet just nu kan man tolka det som att den bara ritar ut Playerns Attck medn används även för Enemys.
     {
         if (IsActive) 
         {
             spriteBatch.Draw(Texture, Position, Color.White);
         }
-        Hitbox.Update(Position);
+       
     }
-   public class MediumEnemyProjectile : Projectile //M-Es projektil som ärver basegenskaper ifrån Projectile
-   {
-        public MediumEnemyProjectile(Texture2D texture, Vector2 position, Vector2 direction, float speed, int damage, Hitbox hitbox)
-            : base (texture, position, direction, speed, damage, null)
-        {
-            Direction = direction;
+//    public class MediumEnemyProjectile : Projectile //M-Es projektil som ärver basegenskaper ifrån Projectile
+//    {
+//         public MediumEnemyProjectile(Texture2D texture, Vector2 position, Vector2 direction, float speed, int damage)
+//             : base (texture, position, direction, speed, damage, null)
+//         {
+//             Direction = direction;
             
-            Hitbox = new Hitbox(position, Texture);
+//             Hitbox = new Hitbox(position, Texture);
             
-        }
-        public override void Update(GameTime gameTime) 
-        {
-            Position += Direction * Speed * (float)gameTime.ElapsedGameTime.TotalSeconds; // Uppdaterar position varje frame baserat på riktning och hastighet
-            Hitbox.Update(Position); // Uppdaterar hitbox-positionen
-        }
+//         }
+//         public override void Update(GameTime gameTime) 
+//         {
+//             Position += Direction * Speed * (float)gameTime.ElapsedGameTime.TotalSeconds; // Uppdaterar position varje frame baserat på riktning och hastighet
+//             Hitbox.Update(Position); // Uppdaterar hitbox-positionen
+//         }
 
-   }   
+//    }   
 }
