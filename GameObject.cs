@@ -5,11 +5,12 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 using System.Collections.Generic;
 using System;
+using JcGame;
 #region GameObject Class
 
 public abstract class GameObject
 {
-    public int TextureSize{get; set;}
+    public int TextureSize{get;set;}
     public Texture2D Texture{get;set;}
     public Vector2 Position{get;set;}
     public bool IsActive {get;set;} = true;
@@ -38,7 +39,8 @@ public abstract class GameObject
     {
         if (IsActive && Texture != null)
         {
-            spriteBatch.Draw(Texture, Position, Color.White);
+            Rectangle rectangle = new Rectangle((int) Position.X, (int) Position.Y, TextureSize, TextureSize);
+            spriteBatch.Draw(Texture, rectangle, Color.White);
         }
     }
 }
@@ -54,8 +56,9 @@ public class Player : GameObject
     public float ShootTimer{get; set;} = 0;
     private List<Projectile> projectiles = new List<Projectile>();
     private Texture2D projectileTexture;
+    private Game1 game;
 
-    public Player(int textureSize, Texture2D texture, Vector2 position, int baseHealth, int baseDamage, int baseShield, float speed, SoundEffect laserSound)
+    public Player(int textureSize, Texture2D texture, Vector2 position, int baseHealth, int baseDamage, int baseShield, float speed, SoundEffect laserSound, Game1 game)
     : base(textureSize, texture, position, baseHealth)
 
     {
@@ -63,11 +66,12 @@ public class Player : GameObject
         BaseShield = baseShield;
         Speed = speed;
         LaserSound = laserSound;
+        this.game = game;
     }
     public override void LoadContent(ContentManager content)
     {
-        projectileTexture = content.Load<Texture2D>("laserGreen");
         Texture = content.Load<Texture2D>("player");
+        projectileTexture = content.Load<Texture2D>("laserGreen");
         LaserSound = content.Load<SoundEffect>("laserSound");
     }
 
@@ -105,9 +109,13 @@ public class Player : GameObject
             
             //Projektilens riktning samt hastighet
             Vector2 direction = new Vector2(0, -20);
-            float projectileSpeed = 50;
+            float projectileSpeed = 50f;
+            int textureSize = 10;
+            int baseHealth = 0;
+            
+
             //Lägger till projektilen i listan projectiles
-            projectiles.Add(new Projectile(projectileTexture, projectileStartPosition, direction, projectileSpeed, 10));
+            projectiles.Add(new Projectile(textureSize, projectileStartPosition, projectileTexture, baseHealth, direction, projectileSpeed, BaseDamage));
             //Spelar skjutljudet
             LaserSound.Play();
         }
@@ -120,6 +128,8 @@ public class Player : GameObject
             BaseHealth = BaseHealth + 10;
             IsActive = false;
         }
+        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            game.Exit();
 
         Position = playerPosition;
     }
@@ -214,7 +224,6 @@ public class MediumEnemy : GameObject
             MathHelper.Clamp(Position.X + xMovement, 0, ScreenWidth - Texture.Width),
             Position.Y + yMovement
         );
-         
     }
 }
 #endregion
@@ -284,6 +293,7 @@ public class HeartItem : GameObject
     //Laddar in rätt texture
     public override void LoadContent(ContentManager content)
     {
+        TextureSize = 10;
         Texture = content.Load<Texture2D>("heartTexture");
     }
     public override void Update(GameTime gameTime)
@@ -291,4 +301,45 @@ public class HeartItem : GameObject
         //Lämnas tom då HeartItem inte behöver updateras
     }
 }
+#endregion
+#region Projectiels Class
+public class Projectile : GameObject
+{
+    
+    public Vector2 Direction { get; set; }
+    public float Speed { get; set; }
+    public int Damage { get; set; }
+    
+    public Projectile(int textureSize, Vector2 position, Texture2D texture, int baseHealth, Vector2 direction, float speed, int damage)
+    : base(textureSize, texture, position, baseHealth)
+    {
+        Direction = direction;
+        Speed = speed;
+        Damage = damage;
+   
+    }
+    public override void Update(GameTime gametime) 
+    {// Updatera position baserat på riktning och hastighet, om projektilen åker utanför sätts IsActive till false
+        Position += Direction * Speed * (float)gametime.ElapsedGameTime.TotalSeconds;
+
+        if (Position.X < 0 || Position.X > 1920 || Position.Y < 0 || Position.Y > 1080)
+        {
+            IsActive = false;
+        }
+    }
+    public override void LoadContent(ContentManager content)
+    {
+        
+    }
+    public void DrawProjectile(SpriteBatch spriteBatch) //Ritar ut projectilerna.
+    // OBS:för både Player och Enemys projectiler, Behöver byta namn för mer klarhet just nu kan man tolka det som att den bara ritar ut Playerns Attck medn används även för Enemys.
+    {
+        if (IsActive) 
+        {
+            spriteBatch.Draw(Texture, Position, Color.White);
+        }
+       
+    }
+}
+
 #endregion

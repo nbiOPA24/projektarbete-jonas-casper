@@ -24,7 +24,7 @@ public class Game1 : Game
     // private SpriteFont font;
     private Player player;
     private EnemySpawnManager enemySpawnManager;
-    
+    private HeartItem heart;
     private SmallEnemy smallEnemy;
     private MediumEnemy mediumEnemy;
     private BigEnemy bigEnemy;
@@ -74,15 +74,16 @@ public class Game1 : Game
         int textureSize = 64; 
         float playerSpeed = 400f;
 
-        player = new Player(textureSize, null, new Vector2(940, 1000),  100, 35, 20, playerSpeed, null);//baseHealth, baseDamage, baseShield, speed
+        heart = new HeartItem(textureSize, new Vector2(0,0), null, 10, 0);
+        player = new Player(textureSize, null, new Vector2(940, 1000), 100, 35, 20, playerSpeed, null, this);//baseHealth, baseDamage, baseShield, speed
         smallEnemy = new SmallEnemy(64, null, new Vector2(400, 100), 40, 10, 15, screenWidth:1920, 0);
-        mediumEnemy = new MediumEnemy(64, null, new Vector2(400, 100),100, 25, 20, screenWidth:1920, 0, laserSound: null);
+        mediumEnemy = new MediumEnemy(64, null, new Vector2(400, 100), 100, 25, 20, screenWidth:1920, 0, laserSound: null);
         bigEnemy = new BigEnemy (64, null, new Vector2(400,200), 150, 50, 5, screenWidth:1920, 0);
         
-        gameObjects.Add(player);
         gameObjects.Add(smallEnemy);   
         gameObjects.Add(mediumEnemy);
         gameObjects.Add(bigEnemy);
+        gameObjects.Add(heart);
         
         base.Initialize();
     }
@@ -95,6 +96,7 @@ public class Game1 : Game
         smallEnemy.LoadContent(Content);
         mediumEnemy.LoadContent(Content);
         bigEnemy.LoadContent(Content);  
+        heart.LoadContent(Content);
 
         enemySpawnManager = new EnemySpawnManager(
             spawnInterval: 2f,
@@ -148,6 +150,8 @@ public class Game1 : Game
         mediumEnemy.Update(gameTime);
         bigEnemy.Update(gameTime);
         enemySpawnManager.Update(gameTime);
+        heart.Update(gameTime);
+        
 
         base.Update(gameTime);
 
@@ -257,11 +261,13 @@ public class Game1 : Game
         _spriteBatch.Begin();
 
         // Rita spelaren
+
         player.Draw(_spriteBatch);
         smallEnemy.Draw(_spriteBatch);
+        enemySpawnManager.DrawEnemys(_spriteBatch);
         mediumEnemy.Draw(_spriteBatch);
         bigEnemy.Draw(_spriteBatch); 
-
+        heart.Draw(_spriteBatch);
         
         //enemySpawnManager.DrawEnemys(_spriteBatch);
 

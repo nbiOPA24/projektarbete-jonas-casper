@@ -91,8 +91,7 @@
 //     //     Hitbox.Update(Position);
         
 //     //     //Gör att man kan avsluta spelet med "ESC" eller "Back" knappen på en kontroller 
-//     //     if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-//     //         game.Exit();
+//     //    
 //     // }
 // }
 

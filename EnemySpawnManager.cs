@@ -12,6 +12,7 @@ public class EnemySpawnManager
     public Texture2D SmallEnemyTexture, MediumEnemyTexture, BigEnemyTexture;
     public int ScreenWidth;
     public SoundEffect ShootSound;
+    Random rnd = new Random();
     
     
     
@@ -55,7 +56,7 @@ public class EnemySpawnManager
     }
     private void SpawnEnemy() // Spawn-metod med en Random som ger olika sannolikheter baserat på Enemyns storlek(Svagast störst chans att spawna)
     {
-        Random rnd = new Random();
+        
         float spawnX = rnd.Next(0, ScreenWidth - 100);
         GameObject newEnemy;
         
