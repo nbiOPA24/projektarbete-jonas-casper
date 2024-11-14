@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.VisualBasic;
 using System;
 using Microsoft.Xna.Framework.Audio;
+using System.Runtime.CompilerServices;
 
 namespace JcGame;
 
@@ -22,7 +23,13 @@ public class Game1 : Game
     }*/
     // private SpriteFont font;
     private Player player;
+    private EnemySpawnManager enemySpawnManager;
+    
+    private SmallEnemy smallEnemy;
+    private MediumEnemy mediumEnemy;
+    private BigEnemy bigEnemy;
     private GraphicsDeviceManager _graphics;
+    private List<GameObject> gameObjects = new List<GameObject>();
     // private int _nativeWidth = 1920;
     // private int _nativeHeight = 1080;
     // // //private bool isGameOver = false;
@@ -38,7 +45,7 @@ public class Game1 : Game
     // // //private Texture2D gameOverTexture;
     // public SoundEffect shootSound;
     // //private List<Projectile> projectiles;
-    // //private EnemySpawnManager enemySpawnManager;
+    
     // private BackGroundManager backGroundManager;
     // private Texture2D hitboxTexture; // TODO TA BORT SENARE MÅLAR HITBOX
     // private Item.HeartItem heart;
@@ -50,7 +57,7 @@ public class Game1 : Game
     // int textureSize = 64; 
     
     //UtilityMethods utility = new UtilityMethods();
-    
+    //private Texture2D projectileTexture;
             
     public Game1()
     {
@@ -66,17 +73,37 @@ public class Game1 : Game
     {
         int textureSize = 64; 
         float playerSpeed = 400f;
+
         player = new Player(textureSize, null, new Vector2(940, 1000),  100, 35, 20, playerSpeed, null);//baseHealth, baseDamage, baseShield, speed
+        smallEnemy = new SmallEnemy(64, null, new Vector2(400, 100), 40, 10, 15, screenWidth:1920, 0);
+        mediumEnemy = new MediumEnemy(64, null, new Vector2(400, 100),100, 25, 20, screenWidth:1920, 0, laserSound: null);
+        bigEnemy = new BigEnemy (64, null, new Vector2(400,200), 150, 50, 5, screenWidth:1920, 0);
+        
+        gameObjects.Add(player);
+        gameObjects.Add(smallEnemy);   
+        gameObjects.Add(mediumEnemy);
+        gameObjects.Add(bigEnemy);
+        
         base.Initialize();
     }
     //I LoadContent så laddas allt vi lägger in, tex player skin, item skins, bakgrund osv
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
-        player.Texture = Content.Load<Texture2D>("player");
-        player.LaserSound = Content.Load<SoundEffect>("laserSound");
-                
-        player.LoadContent(Content);       
+                        
+        player.LoadContent(Content);
+        smallEnemy.LoadContent(Content);
+        mediumEnemy.LoadContent(Content);
+        bigEnemy.LoadContent(Content);  
+
+        enemySpawnManager = new EnemySpawnManager(
+            spawnInterval: 2f,
+            screenWidth: GraphicsDevice.Viewport.Width, 
+            smallEnemyTexture: smallEnemy.Texture, 
+            mediumEnemyTexture: mediumEnemy.Texture, 
+            bigEnemyTexture: bigEnemy.Texture, 
+            shootSound: mediumEnemy.LaserSound);
+                    
         base.LoadContent();
     ///////////////////////////////////////////////////////////////////////////////
         //bakgrund
@@ -117,6 +144,11 @@ public class Game1 : Game
         protected override void Update(GameTime gameTime)
     {
         player.Update(gameTime);
+        smallEnemy.Update(gameTime);
+        mediumEnemy.Update(gameTime);
+        bigEnemy.Update(gameTime);
+        enemySpawnManager.Update(gameTime);
+
         base.Update(gameTime);
 
         // Spelaren dör om health är lika med eller mindre än 0. Nu avslutas spelet, men tanken är att man ska hamna i en meny!
@@ -226,6 +258,12 @@ public class Game1 : Game
 
         // Rita spelaren
         player.Draw(_spriteBatch);
+        smallEnemy.Draw(_spriteBatch);
+        mediumEnemy.Draw(_spriteBatch);
+        bigEnemy.Draw(_spriteBatch); 
+
+        
+        //enemySpawnManager.DrawEnemys(_spriteBatch);
 
         _spriteBatch.End();
 

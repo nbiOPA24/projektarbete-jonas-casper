@@ -13,12 +13,15 @@ public abstract class GameObject
     public Texture2D Texture{get;set;}
     public Vector2 Position{get;set;}
     public bool IsActive {get;set;} = true;
+    public int BaseHealth {get;set;} = 0;
+    
 
-    protected GameObject(int textureSize,Texture2D texture, Vector2 position)
+    protected GameObject(int textureSize,Texture2D texture, Vector2 position, int baseHealth)
     {
         TextureSize = textureSize;
         Texture = texture;
         Position = position;
+        BaseHealth = baseHealth;
     }
 
     public Rectangle hitbox
@@ -43,7 +46,6 @@ public abstract class GameObject
 #region Player Class
 public class Player : GameObject
 {
-    public int BaseHealth{get; set;}
     public int BaseDamage {get; set;}
     public int BaseShield {get; set;}
     public float Speed {get; set;}
@@ -53,11 +55,10 @@ public class Player : GameObject
     private List<Projectile> projectiles = new List<Projectile>();
     private Texture2D projectileTexture;
 
-    public Player(int textureSize, Texture2D texture, Vector2 position,  int baseHealth, int baseDamage, int baseShield, float speed, SoundEffect laserSound)
-    : base(textureSize, texture, position)
+    public Player(int textureSize, Texture2D texture, Vector2 position, int baseHealth, int baseDamage, int baseShield, float speed, SoundEffect laserSound)
+    : base(textureSize, texture, position, baseHealth)
 
     {
-        BaseHealth = baseHealth;
         BaseDamage = baseDamage;
         BaseShield = baseShield;
         Speed = speed;
@@ -65,9 +66,9 @@ public class Player : GameObject
     }
     public override void LoadContent(ContentManager content)
     {
+        projectileTexture = content.Load<Texture2D>("laserGreen");
         Texture = content.Load<Texture2D>("player");
         LaserSound = content.Load<SoundEffect>("laserSound");
-        projectileTexture = content.Load<Texture2D>("laserGreen");
     }
 
     public override void Update(GameTime gameTime)
@@ -114,6 +115,11 @@ public class Player : GameObject
             projectile.Update(gameTime);
 
         projectiles.RemoveAll(p => !p.IsActive);
+        if (hitbox.Intersects(hitbox) && IsActive)
+        {
+            BaseHealth = BaseHealth + 10;
+            IsActive = false;
+        }
 
         Position = playerPosition;
     }
@@ -133,7 +139,6 @@ public class Player : GameObject
 #region SmallEnemy Class
 public class SmallEnemy : GameObject
 {
-    public int BaseHealth {get; set;}
     public int BaseDamage {get; set;}
     public int Speed {get; set;}
     public int ScreenWidth {get; set;}
@@ -141,39 +146,37 @@ public class SmallEnemy : GameObject
     
         
     public SmallEnemy(int textureSize, Texture2D texture, Vector2 position, int baseHealth, int baseDamage, int speed, int screenWidth, float elapsedTime)
-    : base(textureSize, texture, position)
+    : base(textureSize, texture, position, baseHealth)
     {
-        BaseHealth = baseHealth;
         BaseDamage = baseDamage;
         Speed = speed;
         ScreenWidth = screenWidth;
         ElapsedTime = elapsedTime;
     }
-        public override void LoadContent(ContentManager content)
-        {
-            Texture = content.Load<Texture2D>("eyelander");   
-        }
-        public override void Update(GameTime gameTime)
-        {
-            ElapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            //SmalEnemys rörelseemönster, Math.Sin skapar en mjukvågrörelse. 
-            float xMovement = (float)Math.Sin(ElapsedTime * 2) * 1.5f;
-            float yMovement = Speed * 0.1f;
-
-            Position = new Vector2 //här skapas även en ny Vector, och anävder en MathHelper som ser till att Enemyn inte kan lämna skärmen på Y-axeln
-            (
-            MathHelper.Clamp(Position.X + xMovement, 0, ScreenWidth - Texture.Width),
-            Position.Y + yMovement
-            );
-         //UpdateHitbox();  Kolla på detta 
-        }
+    public override void LoadContent(ContentManager content)
+    {
+        Texture = content.Load<Texture2D>("eyelander");   
     }
+    public override void Update(GameTime gameTime)
+    {
+        ElapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+        //SmalEnemys rörelseemönster, Math.Sin skapar en mjukvågrörelse. 
+        float xMovement = (float)Math.Sin(ElapsedTime * 2) * 1.5f;
+        float yMovement = Speed * 0.1f;
+
+        Position = new Vector2 //här skapas även en ny Vector, och anävder en MathHelper som ser till att Enemyn inte kan lämna skärmen på Y-axeln
+        (
+        MathHelper.Clamp(Position.X + xMovement, 0, ScreenWidth - Texture.Width),
+        Position.Y + yMovement
+        );
+        
+    }
+}
 #endregion
 #region MediumEnemy Class
 public class MediumEnemy : GameObject
 {
-    public int BaseHealth {get; set;}
     public int BaseDamage {get; set;}
     public int Speed {get; set;}
     public int ScreenWidth {get; set;}
@@ -184,9 +187,8 @@ public class MediumEnemy : GameObject
     //public List<MediumEnemyProjectile> mediumEnemyProjectiles;
     public Texture2D projectileTexture;
     public MediumEnemy(int textureSize, Texture2D texture, Vector2 position, int baseHealth, int baseDamage, int speed, int screenWidth, float elapsedTime, SoundEffect laserSound)
-    : base (textureSize, texture, position)
+    : base (textureSize, texture, position, baseHealth)
     {
-        BaseHealth = baseHealth;
         BaseDamage = baseDamage;
         Speed = speed;
         ScreenWidth = screenWidth;
@@ -204,29 +206,29 @@ public class MediumEnemy : GameObject
     {
         ElapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-         // Rörelsemönster för M-E samma som för S-E bara att den rör sig i saktare tempo vertikalt.
-         float xMovement = (float)Math.Sin(ElapsedTime * 2) * 4.5f; 
-         float yMovement = Speed * 0.1f;
-         Position = new Vector2
-         (
-             MathHelper.Clamp(Position.X + xMovement, 0, ScreenWidth - Texture.Width),
-             Position.Y + yMovement
-         );
-         //UpdateHitbox(); 
+        // Rörelsemönster för M-E samma som för S-E bara att den rör sig i saktare tempo vertikalt.
+        float xMovement = (float)Math.Sin(ElapsedTime * 2) * 4.5f; 
+        float yMovement = Speed * 0.1f;
+        Position = new Vector2
+        (
+            MathHelper.Clamp(Position.X + xMovement, 0, ScreenWidth - Texture.Width),
+            Position.Y + yMovement
+        );
+         
     }
 }
 #endregion
 #region BigEnemy Class
+
 public class BigEnemy : GameObject
 {
-    public int BaseHealth { get; set; }
     public int BaseDamage { get; set;} 
     public int Speed { get; set; }
     public int ScreenWidth { get; set; }
     public float ElapsedTime { get; set; }
     private bool movingRight = true;
     public BigEnemy(int textureSize, Texture2D texture, Vector2 position, int baseHealth, int baseDamage, int speed, int screenWidth, float elapsedTime)
-    : base(textureSize, texture, position)
+    : base(textureSize, texture, position, baseHealth)
     {
         BaseHealth = baseHealth;
         BaseDamage = baseDamage;
@@ -265,7 +267,28 @@ public class BigEnemy : GameObject
                 movingRight = true; // Byt riktning
             }
         }
-        //UpdateHitbox();
+        
+    }
+}
+#endregion
+#region HeartItem Class
+public class HeartItem : GameObject
+{
+    public int HealthBoost = 10;
+
+    public HeartItem (int textureSize, Vector2 position, Texture2D texture, int healthBoost,int baseHealth) 
+    : base (textureSize, texture, position, baseHealth)
+    {
+        HealthBoost = healthBoost;
+    }
+    //Laddar in rätt texture
+    public override void LoadContent(ContentManager content)
+    {
+        Texture = content.Load<Texture2D>("heartTexture");
+    }
+    public override void Update(GameTime gameTime)
+    {
+        //Lämnas tom då HeartItem inte behöver updateras
     }
 }
 #endregion
