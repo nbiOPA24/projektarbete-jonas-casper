@@ -89,7 +89,7 @@ public class Player : GameObject
         playerPosition.Y += movementSpeed;
 
         if (keyboardState.IsKeyDown(Keys.Up))
-        playerPosition.Y += movementSpeed;
+        playerPosition.Y -= movementSpeed;
 
         ShootTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
         
@@ -114,6 +114,8 @@ public class Player : GameObject
             projectile.Update(gameTime);
 
         projectiles.RemoveAll(p => !p.IsActive);
+
+        Position = playerPosition;
     }
 
     public override void Draw(SpriteBatch spriteBatch)
@@ -146,7 +148,7 @@ public class SmallEnemy : GameObject
         Speed = speed;
         ScreenWidth = screenWidth;
         ElapsedTime = elapsedTime;
-        }
+    }
         public override void LoadContent(ContentManager content)
         {
             Texture = content.Load<Texture2D>("eyelander");   
@@ -161,8 +163,8 @@ public class SmallEnemy : GameObject
 
             Position = new Vector2 //här skapas även en ny Vector, och anävder en MathHelper som ser till att Enemyn inte kan lämna skärmen på Y-axeln
             (
-             MathHelper.Clamp(Position.X + xMovement, 0, ScreenWidth - Texture.Width),
-             Position.Y + yMovement
+            MathHelper.Clamp(Position.X + xMovement, 0, ScreenWidth - Texture.Width),
+            Position.Y + yMovement
             );
          //UpdateHitbox();  Kolla på detta 
         }
@@ -231,7 +233,6 @@ public class BigEnemy : GameObject
         Speed = speed;
         ScreenWidth = screenWidth;
         ElapsedTime = elapsedTime;
-        
     }
     public override void LoadContent(ContentManager content)
     {
@@ -241,29 +242,30 @@ public class BigEnemy : GameObject
     {
         ElapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
          
-         if (movingRight)
-         {
-         // Flytta till höger
-         Position = new Vector2(Position.X + Speed, Position.Y); // Skapa en ny Vector2
-         // Kontrollera om den når högra kanten
-         if (Position.X + Texture.Width >= ScreenWidth)
-         {
-             Position = new Vector2(ScreenWidth - Texture.Width, Position.Y); // går till högra kanten
-             movingRight = false; // Byt riktning
-         }
-         }
-         else 
-         {
-         // Flytta till vänster
-         Position = new Vector2(Position.X - Speed, Position.Y); // Skapa en ny Vector2
-         // Kontrollera om den når vänstra kanten
-         if (Position.X <= 0)
-         {
-             Position = new Vector2(0, Position.Y); // går till vänstra kanten
-             movingRight = true; // Byt riktning
-         }
-         }
-         //UpdateHitbox();
+        if (movingRight)
+        {
+            // Flytta till höger
+            Position = new Vector2(Position.X + Speed, Position.Y); // Skapa en ny Vector2
+            // Kontrollera om den når högra kanten
+            if (Position.X + Texture.Width >= ScreenWidth)
+            {
+                Position = new Vector2(ScreenWidth - Texture.Width, Position.Y); // går till högra kanten
+                movingRight = false; // Byt riktning
+            }
+        }
+
+        else 
+        {
+            // Flytta till vänster
+            Position = new Vector2(Position.X - Speed, Position.Y); // Skapa en ny Vector2
+            // Kontrollera om den når vänstra kanten
+            if (Position.X <= 0)
+            {
+                Position = new Vector2(0, Position.Y); // går till vänstra kanten
+                movingRight = true; // Byt riktning
+            }
+        }
+        //UpdateHitbox();
     }
 }
 #endregion

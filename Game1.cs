@@ -65,7 +65,8 @@ public class Game1 : Game
     protected override void Initialize()
     {
         int textureSize = 64; 
-        player = new Player(textureSize, null, new Vector2(940, 1000),  100, 35, 20, 15, null);//baseHealth, baseDamage, baseShield, speed
+        float playerSpeed = 400f;
+        player = new Player(textureSize, null, new Vector2(940, 1000),  100, 35, 20, playerSpeed, null);//baseHealth, baseDamage, baseShield, speed
         base.Initialize();
     }
     //I LoadContent så laddas allt vi lägger in, tex player skin, item skins, bakgrund osv
