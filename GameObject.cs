@@ -30,9 +30,10 @@ public abstract class GameObject
     //Logik för att skapa hitboxes
     public Rectangle hitbox
     {
+        
         get
         {
-            return new Rectangle((int)Position.X, (int) Position.Y, TextureSize, TextureSize);
+            return new Rectangle((int)Position.X, (int) Position.Y, Texture.Width, Texture.Height);
         }
     }
     //Vilka petoder som våra basklasser skas ärva
@@ -84,7 +85,6 @@ public class Player : GameObject
     // Player Update håller playerlogik som ska laddas in i Game1 LoadContent
     public override void Update(GameTime gameTime)
     {
-        
         //Logik för hur spelaren rör på sig, "pil upp" för uppåt tex
         float movementSpeed = Speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
         //Sparar var spelaren är 
@@ -147,19 +147,22 @@ public class Player : GameObject
             {
                 if (obj is HeartItem heartItem)
                 {
-                    BaseHealth = BaseHealth +10;
+                    BaseHealth = BaseHealth;
                 }
                 else if(obj is SmallEnemy smallEnemy)
                 {
                     BaseHealth = BaseHealth - smallEnemy.BaseDamage;
+                    obj.IsActive = false;
                 }
                 else if(obj is MediumEnemy mediumEnemy)
                 {
                     BaseHealth = BaseHealth - mediumEnemy.BaseDamage;
+                    obj.IsActive = false;
                 }
                 else if (obj is BigEnemy bigEnemy)
                 {
                     BaseHealth = BaseHealth - bigEnemy.BaseDamage;
+                    obj.IsActive = false;
                 }
             }
         }
@@ -174,7 +177,6 @@ public class Player : GameObject
             projectile.DrawProjectile(spriteBatch);
         }
     }
-    
 }
 #endregion
 #region SmallEnemy Class
@@ -211,7 +213,6 @@ public class SmallEnemy : GameObject
         MathHelper.Clamp(Position.X + xMovement, 0, ScreenWidth - Texture.Width),
         Position.Y + yMovement
         );
-        
     }
 }
 #endregion

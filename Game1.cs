@@ -15,6 +15,14 @@ namespace JcGame;
 
 public class Game1 : Game
 {
+    // TODO DENNA METODEN SKA TAS BORT, DEN MÅLAR UT HITBOXRNA FÖR ATT SE ATT DOM FUNGERAR!!!!!!!!!!!!!!!!!!!!!!!
+    private void DrawHitbox(GameObject obj)
+{
+    if (obj.IsActive)
+    {
+        _spriteBatch.Draw(hitboxTexture, obj.hitbox, Color.Red);
+    }
+}
     /*public enum GameState
     {
         MainMenu,
@@ -48,7 +56,7 @@ public class Game1 : Game
     // //private List<Projectile> projectiles;
     
     // private BackGroundManager backGroundManager;
-    // private Texture2D hitboxTexture; // TODO TA BORT SENARE MÅLAR HITBOX
+    private Texture2D hitboxTexture; // TODO TA BORT SENARE MÅLAR HITBOX
     // private Item.HeartItem heart;
     // private double spawnTimer = 0;
     // private double randomHeartTimer;
@@ -95,6 +103,8 @@ public class Game1 : Game
     //I LoadContent så laddas allt vi lägger in, tex player skin, item skins, bakgrund osv
     protected override void LoadContent()
     {
+        hitboxTexture = new Texture2D(GraphicsDevice, 1, 1); //TA BORT SENARE, MÅLAR HITBOX
+        hitboxTexture.SetData(new[] { Color.Red * 0.5f }); //TA BORT SENARE, MÅLAR HITBOX
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         font = Content.Load<SpriteFont>("playerHealth");
         //Alla sprites, bilder, ljud osv för respektive klass laddas in från GameObject                
@@ -279,6 +289,13 @@ public class Game1 : Game
         string healthText = $"Health: {player.BaseHealth}";
         _spriteBatch.DrawString(font, healthText, new Vector2(100,100), Color.White);
        
+        // DrawHitbox(player);
+        // DrawHitbox(smallEnemy);
+        // DrawHitbox(mediumEnemy);
+        // DrawHitbox(bigEnemy);
+        // DrawHitbox(heart);
+
+         enemySpawnManager.DrawHitboxes(_spriteBatch, hitboxTexture);
         _spriteBatch.End();
 
         base.Draw(gameTime);

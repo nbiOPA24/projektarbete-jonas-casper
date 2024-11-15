@@ -6,6 +6,17 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 public class EnemySpawnManager 
 {
+     // TODO DENNA METODEN SKA TAS BORT, DEN MÅLAR UT HITBOXRNA FÖR ATT SE ATT DOM FUNGERAR!!!!!!!!!!!!!!!!!!!!!!!
+    public void DrawHitboxes(SpriteBatch spriteBatch, Texture2D hitboxTexture)
+{
+    foreach (var enemy in Enemies)
+    {
+        if (enemy.IsActive)
+        {
+            spriteBatch.Draw(hitboxTexture, enemy.hitbox, Color.Red);
+        }
+    }
+}
     public List<GameObject> Enemies = new List<GameObject>();
     public float SpawnInterval;
     public float ElapsedSpawnTime;
