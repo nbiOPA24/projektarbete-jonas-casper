@@ -22,7 +22,7 @@ public class Game1 : Game
         GameOver,
         Exit
     }*/
-    // private SpriteFont font;
+    private SpriteFont font;
     private Player player;
     private EnemySpawnManager enemySpawnManager;
     private HeartItem heart;
@@ -96,12 +96,14 @@ public class Game1 : Game
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
+        font = Content.Load<SpriteFont>("playerHealth");
         //Alla sprites, bilder, ljud osv för respektive klass laddas in från GameObject                
         player.LoadContent(Content);
         smallEnemy.LoadContent(Content);
         mediumEnemy.LoadContent(Content);
         bigEnemy.LoadContent(Content);  
         heart.LoadContent(Content);
+        
 
         //Skapar Ett nytt objekt av typen EnemySpawnManager
         enemySpawnManager = new EnemySpawnManager(
@@ -119,7 +121,6 @@ public class Game1 : Game
         // backGroundManager = new BackGroundManager(backgroundTexture, 1f);
 
         
-        // font = Content.Load<SpriteFont>("playerHealth");
         // // Skapa en enkel röd textur för att visualisera hitboxar
         // hitboxTexture = new Texture2D(GraphicsDevice, 1, 1); //TABPRT SENARE MÅLAR HITBOX
         // hitboxTexture.SetData(new[] { Color.Red * 0.5f }); // Halvgenomskinlig röd färg TA BORT SENARE MÅLAR HITBOX
@@ -274,6 +275,9 @@ public class Game1 : Game
         mediumEnemy.Draw(_spriteBatch);
         bigEnemy.Draw(_spriteBatch); 
         heart.Draw(_spriteBatch);
+
+        string healthText = $"Health: {player.BaseHealth}";
+        _spriteBatch.DrawString(font, healthText, new Vector2(100,100), Color.White);
        
         _spriteBatch.End();
 
@@ -293,8 +297,8 @@ public class Game1 : Game
         //     heart.DrawHeartItem(_spriteBatch);
         // }
         // //Målar ut en healthtect längst upp till vänster i spelfönstret
-        // string healthText = $"Health: {player.BaseHealth}";
-        // _spriteBatch.DrawString(font, healthText, new Vector2(100,100), Color.White);
+        // ";
+        // 
                 
         // {
         //     enemySpawnManager.DrawEnemys(_spriteBatch);
