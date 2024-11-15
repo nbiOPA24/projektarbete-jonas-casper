@@ -9,6 +9,7 @@ using Microsoft.VisualBasic;
 using System;
 using Microsoft.Xna.Framework.Audio;
 using System.Runtime.CompilerServices;
+using System.ComponentModel;
 
 namespace JcGame;
 
@@ -29,7 +30,7 @@ public class Game1 : Game
     private MediumEnemy mediumEnemy;
     private BigEnemy bigEnemy;
     private GraphicsDeviceManager _graphics;
-    private List<GameObject> gameObjects = new List<GameObject>();
+    public List<GameObject> nonPlayerObjects = new List<GameObject>();
     // private int _nativeWidth = 1920;
     // private int _nativeHeight = 1080;
     // // //private bool isGameOver = false;
@@ -61,6 +62,7 @@ public class Game1 : Game
             
     public Game1()
     {
+        //övergripande inställningar för spelet
         _graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         _graphics.PreferredBackBufferWidth = 1920;
@@ -71,6 +73,7 @@ public class Game1 : Game
 
     protected override void Initialize()
     {
+        //Här berättar vi för spelet vad det är som ska laddas in när spelet startas. 
         int textureSize = 64; 
         float playerSpeed = 400f;
 
@@ -80,10 +83,12 @@ public class Game1 : Game
         mediumEnemy = new MediumEnemy(64, null, new Vector2(400, 100), 100, 25, 20, screenWidth:1920, 0, laserSound: null);
         bigEnemy = new BigEnemy (64, null, new Vector2(400,200), 150, 50, 5, screenWidth:1920, 0);
         
-        gameObjects.Add(smallEnemy);   
-        gameObjects.Add(mediumEnemy);
-        gameObjects.Add(bigEnemy);
-        gameObjects.Add(heart);
+        //Lägger till alla nonplayer objects i en lista
+        
+        nonPlayerObjects.Add(smallEnemy);   
+        nonPlayerObjects.Add(mediumEnemy);
+        nonPlayerObjects.Add(bigEnemy);
+        nonPlayerObjects.Add(heart);
         
         base.Initialize();
     }
@@ -91,13 +96,14 @@ public class Game1 : Game
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
-                        
+        //Alla sprites, bilder, ljud osv för respektive klass laddas in från GameObject                
         player.LoadContent(Content);
         smallEnemy.LoadContent(Content);
         mediumEnemy.LoadContent(Content);
         bigEnemy.LoadContent(Content);  
         heart.LoadContent(Content);
 
+        //Skapar Ett nytt objekt av typen EnemySpawnManager
         enemySpawnManager = new EnemySpawnManager(
             spawnInterval: 2f,
             screenWidth: GraphicsDevice.Viewport.Width, 
@@ -145,6 +151,7 @@ public class Game1 : Game
         //I update har vi allt som uppdateras i spelet, allt här updaterars 60ggr per sekund
         protected override void Update(GameTime gameTime)
     {
+        //Spellogik för respektive klass
         player.Update(gameTime);
         smallEnemy.Update(gameTime);
         mediumEnemy.Update(gameTime);
@@ -260,17 +267,14 @@ public class Game1 : Game
 
         _spriteBatch.Begin();
 
-        // Rita spelaren
-
+        // Här ritas alla testures ut i spelet. 
         player.Draw(_spriteBatch);
         smallEnemy.Draw(_spriteBatch);
         enemySpawnManager.DrawEnemys(_spriteBatch);
         mediumEnemy.Draw(_spriteBatch);
         bigEnemy.Draw(_spriteBatch); 
         heart.Draw(_spriteBatch);
-        
-        //enemySpawnManager.DrawEnemys(_spriteBatch);
-
+       
         _spriteBatch.End();
 
         base.Draw(gameTime);

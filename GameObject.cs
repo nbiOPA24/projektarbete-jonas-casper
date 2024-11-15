@@ -6,17 +6,20 @@ using Microsoft.Xna.Framework.Content;
 using System.Collections.Generic;
 using System;
 using JcGame;
-#region GameObject Class
 
+
+#region GameObject Class
+//Basklassen som alla våra subklasser ärver ifrån
 public abstract class GameObject
 {
+    //Fält med egenskaper för alla subklasser
     public int TextureSize{get;set;}
     public Texture2D Texture{get;set;}
     public Vector2 Position{get;set;}
     public bool IsActive {get;set;} = true;
     public int BaseHealth {get;set;} = 0;
     
-
+    //Konstruktor för Basklassen
     protected GameObject(int textureSize,Texture2D texture, Vector2 position, int baseHealth)
     {
         TextureSize = textureSize;
@@ -24,7 +27,7 @@ public abstract class GameObject
         Position = position;
         BaseHealth = baseHealth;
     }
-
+    //Logik för att skapa hitboxes
     public Rectangle hitbox
     {
         get
@@ -32,7 +35,7 @@ public abstract class GameObject
             return new Rectangle((int)Position.X, (int) Position.Y, TextureSize, TextureSize);
         }
     }
-
+    //Vilka petoder som våra basklasser skas ärva
     public abstract void LoadContent(ContentManager contentManager);
     public abstract void Update(GameTime gameTime);
     public virtual void Draw(SpriteBatch spriteBatch)
@@ -45,9 +48,11 @@ public abstract class GameObject
     }
 }
 #endregion
+
 #region Player Class
 public class Player : GameObject
 {
+    //Egenskaper för player
     public int BaseDamage {get; set;}
     public int BaseShield {get; set;}
     public float Speed {get; set;}
@@ -58,6 +63,7 @@ public class Player : GameObject
     private Texture2D projectileTexture;
     private Game1 game;
 
+    //Konstruktor för player
     public Player(int textureSize, Texture2D texture, Vector2 position, int baseHealth, int baseDamage, int baseShield, float speed, SoundEffect laserSound, Game1 game)
     : base(textureSize, texture, position, baseHealth)
 
@@ -68,21 +74,24 @@ public class Player : GameObject
         LaserSound = laserSound;
         this.game = game;
     }
+    //PLayer LoadContent håller playerinformation som ska laddas in i game1 LoadContent
     public override void LoadContent(ContentManager content)
     {
         Texture = content.Load<Texture2D>("player");
         projectileTexture = content.Load<Texture2D>("laserGreen");
         LaserSound = content.Load<SoundEffect>("laserSound");
     }
-
+    // Player Update håller playerlogik som ska laddas in i Game1 LoadContent
     public override void Update(GameTime gameTime)
     {
+        
+        //Logik för hur spelaren rör på sig, "pil upp" för uppåt tex
         float movementSpeed = Speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
         //Sparar var spelaren är 
         var playerPosition = Position;
         //Läser av vilken tangentsom trycks ned
         var keyboardState = Keyboard.GetState();
-       
+    
         //Hur man styr spelaren
         if (keyboardState.IsKeyDown(Keys.Left))
         playerPosition.X -= movementSpeed;
@@ -95,7 +104,12 @@ public class Player : GameObject
 
         if (keyboardState.IsKeyDown(Keys.Up))
         playerPosition.Y -= movementSpeed;
+        
+        //Escape stänger ned spelet
+        if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+            game.Exit();
 
+        //Logik för hur ofta projektiler kan spawna
         ShootTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
         
         //Kod för hur man skjuter samt skapandet av projektiler och hur de beter sig
@@ -119,17 +133,13 @@ public class Player : GameObject
             //Spelar skjutljudet
             LaserSound.Play();
         }
+        
         foreach (var projectile in projectiles)
             projectile.Update(gameTime);
 
         projectiles.RemoveAll(p => !p.IsActive);
-        if (hitbox.Intersects(hitbox) && IsActive)
-        {
-            BaseHealth = BaseHealth + 10;
-            IsActive = false;
-        }
-        if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-            game.Exit();
+
+                    
 
         Position = playerPosition;
     }
@@ -252,7 +262,7 @@ public class BigEnemy : GameObject
     public override void Update(GameTime gameTime)
     {
         ElapsedTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-         
+        
         if (movingRight)
         {
             // Flytta till höger
@@ -316,7 +326,7 @@ public class Projectile : GameObject
         Direction = direction;
         Speed = speed;
         Damage = damage;
-   
+
     }
     public override void Update(GameTime gametime) 
     {// Updatera position baserat på riktning och hastighet, om projektilen åker utanför sätts IsActive till false
@@ -338,7 +348,7 @@ public class Projectile : GameObject
         {
             spriteBatch.Draw(Texture, Position, Color.White);
         }
-       
+    
     }
 }
 
