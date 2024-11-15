@@ -139,9 +139,30 @@ public class Player : GameObject
 
         projectiles.RemoveAll(p => !p.IsActive);
 
-                    
-
         Position = playerPosition;
+
+        foreach (var obj in game.nonPlayerObjects)
+        {
+            if (IsActive && obj.IsActive && hitbox.Intersects(obj.hitbox))
+            {
+                if (obj is HeartItem heartItem)
+                {
+                    BaseHealth = BaseHealth +10;
+                }
+                else if(obj is SmallEnemy smallEnemy)
+                {
+                    BaseHealth = BaseHealth - smallEnemy.BaseDamage;
+                }
+                else if(obj is MediumEnemy mediumEnemy)
+                {
+                    BaseHealth = BaseHealth - mediumEnemy.BaseDamage;
+                }
+                else if (obj is BigEnemy bigEnemy)
+                {
+                    BaseHealth = BaseHealth - bigEnemy.BaseDamage;
+                }
+            }
+        }
     }
 
     public override void Draw(SpriteBatch spriteBatch)
