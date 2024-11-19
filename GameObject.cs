@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System;
 using JcGame;
 
-
 #region GameObject Class
 //Basklassen som alla våra subklasser ärver ifrån
 public abstract class GameObject
@@ -30,7 +29,6 @@ public abstract class GameObject
     //Logik för att skapa hitboxes
     public Rectangle hitbox
     {
-        
         get
         {
             return new Rectangle((int)Position.X, (int) Position.Y, Texture.Width, Texture.Height);
@@ -134,13 +132,11 @@ public class Player : GameObject
             int textureSize = 10;
             int baseHealth = 0;
             
-
             //Lägger till projektilen i listan projectiles
             projectiles.Add(new Projectile(textureSize, projectileStartPosition, projectileTexture, baseHealth, direction, projectileSpeed, BaseDamage));
             //Spelar skjutljudet
             LaserSound.Play();
         }
-        
         foreach (var projectile in projectiles)
             projectile.Update(gameTime);
 
@@ -174,7 +170,6 @@ public class Player : GameObject
             }
         }
     }
-
     public override void Draw(SpriteBatch spriteBatch)
     {
         base.Draw(spriteBatch);
@@ -193,8 +188,7 @@ public class SmallEnemy : GameObject
     public int Speed {get; set;}
     public int ScreenWidth {get; set;}
     public float ElapsedTime {get; set;}
-    
-        
+            
     public SmallEnemy(int textureSize, Texture2D texture, Vector2 position, int baseHealth, int baseDamage, int speed, int screenWidth, float elapsedTime)
     : base(textureSize, texture, position, baseHealth)
     {
@@ -315,7 +309,6 @@ public class BigEnemy : GameObject
                 movingRight = true; // Byt riktning
             }
         }
-        
     }
 }
 #endregion
@@ -344,7 +337,6 @@ public class HeartItem : GameObject
 #region Projectiels Class
 public class Projectile : GameObject
 {
-    
     public Vector2 Direction { get; set; }
     public float Speed { get; set; }
     public int Damage { get; set; }
@@ -355,7 +347,6 @@ public class Projectile : GameObject
         Direction = direction;
         Speed = speed;
         Damage = damage;
-
     }
     public override void Update(GameTime gametime) 
     {// Updatera position baserat på riktning och hastighet, om projektilen åker utanför sätts IsActive till false
