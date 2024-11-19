@@ -2,6 +2,7 @@
  using JcGame;
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
+ using Microsoft.Xna.Framework.Input;
  public class UtilityMethods
  {
      //Metod föra att hålla objekt inom "fönstret"
@@ -22,19 +23,19 @@
     //      return enemy.Hitbox.Bounds.Intersects(projectile.Hitbox.Bounds);
     //  }
 
-    public void PlayerUpdate(Player player, GameTime gameTime, Game game)
+    public void PlayerUpdate(Player player, GameTime gameTime, Game1 game)
     {
-        if (BaseHealth <= 0)
+        if (player.BaseHealth <= 0)
         {
-            if (BaseHealth <= 0)
+            if (player.BaseHealth <= 0)
             {
                 game.Exit();
             }
         }
         //Logik för hur spelaren rör på sig, "pil upp" för uppåt tex
-        float movementSpeed = Speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+        float movementSpeed = player.Speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
         //Sparar var spelaren är 
-        var playerPosition = Position;
+        var playerPosition = player.Position;
         //Läser av vilken tangentsom trycks ned
         var keyboardState = Keyboard.GetState();
     
@@ -56,16 +57,16 @@
             game.Exit();
 
         //Logik för hur ofta projektiler kan spawna
-        ShootTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+        player.ShootTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
         
         //Kod för hur man skjuter samt skapandet av projektiler och hur de beter sig
-        if (keyboardState.IsKeyDown(Keys.Space) && ShootTimer >= ShootCooldown)
+        if (keyboardState.IsKeyDown(Keys.Space) && player.ShootTimer >= player.ShootCooldown)
         {
-            ShootTimer = 0F;
+            player.ShootTimer = 0F;
             //Ser till så att projektilen skjuts ifrån mitten av spelaren
-            float xOffset = Texture.Width / 2;
-            float yOffset = Texture.Height / 2;
-            Vector2 projectileStartPosition = new Vector2(Position.X + xOffset, Position.Y + yOffset);
+            float xOffset = player.Texture.Width / 2;
+            float yOffset = player.Texture.Height / 2;
+            Vector2 projectileStartPosition = new Vector2(player.Position.X + xOffset, player.Position.Y + yOffset);
             
             //Projektilens riktning samt hastighet
             Vector2 direction = new Vector2(0, -20);
@@ -74,45 +75,44 @@
             int baseHealth = 0;
             
             //Lägger till projektilen i listan projectiles
-            projectiles.Add(new Projectile(textureSize, projectileStartPosition, projectileTexture, baseHealth, direction, projectileSpeed, BaseDamage));
+            projectiles.Add(new Projectile(textureSize, projectileStartPosition, projectileTexture, baseHealth, direction, projectileSpeed, player.BaseDamage));
             //Spelar skjutljudet
-            LaserSound.Play();
+            player.LaserSound.Play();
         }
         foreach (var projectile in projectiles)
             projectile.Update(gameTime);
 
         projectiles.RemoveAll(p => !p.IsActive);
 
-        Position = playerPosition;
+        player.Position = playerPosition;
 
-        foreach (var obj in game.nonPlayerObjects)
+        foreach (var obj in nonPlayerObjects)
         {
-            if (IsActive && obj.IsActive && hitbox.Intersects(obj.hitbox))
+            if (player.IsActive && obj.IsActive && obj.hitbox.Intersects(obj.hitbox))
             {
                 if (obj is HeartItem heartItem)
                 {
-                    BaseHealth = BaseHealth;
+                    player.BaseHealth = player.BaseHealth +10;
                 }
                 else if(obj is SmallEnemy smallEnemy)
                 {
-                    BaseHealth = BaseHealth - smallEnemy.BaseDamage;
+                    player.BaseHealth = player.BaseHealth - smallEnemy.BaseDamage;
                     obj.IsActive = false;
                 }
                 else if(obj is MediumEnemy mediumEnemy)
                 {
-                    BaseHealth = BaseHealth - mediumEnemy.BaseDamage;
+                    player.BaseHealth = player.BaseHealth - mediumEnemy.BaseDamage;
                     obj.IsActive = false;
                 }
                 else if (obj is BigEnemy bigEnemy)
                 {
-                    BaseHealth = BaseHealth - bigEnemy.BaseDamage;
+                    player.BaseHealth = player.BaseHealth - bigEnemy.BaseDamage;
                     obj.IsActive = false;
                 }
             }
         }
 
     }
-    
 }
 
 //using System.ComponentModel.Design;

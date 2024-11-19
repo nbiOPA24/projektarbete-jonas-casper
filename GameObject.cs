@@ -73,6 +73,7 @@ public class Player : GameObject
         LaserSound = laserSound;
         this.game = game;
     }
+    
     //PLayer LoadContent håller playerinformation som ska laddas in i game1 LoadContent
     public override void LoadContent(ContentManager content)
     {
@@ -89,7 +90,7 @@ public class Player : GameObject
             {
                 game.Exit();
             }
-        }
+        }   
         //Logik för hur spelaren rör på sig, "pil upp" för uppåt tex
         float movementSpeed = Speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
         //Sparar var spelaren är 
@@ -170,13 +171,12 @@ public class Player : GameObject
             }
         }
     }
-    public override void Draw(SpriteBatch spriteBatch)
+    public void DrawProjectile(SpriteBatch spriteBatch) //Ritar ut projectilerna.
+    // OBS:för både Player och Enemys projectiler, Behöver byta namn för mer klarhet just nu kan man tolka det som att den bara ritar ut Playerns Attck medn används även för Enemys.
     {
-        base.Draw(spriteBatch);
-
-        foreach (var projectile in projectiles)
+        if (IsActive) 
         {
-            projectile.DrawProjectile(spriteBatch);
+            spriteBatch.Draw(Texture, Position, Color.White);
         }
     }
 }
@@ -239,6 +239,7 @@ public class MediumEnemy : GameObject
         LaserSound = laserSound;
         //mediumEnemyProjectiles = new List<MediumEnemyProjectile>();
     }
+    
     public override void LoadContent(ContentManager content)
     {
         Texture = content.Load<Texture2D>("antmaker");
@@ -257,6 +258,14 @@ public class MediumEnemy : GameObject
             MathHelper.Clamp(Position.X + xMovement, 0, ScreenWidth - Texture.Width),
             Position.Y + yMovement
         );
+    }
+    public void DrawProjectile(SpriteBatch spriteBatch) //Ritar ut projectilerna.
+    // OBS:för både Player och Enemys projectiler, Behöver byta namn för mer klarhet just nu kan man tolka det som att den bara ritar ut Playerns Attck medn används även för Enemys.
+    {
+        if (IsActive) 
+        {
+            spriteBatch.Draw(Texture, Position, Color.White);
+        }
     }
 }
 #endregion
@@ -278,6 +287,7 @@ public class BigEnemy : GameObject
         ScreenWidth = screenWidth;
         ElapsedTime = elapsedTime;
     }
+   
     public override void LoadContent(ContentManager content)
     {
         Texture = content.Load<Texture2D>("enemyUFO");
@@ -308,6 +318,14 @@ public class BigEnemy : GameObject
                 Position = new Vector2(0, Position.Y); // går till vänstra kanten
                 movingRight = true; // Byt riktning
             }
+        }
+    }
+     public void DrawProjectile(SpriteBatch spriteBatch) //Ritar ut projectilerna.
+    // OBS:för både Player och Enemys projectiler, Behöver byta namn för mer klarhet just nu kan man tolka det som att den bara ritar ut Playerns Attck medn används även för Enemys.
+    {
+        if (IsActive) 
+        {
+            spriteBatch.Draw(Texture, Position, Color.White);
         }
     }
 }
@@ -342,7 +360,7 @@ public class Projectile : GameObject
     public int Damage { get; set; }
     
     public Projectile(int textureSize, Vector2 position, Texture2D texture, int baseHealth, Vector2 direction, float speed, int damage)
-    : base(textureSize, texture, position, baseHealth)
+    : base(textureSize, texture, position, 0)
     {
         Direction = direction;
         Speed = speed;
@@ -361,15 +379,7 @@ public class Projectile : GameObject
     {
         
     }
-    public void DrawProjectile(SpriteBatch spriteBatch) //Ritar ut projectilerna.
-    // OBS:för både Player och Enemys projectiler, Behöver byta namn för mer klarhet just nu kan man tolka det som att den bara ritar ut Playerns Attck medn används även för Enemys.
-    {
-        if (IsActive) 
-        {
-            spriteBatch.Draw(Texture, Position, Color.White);
-        }
     
-    }
 }
 
 #endregion

@@ -1,9 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+// using System;
+// using System.Collections.Generic;
+// using System.Linq;
+// using System.Threading.Tasks;
+// using Microsoft.Xna.Framework;
+// using Microsoft.Xna.Framework.Graphics;
 
 // public class Projectile
 // {
@@ -35,7 +35,7 @@ using Microsoft.Xna.Framework.Graphics;
 //         }
 //     }
 //     public void DrawProjectile(SpriteBatch spriteBatch) //Ritar ut projectilerna.
-//     // OBS:för både Player och Enemys projectiler, Behöver byta namn för mer klarhet just nu kan man tolka det som att den bara ritar ut Playerns Attck medn används även för Enemys.
+//     OBS:för både Player och Enemys projectiler, Behöver byta namn för mer klarhet just nu kan man tolka det som att den bara ritar ut Playerns Attck medn används även för Enemys.
 //     {
 //         if (IsActive) 
 //         {
@@ -44,22 +44,21 @@ using Microsoft.Xna.Framework.Graphics;
        
 //     }
 // }
-// //    public class MediumEnemyProjectile : Projectile //M-Es projektil som ärver basegenskaper ifrån Projectile
-// //    {
-// //         public MediumEnemyProjectile(Texture2D texture, Vector2 position, Vector2 direction, float speed, int damage)
-// //             : base (texture, position, direction, speed, damage, null)
-// //         {
-// //             Direction = direction;
+//    public class MediumEnemyProjectile : Projectile //M-Es projektil som ärver basegenskaper ifrån Projectile
+//    {
+//         public MediumEnemyProjectile(Texture2D texture, Vector2 position, Vector2 direction, float speed, int damage)
+//             : base (texture, position, direction, speed, damage, null)
+//         {
+//             Direction = direction;
             
-// //             Hitbox = new Hitbox(position, Texture);
+//             Hitbox = new Hitbox(position, Texture);
             
-// //         }
-// //         public override void Update(GameTime gameTime) 
-// //         {
-// //             Position += Direction * Speed * (float)gameTime.ElapsedGameTime.TotalSeconds; // Uppdaterar position varje frame baserat på riktning och hastighet
-// //             Hitbox.Update(Position); // Uppdaterar hitbox-positionen
-// //         }
+//         }
+//         public override void Update(GameTime gameTime) 
+//         {
+//             Position += Direction * Speed * (float)gameTime.ElapsedGameTime.TotalSeconds; // Uppdaterar position varje frame baserat på riktning och hastighet
+//             Hitbox.Update(Position); // Uppdaterar hitbox-positionen
+//         }
 
-// //    }   
-// //}
-// //
+//    }   
+// }
