@@ -53,7 +53,7 @@ public class Game1 : Game
      private Texture2D backgroundTexture;
     // // //private Texture2D gameOverTexture;
     // public SoundEffect shootSound;
-    // private List<Projectile> projectiles;
+    List<Projectile> projectiles = new List<Projectile>();
     
     private BackGroundManager backGroundManager;
     private Texture2D hitboxTexture; // TODO TA BORT SENARE MÅLAR HITBOX

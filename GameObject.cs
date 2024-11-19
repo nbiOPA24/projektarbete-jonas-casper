@@ -381,5 +381,41 @@ public class Projectile : GameObject
     }
     
 }
+#endregion
+#region PlayerProjectiles Class
+public class PlayerProjectile : Projectile
+{   
+    public PlayerProjectile(int textureSize, Vector2 position, Texture2D texture, int baseHealth, Vector2 direction, float speed, int damage)
+        : base(textureSize, position, texture, baseHealth, direction, speed, damage)
+    {
+
+    }
+    // public void PlayerShootProjectile(List<Projectile> projectiles, Vector2 playerPosition, Texture2D projectileTexture)
+    // {
+    //     // Skapa en ny PlayerProjectile när Space trycks
+    //     Vector2 direction = new Vector2(1, 0); 
+    //     int baseHealth = 0;  
+    //     float speed = 5f;  
+    //     int damage = 10;  
+        
+    //     PlayerProjectile newProjectile = new PlayerProjectile(32, playerPosition, projectileTexture, baseHealth, direction, speed, damage);
+        
+    //     // Lägg till projektilen i listan
+    //     projectiles.Add(newProjectile);
+    // }
+    // public void UpdateProjectiles(List<Projectile> projectiles, GameTime gameTime)
+    // {
+    //     // Uppdatera alla projektiler
+    //     foreach (var projectile in projectiles)
+    //     {
+    //         projectile.Update(gameTime);
+    //     }
+
+    //     // Ta bort inaktiva projektiler
+    //     projectiles.RemoveAll(p => !p.IsActive);
+    // }
+
+
+}
 
 #endregion
