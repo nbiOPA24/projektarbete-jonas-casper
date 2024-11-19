@@ -20,4 +20,8 @@ public class Hitbox
     {
         Bounds = new Rectangle((int)position.X, (int)position.Y, Bounds.Width, Bounds.Height);
     }
+    public bool Intersects(Hitbox other)
+    {
+        return Bounds.Intersects(other.Bounds);
+    }
 }

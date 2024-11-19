@@ -17,6 +17,7 @@ public abstract class GameObject
     public Vector2 Position{get;set;}
     public bool IsActive {get;set;} = true;
     public int BaseHealth {get;set;} = 0;
+    public Hitbox hitbox {get;set;}
     
     //Konstruktor för Basklassen
     protected GameObject(int textureSize,Texture2D texture, Vector2 position, int baseHealth)
@@ -25,15 +26,14 @@ public abstract class GameObject
         Texture = texture;
         Position = position;
         BaseHealth = baseHealth;
+
+        int width = texture?.Width ?? textureSize;
+        int height = texture?.Height ?? textureSize;
+
+        hitbox = new Hitbox(position, width, height);
     }
     //Logik för att skapa hitboxes
-    public Rectangle hitbox
-    {
-        get
-        {
-            return new Rectangle((int)Position.X, (int) Position.Y, Texture.Width, Texture.Height);
-        }
-    }
+   
     //Vilka petoder som våra basklasser skas ärva
     public abstract void LoadContent(ContentManager contentManager);
     public abstract void Update(GameTime gameTime);
@@ -385,37 +385,36 @@ public class Projectile : GameObject
 #region PlayerProjectiles Class
 public class PlayerProjectile : Projectile
 {   
-    public PlayerProjectile(int textureSize, Vector2 position, Texture2D texture, int baseHealth, Vector2 direction, float speed, int damage)
-        : base(textureSize, position, texture, baseHealth, direction, speed, damage)
+    public Texture2D ProjectileTexture {get; set;}
+    public PlayerProjectile(int textureSize, Vector2 position, Texture2D texture, Vector2 direction, float speed, int damage)
+        : base(textureSize, position, texture, 0, direction, speed, damage)
     {
-
+        
+    }   
+    public override void LoadContent(ContentManager content)
+    {
+        ProjectileTexture = content.Load<Texture2D>("laserGreen");
     }
-    // public void PlayerShootProjectile(List<Projectile> projectiles, Vector2 playerPosition, Texture2D projectileTexture)
-    // {
-    //     // Skapa en ny PlayerProjectile när Space trycks
-    //     Vector2 direction = new Vector2(1, 0); 
-    //     int baseHealth = 0;  
-    //     float speed = 5f;  
-    //     int damage = 10;  
-        
-    //     PlayerProjectile newProjectile = new PlayerProjectile(32, playerPosition, projectileTexture, baseHealth, direction, speed, damage);
-        
-    //     // Lägg till projektilen i listan
-    //     projectiles.Add(newProjectile);
-    // }
-    // public void UpdateProjectiles(List<Projectile> projectiles, GameTime gameTime)
-    // {
-    //     // Uppdatera alla projektiler
-    //     foreach (var projectile in projectiles)
-    //     {
-    //         projectile.Update(gameTime);
-    //     }
-
-    //     // Ta bort inaktiva projektiler
-    //     projectiles.RemoveAll(p => !p.IsActive);
-    // }
-
 
 }
 
+#endregion
+
+#region  EnemyPrjectile Class
+public class EnemyProjectile : Projectile
+{
+    public EnemyProjectile (int textureSize, Vector2 position, Texture2D texture, int baseHealth, Vector2 direction, float speed, int damage)
+        : base (textureSize, position, texture, 0, direction, speed, damage)
+    {
+    }
+    public override void Update(GameTime gameTime)
+    {
+        base.Update(gameTime);
+    }
+    public override void Draw(SpriteBatch spriteBatch)
+    {
+        base.Draw(spriteBatch);
+    }
+}
+        
 #endregion

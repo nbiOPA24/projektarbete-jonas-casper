@@ -3,17 +3,30 @@ using JcGame;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework.Content;
 using System;
 namespace JcGame;
 public class BackGroundManager
 {
     private BackgroundLayer backgroundLayer;
-    //KOnstruktor som tar en textur och en hastighet för att skapa en bakgrund som rör sig
+    public float Speed {get; set;}
+    private Texture2D backgroundTexture {get; set;}
+
+
+    
+    
     public BackGroundManager(Texture2D texture, float speed)
     {
+        backgroundTexture = texture;
+        Speed = speed;
         backgroundLayer = new BackgroundLayer(texture, speed);
     }
 
+    public void LoadContent(ContentManager content)
+    {
+        backgroundTexture = content.Load<Texture2D>("SpaceBackground");
+        //backGroundManager = new BackGroundManager(backgroundTexture, 1f);
+    }
     //Uppdaterar background 60ggr per sekund
     public void Update()
     {

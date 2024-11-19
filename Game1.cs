@@ -23,13 +23,6 @@ public class Game1 : Game
         _spriteBatch.Draw(hitboxTexture, obj.hitbox, Color.Red);
     }
 }
-    /*public enum GameState
-    {
-        MainMenu,
-        Playing,
-        GameOver,
-        Exit
-    }*/
     private SpriteFont font;
     private Player player;
     private EnemySpawnManager enemySpawnManager;
@@ -39,20 +32,14 @@ public class Game1 : Game
     private BigEnemy bigEnemy;
     private GraphicsDeviceManager _graphics;
     public List<GameObject> nonPlayerObjects = new List<GameObject>();
-    // private int _nativeWidth = 1920;
-    // private int _nativeHeight = 1080;
+    
     // // //private bool isGameOver = false;
-    // // private Texture2D heartTexture;
-    // // private Texture2D attackSpeedTexture;
+       // // private Texture2D attackSpeedTexture;
     // // private Item.AttackSpeedItem attackSpeed;
     private SpriteBatch _spriteBatch;
-    // // private Texture2D playerTexture;
-    // // private Texture2D laserGreenTexture;
-    // // private SoundEffect shootSound;
-    // // private Texture2D laserRedTexture;
-     private Texture2D backgroundTexture;
+         private Texture2D backgroundTexture;
     // // //private Texture2D gameOverTexture;
-    // public SoundEffect shootSound;
+    
     List<Projectile> projectiles = new List<Projectile>();
     
     private BackGroundManager backGroundManager;
@@ -61,10 +48,7 @@ public class Game1 : Game
     // private double spawnTimer = 0;
     // private double randomHeartTimer;
     // private Random heartRandom = new Random();
-    // public float shootCooldown = 0.3f;
-    // private float shootTimer = 0;
-    // int textureSize = 64; 
-    
+        
     //UtilityMethods utility = new UtilityMethods();
     //private Texture2D projectileTexture;
             
@@ -103,6 +87,7 @@ public class Game1 : Game
     //I LoadContent så laddas allt vi lägger in, tex player skin, item skins, bakgrund osv
     protected override void LoadContent()
     {
+        backGroundManager = new BackGroundManager(backgroundTexture, 1f);
         hitboxTexture = new Texture2D(GraphicsDevice, 1, 1); //TA BORT SENARE, MÅLAR HITBOX
         hitboxTexture.SetData(new[] { Color.Red * 0.5f }); //TA BORT SENARE, MÅLAR HITBOX
         _spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -113,6 +98,7 @@ public class Game1 : Game
         mediumEnemy.LoadContent(Content);
         bigEnemy.LoadContent(Content);  
         heart.LoadContent(Content);
+        backGroundManager.LoadContent(Content);
         
 
         //Skapar Ett nytt objekt av typen EnemySpawnManager
@@ -127,14 +113,8 @@ public class Game1 : Game
         base.LoadContent();
     ///////////////////////////////////////////////////////////////////////////////
         //bakgrund
-        backgroundTexture = Content.Load<Texture2D>("SpaceBackground");
-        backGroundManager = new BackGroundManager(backgroundTexture, 1f);
-
+        //backgroundTexture = Content.Load<Texture2D>("SpaceBackground");
         
-        // // Skapa en enkel röd textur för att visualisera hitboxar
-        // hitboxTexture = new Texture2D(GraphicsDevice, 1, 1); //TABPRT SENARE MÅLAR HITBOX
-        // hitboxTexture.SetData(new[] { Color.Red * 0.5f }); // Halvgenomskinlig röd färg TA BORT SENARE MÅLAR HITBOX
-
         // //Hjärtat som ger liv       
         // heartTexture = Content.Load<Texture2D>("heartTexture");
         // heart = new Item.HeartItem(Vector2.Zero, heartTexture, 10);
@@ -144,18 +124,11 @@ public class Game1 : Game
         // attackSpeed.IsActive = false;
         // Random random = new Random();
         // randomHeartTimer = random.Next(5000, 15000);        
-               
-        // //gameOverTexture = Content.Load<Texture2D>("Gameover");
-        // //gameOverTexture = Content.Load<Texture2D>("Gameover");
-        // //Projektil med ljud
-        // //projectiles = new List<Projectile>();
+              
+                       
         // laserGreenTexture = Content.Load<Texture2D>("laserGreen");
         // laserRedTexture = Content.Load<Texture2D>("laserRed");
-        // //shootSound = Content.Load<SoundEffect>("laserSound"); 
-
-        // //spelaren       
-        // //playerTexture = Content.Load<Texture2D>("player");
-        // //player = new Player(this, new Vector2(940, 1000), playerTexture, 100, 35, 20, 15, shootSound);//baseHealth, baseDamage, baseShield, speed 
+            
         
         // enemySpawnManager = new EnemySpawnManager(2f, _graphics.PreferredBackBufferWidth, Content.Load<Texture2D>("eyelander"), Content.Load<Texture2D>("antmaker"), Content.Load<Texture2D>("enemyUfo"), shootSound);
     }
@@ -174,94 +147,7 @@ public class Game1 : Game
 
         base.Update(gameTime);
 
-        //Spelaren dör om health är lika med eller mindre än 0. Nu avslutas spelet, men tanken är att man ska hamna i en meny!
-        
-
-        
-        ///////////////////////////////////////////////////////////////////
-        
-        // //logik för när hjärtat ska spawna
-        // spawnTimer += gameTime.ElapsedGameTime.TotalMilliseconds; 
-        // if (spawnTimer >= randomHeartTimer)
-        // //Skapar ett nytt hjärta på en random plats inom vissa kordinater
-        // {
-        //     heart.Position = new Vector2(heartRandom.Next(20, 1880), heartRandom.Next(20, 550));
-        //     heart.IsActive = true; 
-        //     spawnTimer = 0;
-        //     randomHeartTimer = heartRandom.Next(5000, 15000);
-        // }
-        // Vid kollision mellan hjärtat och spelare så ökar spelarens health med heart.healthboost som är 10hp
-        // if (heart.IsActive && player.Hitbox.Bounds.Intersects(heart.HeartHitbox))
-        // {
-        //     player.BaseHealth += heart.HealthBoost;
-        //     heart.IsActive = false; 
-        //     spawnTimer = 0;
-        //     randomHeartTimer = heartRandom.Next(5000, 15000);
-        // }
-        
-        
-        
-        //Om spelaren och en enemy kolliderar så förlorar spelaren health som är lika enemy.Attack. och enemien dör
-        // foreach (var enemy in enemySpawnManager.enemies)
-        // {
-        //     if(utility.CheckCollisionPlayer(enemy, player))
-        //         {
-        //             player.BaseHealth = player.BaseHealth - enemy.Attack;
-        //             enemy.IsActive = false;
-        //         }
-        //     //Hanterar spelarens projektiler, om kollision mellan projektil och enemy så förlorar enemy health baserat på player.BaseDamage                
-        //     foreach(var projectile in projectiles)
-        //     {
-        //         if (utility.CheckCollisionProjectile(enemy, projectile))
-        //         {
-        //             projectile.IsActive = false;
-        //             enemy.Health = enemy.Health - player.BaseDamage;
-        //             if (enemy.Health <= 0) 
-        //             {
-        //                 enemy.IsActive = false;
-        //             }
-        //         }
-        //         //Om en enemy hamnar utanför skärmen vertikalt så 'dör' enemien samt dess projektil
-        //         if (enemy.Position.Y > GraphicsDevice.Viewport.Height || enemy.Position.Y < 0)
-        //         {
-        //             enemy.IsActive = false; // Fienden har lämnat skärmen vertikalt                   
-        //         }
-        //         if(projectile.Position.Y > GraphicsDevice.Viewport.Height  || projectile.Position.Y < 0)
-        //         {
-        //             projectile.IsActive = false;
-        //         }
-        //     }     
-        // }
-        //Listan på alla aktiva enemies, tar bort enemies som inte länge är aktiva, alltså som har 'dött'                
-        // enemySpawnManager.enemies.RemoveAll(e => !e.IsActive);
-        // //player.PlayerMovement(projectiles, laserGreenTexture, gameTime);
-        // enemySpawnManager.Update(gameTime);
-        
-        // //Logik för hur alla enemies ska röra sig
-        // foreach (var enemy in enemySpawnManager.enemies)
-        // {
-        //     if (enemy is SmallEnemy smallEnemy)
-        //         smallEnemy.MoveDownSmoothly(gameTime); //läser in metoden MoveDownSmoothly med (gametime) som inparameter        
-            
-        //     else if (enemy is BigEnemy bigEnemy)
-        //         bigEnemy.MoveSideToSide(gameTime); //läser in metoden MoveSidetoSide för BigEnemy
-            
-        //     else if (enemy is MediumEnemy mediumEnemy)
-        //     {
-        //         mediumEnemy.MoveDownSmoothlyFaster(gameTime);
-        //         mediumEnemy.Update(gameTime, player, player.Position, laserRedTexture);
-        //     }
-        //     //Uppdaterar enemies hitbox så den följer bilden korrekt    
-        //     enemy.UpdateHitbox();
-            
-        // }
-        // //Går igenom listan med projektiler och tar bort de som är inte är aktiva
-        // // foreach (var projectile in projectiles)
-        // //     projectile.Update(gameTime);
-        
-        // // projectiles.RemoveAll(p => !p.IsActive);
-        // //Kontrollerar så att spelaren inte kan åka utenför fönstrets kanter.    
-        // player.Position = utility.InsideBorder(player.Position, playerTexture, _graphics);
+    
 
         
     }
@@ -280,55 +166,14 @@ public class Game1 : Game
         
         enemySpawnManager.DrawEnemys(_spriteBatch);
        
-
         string healthText = $"Health: {player.BaseHealth}";
         _spriteBatch.DrawString(font, healthText, new Vector2(100,100), Color.White);
-       
-        // DrawHitbox(player);
-        // DrawHitbox(smallEnemy);
-        // DrawHitbox(mediumEnemy);
-        // DrawHitbox(bigEnemy);
-        // DrawHitbox(heart);
-
+              
         enemySpawnManager.DrawHitboxes(_spriteBatch, hitboxTexture);
         _spriteBatch.End();
 
         base.Draw(gameTime);
-        
-        // GraphicsDevice.Clear(Color.CornflowerBlue);
-        // _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-       
-       
-        // if (attackSpeed.IsActive)
-        // {
-        //     attackSpeed.DrawAttackSpeedItem(_spriteBatch);
-        // }
-        // //Om heart är aktivt så målas ett hjärta ut någonstans på skärmern
-        // if (heart.IsActive)
-        // {
-        //     heart.DrawHeartItem(_spriteBatch);
-        // }
-        // //Målar ut en healthtect längst upp till vänster i spelfönstret
-        // ";
-        // 
-                
-        // {
-        //     enemySpawnManager.DrawEnemys(_spriteBatch);
-        //     foreach (var enemy in enemySpawnManager.enemies)
-        //     {
-        //         if (enemy is MediumEnemy mediumEnemy)
-        //         {
-        //             // Rita projektilerna som MediumEnemy har skjutit
-        //             mediumEnemy.DrawMediumEnemyAttack(_spriteBatch);
-        //         }
-        //     }
-        //     enemySpawnManager.DrawHitboxes(_spriteBatch, hitboxTexture); //TODO TA BORT SENARE MÅLAR HITBOX
-        //     player.DrawPlayer(_spriteBatch);
-        //     //går igenom listan med projektiler och målar ut dom                    
-        //     foreach (var projectile in projectiles)
-        //         projectile.DrawPlayerAttack(_spriteBatch);
-        // }
-                       
+                             
         
     }
 }

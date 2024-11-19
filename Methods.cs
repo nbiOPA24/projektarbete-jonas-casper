@@ -4,7 +4,7 @@
  using Microsoft.Xna.Framework.Graphics;
  using Microsoft.Xna.Framework.Input;
  public class UtilityMethods
- {
+{
      //Metod föra att hålla objekt inom "fönstret"
      public Vector2 InsideBorder(Vector2 position, Texture2D texture, GraphicsDeviceManager graphics)
      {
@@ -67,28 +67,24 @@
             float xOffset = player.Texture.Width / 2;
             float yOffset = player.Texture.Height / 2;
             Vector2 projectileStartPosition = new Vector2(player.Position.X + xOffset, player.Position.Y + yOffset);
-            
-            //Projektilens riktning samt hastighet
-            Vector2 direction = new Vector2(0, -20);
-            float projectileSpeed = 50f;
-            int textureSize = 10;
-            int baseHealth = 0;
-            
-            //Lägger till projektilen i listan projectiles
-            projectiles.Add(new Projectile(textureSize, projectileStartPosition, projectileTexture, baseHealth, direction, projectileSpeed, player.BaseDamage));
-            //Spelar skjutljudet
-            player.LaserSound.Play();
-        }
-        foreach (var projectile in projectiles)
-            projectile.Update(gameTime);
 
-        projectiles.RemoveAll(p => !p.IsActive);
+            //var = PlayerProjectile = new PlayerProjectile(textureSize: 10, position: projectileStartPosition, texture:  )
+            
+        //     //Lägger till projektilen i listan projectiles
+        //     projectiles.Add(new Projectile(textureSize, projectileStartPosition, projectileTexture, baseHealth, direction, projectileSpeed, player.BaseDamage));
+        //     //Spelar skjutljudet
+        //     player.LaserSound.Play();
+        // }
+        // foreach (var projectile in projectiles)
+        //     projectile.Update(gameTime);
+
+        // projectiles.RemoveAll(p => !p.IsActive);
 
         player.Position = playerPosition;
 
-        foreach (var obj in nonPlayerObjects)
+        foreach (var obj in game.nonPlayerObjects)
         {
-            if (player.IsActive && obj.IsActive && obj.hitbox.Intersects(obj.hitbox))
+            if (player.IsActive && obj.IsActive && player.hitbox.Intersects(obj.hitbox))
             {
                 if (obj is HeartItem heartItem)
                 {
@@ -113,6 +109,7 @@
         }
 
     }
+}
 }
 
 //using System.ComponentModel.Design;
