@@ -173,14 +173,8 @@ public class Game1 : Game
 
         base.Update(gameTime);
 
-        // Spelaren dör om health är lika med eller mindre än 0. Nu avslutas spelet, men tanken är att man ska hamna i en meny!
-        // if (player.BaseHealth <= 0)
-        // {
-        //     if (player.BaseHealth <= 0)
-        //     {
-        //         Exit();
-        //     }
-        // }
+        //Spelaren dör om health är lika med eller mindre än 0. Nu avslutas spelet, men tanken är att man ska hamna i en meny!
+        
 
         
         ///////////////////////////////////////////////////////////////////

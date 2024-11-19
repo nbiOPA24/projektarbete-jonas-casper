@@ -85,6 +85,13 @@ public class Player : GameObject
     // Player Update håller playerlogik som ska laddas in i Game1 LoadContent
     public override void Update(GameTime gameTime)
     {
+        if (BaseHealth <= 0)
+        {
+            if (BaseHealth <= 0)
+            {
+                game.Exit();
+            }
+        }
         //Logik för hur spelaren rör på sig, "pil upp" för uppåt tex
         float movementSpeed = Speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
         //Sparar var spelaren är 
