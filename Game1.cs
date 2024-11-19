@@ -50,12 +50,12 @@ public class Game1 : Game
     // // private Texture2D laserGreenTexture;
     // // private SoundEffect shootSound;
     // // private Texture2D laserRedTexture;
-    // // private Texture2D backgroundTexture;
+     private Texture2D backgroundTexture;
     // // //private Texture2D gameOverTexture;
     // public SoundEffect shootSound;
     // //private List<Projectile> projectiles;
     
-    // private BackGroundManager backGroundManager;
+    private BackGroundManager backGroundManager;
     private Texture2D hitboxTexture; // TODO TA BORT SENARE MÅLAR HITBOX
     // private Item.HeartItem heart;
     // private double spawnTimer = 0;
@@ -127,8 +127,8 @@ public class Game1 : Game
         base.LoadContent();
     ///////////////////////////////////////////////////////////////////////////////
         //bakgrund
-        // backgroundTexture = Content.Load<Texture2D>("SpaceBackground");
-        // backGroundManager = new BackGroundManager(backgroundTexture, 1f);
+        backgroundTexture = Content.Load<Texture2D>("SpaceBackground");
+        backGroundManager = new BackGroundManager(backgroundTexture, 1f);
 
         
         // // Skapa en enkel röd textur för att visualisera hitboxar
@@ -169,6 +169,7 @@ public class Game1 : Game
         bigEnemy.Update(gameTime);
         enemySpawnManager.Update(gameTime);
         heart.Update(gameTime);
+        backGroundManager.Update();
         
 
         base.Update(gameTime);
@@ -178,7 +179,7 @@ public class Game1 : Game
 
         
         ///////////////////////////////////////////////////////////////////
-        //backGroundManager.Update();
+        
         // //logik för när hjärtat ska spawna
         // spawnTimer += gameTime.ElapsedGameTime.TotalMilliseconds; 
         // if (spawnTimer >= randomHeartTimer)
@@ -272,6 +273,8 @@ public class Game1 : Game
 
         _spriteBatch.Begin();
 
+        backGroundManager.Draw(_spriteBatch);
+
         // Här ritas alla testures ut i spelet. 
         player.Draw(_spriteBatch);
         
@@ -287,7 +290,7 @@ public class Game1 : Game
         // DrawHitbox(bigEnemy);
         // DrawHitbox(heart);
 
-         enemySpawnManager.DrawHitboxes(_spriteBatch, hitboxTexture);
+        enemySpawnManager.DrawHitboxes(_spriteBatch, hitboxTexture);
         _spriteBatch.End();
 
         base.Draw(gameTime);
@@ -295,7 +298,7 @@ public class Game1 : Game
         // GraphicsDevice.Clear(Color.CornflowerBlue);
         // _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
        
-        // backGroundManager.Draw(_spriteBatch);
+       
         // if (attackSpeed.IsActive)
         // {
         //     attackSpeed.DrawAttackSpeedItem(_spriteBatch);
