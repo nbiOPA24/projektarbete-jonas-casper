@@ -91,7 +91,7 @@ public class Game1 : Game
         mediumEnemy = new MediumEnemy(64, null, new Vector2(400, 100), 100, 25, 20, screenWidth:1920, 0, laserSound: null);
         bigEnemy = new BigEnemy (64, null, new Vector2(400,200), 150, 50, 5, screenWidth:1920, 0);
         
-        //Lägger till alla nonplayer objects i en lista
+        // //Lägger till alla nonplayer objects i en lista
         
         nonPlayerObjects.Add(smallEnemy);   
         nonPlayerObjects.Add(mediumEnemy);
@@ -280,11 +280,9 @@ public class Game1 : Game
 
         // Här ritas alla testures ut i spelet. 
         player.Draw(_spriteBatch);
-        smallEnemy.Draw(_spriteBatch);
+        
         enemySpawnManager.DrawEnemys(_spriteBatch);
-        mediumEnemy.Draw(_spriteBatch);
-        bigEnemy.Draw(_spriteBatch); 
-        heart.Draw(_spriteBatch);
+       
 
         string healthText = $"Health: {player.BaseHealth}";
         _spriteBatch.DrawString(font, healthText, new Vector2(100,100), Color.White);
