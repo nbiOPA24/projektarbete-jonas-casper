@@ -13,7 +13,7 @@ public class EnemySpawnManager
     {
         if (enemy.IsActive)
         {
-            spriteBatch.Draw(hitboxTexture, enemy.hitbox, Color.Red);
+            spriteBatch.Draw(hitboxTexture, enemy.hitbox.Bounds, Color.Red);
         }
     }
 }

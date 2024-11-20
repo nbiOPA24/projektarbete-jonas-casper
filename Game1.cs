@@ -15,14 +15,7 @@ namespace JcGame;
 
 public class Game1 : Game
 {
-    // TODO DENNA METODEN SKA TAS BORT, DEN MÅLAR UT HITBOXRNA FÖR ATT SE ATT DOM FUNGERAR!!!!!!!!!!!!!!!!!!!!!!!
-    private void DrawHitbox(GameObject obj)
-{
-    if (obj.IsActive)
-    {
-        _spriteBatch.Draw(hitboxTexture, obj.hitbox, Color.Red);
-    }
-}
+    
     private SpriteFont font;
     private Player player;
     private EnemySpawnManager enemySpawnManager;
@@ -37,12 +30,12 @@ public class Game1 : Game
        // // private Texture2D attackSpeedTexture;
     // // private Item.AttackSpeedItem attackSpeed;
     private SpriteBatch _spriteBatch;
-         private Texture2D backgroundTexture;
+    
     // // //private Texture2D gameOverTexture;
     
     List<Projectile> projectiles = new List<Projectile>();
     
-    private BackGroundManager backGroundManager;
+    public BackGroundManager backGroundManager;
     private Texture2D hitboxTexture; // TODO TA BORT SENARE MÅLAR HITBOX
     // private Item.HeartItem heart;
     // private double spawnTimer = 0;
@@ -87,7 +80,7 @@ public class Game1 : Game
     //I LoadContent så laddas allt vi lägger in, tex player skin, item skins, bakgrund osv
     protected override void LoadContent()
     {
-        backGroundManager = new BackGroundManager(backgroundTexture, 1f);
+        
         hitboxTexture = new Texture2D(GraphicsDevice, 1, 1); //TA BORT SENARE, MÅLAR HITBOX
         hitboxTexture.SetData(new[] { Color.Red * 0.5f }); //TA BORT SENARE, MÅLAR HITBOX
         _spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -98,6 +91,7 @@ public class Game1 : Game
         mediumEnemy.LoadContent(Content);
         bigEnemy.LoadContent(Content);  
         heart.LoadContent(Content);
+        backGroundManager = new BackGroundManager(1f);
         backGroundManager.LoadContent(Content);
         
 
@@ -144,12 +138,7 @@ public class Game1 : Game
         heart.Update(gameTime);
         backGroundManager.Update();
         
-
-        base.Update(gameTime);
-
-    
-
-        
+        base.Update(gameTime);          
     }
     //Draw målar in alla textures i spelet
     protected override void Draw(GameTime gameTime)

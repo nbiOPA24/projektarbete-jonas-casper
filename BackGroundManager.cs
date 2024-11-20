@@ -10,22 +10,20 @@ public class BackGroundManager
 {
     private BackgroundLayer backgroundLayer;
     public float Speed {get; set;}
-    private Texture2D backgroundTexture {get; set;}
+    private Texture2D BackgroundTexture {get; set;}
 
 
     
     
-    public BackGroundManager(Texture2D texture, float speed)
+    public BackGroundManager(float speed)
     {
-        backgroundTexture = texture;
         Speed = speed;
-        backgroundLayer = new BackgroundLayer(texture, speed);
     }
 
     public void LoadContent(ContentManager content)
     {
-        backgroundTexture = content.Load<Texture2D>("SpaceBackground");
-        //backGroundManager = new BackGroundManager(backgroundTexture, 1f);
+        BackgroundTexture = content.Load<Texture2D>("SpaceBackground");
+        backgroundLayer = new BackgroundLayer(BackgroundTexture, Speed);
     }
     //Uppdaterar background 60ggr per sekund
     public void Update()

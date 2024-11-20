@@ -34,7 +34,7 @@ public abstract class GameObject
     }
     //Logik för att skapa hitboxes
    
-    //Vilka petoder som våra basklasser skas ärva
+    //Vilka metoder som våra basklasser skas ärva
     public abstract void LoadContent(ContentManager contentManager);
     public abstract void Update(GameTime gameTime);
     public virtual void Draw(SpriteBatch spriteBatch)
