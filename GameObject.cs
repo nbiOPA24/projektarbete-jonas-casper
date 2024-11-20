@@ -88,7 +88,7 @@ public class Player : GameObject
         LaserSound = content.Load<SoundEffect>("laserSound");
     }
     // Player Update håller playerlogik som ska laddas in i Game1 LoadContent
-    public void Update(GameTime gameTime)
+    public override void Update(GameTime gameTime)
     {
         if (BaseHealth <= 0)
         {
@@ -370,18 +370,23 @@ public class Projectile : GameObject
         Speed = speed;
         Damage = damage;
     }
-    public override void Update(GameTime gametime) 
+     public override void Update(GameTime gametime) 
     {// Updatera position baserat på riktning och hastighet, om projektilen åker utanför sätts IsActive till false
-        Position += Direction * Speed * (float)gametime.ElapsedGameTime.TotalSeconds;
+         Position += Direction * Speed * (float)gametime.ElapsedGameTime.TotalSeconds;
 
         if (Position.X < 0 || Position.X > 1920 || Position.Y < 0 || Position.Y > 1080)
         {
-            IsActive = false;
+             IsActive = false;
         }
     }
+
     public override void LoadContent(ContentManager content)
     {
         
+    }
+    public override void Draw(SpriteBatch spriteBatch)
+    {
+        spriteBatch.Draw(Texture, Position, Color.White);
     }
     
 }
@@ -399,6 +404,12 @@ public class PlayerProjectile : Projectile
     {
         ProjectileTexture = content.Load<Texture2D>("laserGreen");
     }
+    public override void Draw(SpriteBatch spriteBatch)
+    {
+        base.Draw(spriteBatch);
+    }
+    
+
 
 }
 
@@ -414,6 +425,10 @@ public class EnemyProjectile : Projectile
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
+    }
+    public override void LoadContent(ContentManager content)
+    {
+        Texture = content.Load<Texture2D>("laserRed");
     }
     public override void Draw(SpriteBatch spriteBatch)
     {

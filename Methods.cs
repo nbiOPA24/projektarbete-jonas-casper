@@ -5,6 +5,7 @@
  using Microsoft.Xna.Framework.Input;
  public class UtilityMethods
 {
+    public ProjectileManager projectileManager;
      //Metod föra att hålla objekt inom "fönstret"
      public Vector2 InsideBorder(Vector2 position, Texture2D texture, GraphicsDeviceManager graphics)
      {
@@ -23,7 +24,7 @@
     //      return enemy.Hitbox.Bounds.Intersects(projectile.Hitbox.Bounds);
     //  }
 
-    public void PlayerUpdate(Player player, GameTime gameTime, Game1 game)
+    public void PlayerUpdate(Player player, GameTime gameTime, Game1 game, ProjectileManager projectileManager)
     {
         if (player.BaseHealth <= 0)
         {
@@ -68,17 +69,14 @@
             float yOffset = player.Texture.Height / 2;
             Vector2 projectileStartPosition = new Vector2(player.Position.X + xOffset, player.Position.Y + yOffset);
 
-            //var = PlayerProjectile = new PlayerProjectile(textureSize: 10, position: projectileStartPosition, texture:  )
-            
-        //     //Lägger till projektilen i listan projectiles
-        //     projectiles.Add(new Projectile(textureSize, projectileStartPosition, projectileTexture, baseHealth, direction, projectileSpeed, player.BaseDamage));
-        //     //Spelar skjutljudet
-        //     player.LaserSound.Play();
-        // }
-        // foreach (var projectile in projectiles)
-        //     projectile.Update(gameTime);
+            PlayerProjectile newProjectile = new PlayerProjectile(textureSize: 10, position: projectileStartPosition, texture: game.Content.Load<Texture2D>("laserGreen"), )
 
-        // projectiles.RemoveAll(p => !p.IsActive);
+            
+            
+        
+            player.LaserSound.Play();
+        }
+        
 
         player.Position = playerPosition;
 
