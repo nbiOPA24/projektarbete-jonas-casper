@@ -19,6 +19,8 @@ public class Game1 : Game
     private SpriteFont font;
     private Player player;
     private EnemySpawnManager enemySpawnManager;
+    private ProjectileManager projectileManager;
+    private UtilityMethods utilityMethods;
     private HeartItem heart;
     private SmallEnemy smallEnemy;
     private MediumEnemy mediumEnemy;
@@ -33,7 +35,7 @@ public class Game1 : Game
     
     // // //private Texture2D gameOverTexture;
     
-    List<Projectile> projectiles = new List<Projectile>();
+    
     
     public BackGroundManager backGroundManager;
     private Texture2D hitboxTexture; // TODO TA BORT SENARE MÅLAR HITBOX
@@ -62,10 +64,12 @@ public class Game1 : Game
         int textureSize = 64; 
         
         heart = new HeartItem(textureSize, new Vector2(0,0), null, 10, 0);
-        player = new Player(textureSize, null, new Vector2(940, 1000), 100, 35, 400, 400, null, this);//baseHealth, baseDamage, baseShield, speed
+        player = new Player(textureSize, null, new Vector2(940, 1000), 25, 300, 100, 25, null, this);//baseHealth, baseDamage, baseShield, speed
         smallEnemy = new SmallEnemy(64, null, new Vector2(400, 100), 40, 10, 15, screenWidth:1920, 0);
         mediumEnemy = new MediumEnemy(64, null, new Vector2(400, 100), 100, 25, 20, screenWidth:1920, 0, laserSound: null);
         bigEnemy = new BigEnemy (64, null, new Vector2(400,200), 150, 50, 5, screenWidth:1920, 0);
+        utilityMethods = new UtilityMethods();       
+        projectileManager = new ProjectileManager();
         
         // //Lägger till alla nonplayer objects i en lista
         
@@ -129,13 +133,16 @@ public class Game1 : Game
         protected override void Update(GameTime gameTime)
     {
         //Spellogik för respektive klass
-        player.Update(gameTime);
+        
+        utilityMethods.PlayerUpdate(player, gameTime, this, projectileManager);
+        //player.Update(gameTime);
         smallEnemy.Update(gameTime);
         mediumEnemy.Update(gameTime);
         bigEnemy.Update(gameTime);
         enemySpawnManager.Update(gameTime);
         heart.Update(gameTime);
         backGroundManager.Update();
+        projectileManager.Update(gameTime);
         
         base.Update(gameTime);          
     }
@@ -153,6 +160,7 @@ public class Game1 : Game
         player.Draw(_spriteBatch);
         
         enemySpawnManager.DrawEnemys(_spriteBatch);
+        projectileManager.Draw(_spriteBatch);
        
         string healthText = $"Health: {player.BaseHealth}";
         _spriteBatch.DrawString(font, healthText, new Vector2(100,100), Color.White);
