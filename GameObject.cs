@@ -236,6 +236,7 @@ public class MediumEnemy : GameObject
     public SoundEffect LaserSound {get; set;}
     public float shootCooldown = 2f;
     public float timeSinceLastShot = 0f;
+    private ProjectileManager projectileManager;
     //public List<MediumEnemyProjectile> mediumEnemyProjectiles;
     public Texture2D projectileTexture;
     public MediumEnemy(int textureSize, Texture2D texture, Vector2 position, int baseHealth, int baseDamage, int speed, int screenWidth, float elapsedTime, SoundEffect laserSound)
