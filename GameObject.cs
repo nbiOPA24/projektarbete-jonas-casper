@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Content;
 using System.Collections.Generic;
 using System;
 using JcGame;
+using System.Diagnostics.Contracts;
 
 #region GameObject Class
 //Basklassen som alla våra subklasser ärver ifrån
@@ -17,26 +18,33 @@ public abstract class GameObject
     public Vector2 Position{get;set;}
     public bool IsActive {get;set;} = true;
     public int BaseHealth {get;set;} = 0;
-    public Hitbox hitbox {get;set;}
+    public Hitbox Hitbox {get;set;}
+    public float Speed {get;set;}
     
     //Konstruktor för Basklassen
-    protected GameObject(int textureSize,Texture2D texture, Vector2 position, int baseHealth)
+    protected GameObject(int textureSize,Texture2D texture, Vector2 position, int baseHealth, float speed)
     {
         TextureSize = textureSize;
         Texture = texture;
         Position = position;
         BaseHealth = baseHealth;
+        Speed = speed;
 
         int width = texture?.Width ?? textureSize;
         int height = texture?.Height ?? textureSize;
 
-        hitbox = new Hitbox(position, width, height);
+        Hitbox = new Hitbox(position, width, height);
     }
     //Logik för att skapa hitboxes
    
     //Vilka metoder som våra basklasser skas ärva
     public abstract void LoadContent(ContentManager contentManager);
-    public abstract void Update(GameTime gameTime);
+    public virtual void Update(GameTime gameTime)
+    {
+        Position += new Vector2(0, Speed * (float)gameTime.ElapsedGameTime.TotalSeconds);
+        Hitbox.Update(Position);            
+    }
+
     public virtual void Draw(SpriteBatch spriteBatch)
     {
         if (IsActive && Texture != null)
@@ -54,7 +62,6 @@ public class Player : GameObject
     //Egenskaper för player
     public int BaseDamage {get; set;}
     public int BaseShield {get; set;}
-    public float Speed {get; set;}
     public SoundEffect LaserSound {get; set;}
     public float ShootCooldown{get; set;} = 0.3f;
     public float ShootTimer{get; set;} = 0;
@@ -63,13 +70,12 @@ public class Player : GameObject
     private Game1 game;
 
     //Konstruktor för player
-    public Player(int textureSize, Texture2D texture, Vector2 position, int baseHealth, int baseDamage, int baseShield, float speed, SoundEffect laserSound, Game1 game)
-    : base(textureSize, texture, position, baseHealth)
+    public Player(int textureSize, Texture2D texture, Vector2 position, int baseHealth, float speed, int baseDamage, int baseShield, SoundEffect laserSound, Game1 game)
+    : base(textureSize, texture, position, baseHealth, speed)
 
     {
         BaseDamage = baseDamage;
         BaseShield = baseShield;
-        Speed = speed;
         LaserSound = laserSound;
         this.game = game;
     }
@@ -82,7 +88,7 @@ public class Player : GameObject
         LaserSound = content.Load<SoundEffect>("laserSound");
     }
     // Player Update håller playerlogik som ska laddas in i Game1 LoadContent
-    public override void Update(GameTime gameTime)
+    public void Update(GameTime gameTime)
     {
         if (BaseHealth <= 0)
         {
@@ -147,7 +153,7 @@ public class Player : GameObject
 
         foreach (var obj in game.nonPlayerObjects)
         {
-            if (IsActive && obj.IsActive && hitbox.Intersects(obj.hitbox))
+            if (IsActive && obj.IsActive && Hitbox.Intersects(obj.Hitbox))
             {
                 if (obj is HeartItem heartItem)
                 {
@@ -185,12 +191,12 @@ public class Player : GameObject
 public class SmallEnemy : GameObject
 {
     public int BaseDamage {get; set;}
-    public int Speed {get; set;}
+    
     public int ScreenWidth {get; set;}
     public float ElapsedTime {get; set;}
             
     public SmallEnemy(int textureSize, Texture2D texture, Vector2 position, int baseHealth, int baseDamage, int speed, int screenWidth, float elapsedTime)
-    : base(textureSize, texture, position, baseHealth)
+    : base(textureSize, texture, position, baseHealth, speed)
     {
         BaseDamage = baseDamage;
         Speed = speed;
@@ -221,7 +227,6 @@ public class SmallEnemy : GameObject
 public class MediumEnemy : GameObject
 {
     public int BaseDamage {get; set;}
-    public int Speed {get; set;}
     public int ScreenWidth {get; set;}
     public float ElapsedTime {get; set;}
     public SoundEffect LaserSound {get; set;}
@@ -230,7 +235,7 @@ public class MediumEnemy : GameObject
     //public List<MediumEnemyProjectile> mediumEnemyProjectiles;
     public Texture2D projectileTexture;
     public MediumEnemy(int textureSize, Texture2D texture, Vector2 position, int baseHealth, int baseDamage, int speed, int screenWidth, float elapsedTime, SoundEffect laserSound)
-    : base (textureSize, texture, position, baseHealth)
+    : base (textureSize, texture, position, baseHealth, speed)
     {
         BaseDamage = baseDamage;
         Speed = speed;
@@ -274,12 +279,11 @@ public class MediumEnemy : GameObject
 public class BigEnemy : GameObject
 {
     public int BaseDamage { get; set;} 
-    public int Speed { get; set; }
     public int ScreenWidth { get; set; }
     public float ElapsedTime { get; set; }
     private bool movingRight = true;
     public BigEnemy(int textureSize, Texture2D texture, Vector2 position, int baseHealth, int baseDamage, int speed, int screenWidth, float elapsedTime)
-    : base(textureSize, texture, position, baseHealth)
+    : base(textureSize, texture, position, baseHealth, speed)
     {
         BaseHealth = baseHealth;
         BaseDamage = baseDamage;
@@ -336,7 +340,7 @@ public class HeartItem : GameObject
     public int HealthBoost = 10;
 
     public HeartItem (int textureSize, Vector2 position, Texture2D texture, int healthBoost,int baseHealth) 
-    : base (textureSize, texture, position, baseHealth)
+    : base (textureSize, texture, position, baseHealth, 0)
     {
         HealthBoost = healthBoost;
     }
@@ -360,7 +364,7 @@ public class Projectile : GameObject
     public int Damage { get; set; }
     
     public Projectile(int textureSize, Vector2 position, Texture2D texture, int baseHealth, Vector2 direction, float speed, int damage)
-    : base(textureSize, texture, position, 0)
+    : base(textureSize, texture, position, 0, speed)
     {
         Direction = direction;
         Speed = speed;

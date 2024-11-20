@@ -60,10 +60,9 @@ public class Game1 : Game
     {
         //Här berättar vi för spelet vad det är som ska laddas in när spelet startas. 
         int textureSize = 64; 
-        float playerSpeed = 400f;
-
+        
         heart = new HeartItem(textureSize, new Vector2(0,0), null, 10, 0);
-        player = new Player(textureSize, null, new Vector2(940, 1000), 100, 35, 20, playerSpeed, null, this);//baseHealth, baseDamage, baseShield, speed
+        player = new Player(textureSize, null, new Vector2(940, 1000), 100, 35, 400, 400, null, this);//baseHealth, baseDamage, baseShield, speed
         smallEnemy = new SmallEnemy(64, null, new Vector2(400, 100), 40, 10, 15, screenWidth:1920, 0);
         mediumEnemy = new MediumEnemy(64, null, new Vector2(400, 100), 100, 25, 20, screenWidth:1920, 0, laserSound: null);
         bigEnemy = new BigEnemy (64, null, new Vector2(400,200), 150, 50, 5, screenWidth:1920, 0);

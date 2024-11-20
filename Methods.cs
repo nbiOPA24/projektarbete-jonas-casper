@@ -84,7 +84,7 @@
 
         foreach (var obj in game.nonPlayerObjects)
         {
-            if (player.IsActive && obj.IsActive && player.hitbox.Intersects(obj.hitbox))
+            if (player.IsActive && obj.IsActive && player.Hitbox.Intersects(obj.Hitbox))
             {
                 if (obj is HeartItem heartItem)
                 {
