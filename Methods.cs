@@ -5,6 +5,7 @@
  using Microsoft.Xna.Framework.Input;
  public class UtilityMethods
 {
+    //public Hitbox hit;
     public ProjectileManager projectileManager;
      //Metod föra att hålla objekt inom "fönstret"
      public Vector2 InsideBorder(Vector2 position, Texture2D texture, GraphicsDeviceManager graphics)
@@ -53,6 +54,7 @@
         if (keyboardState.IsKeyDown(Keys.Up))
         playerPosition.Y -= movementSpeed;
         
+       // hitbox.Update(player.Position); 
         //Escape stänger ned spelet
         if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             game.Exit();
@@ -69,12 +71,9 @@
             float yOffset = player.Texture.Height / 2;
             Vector2 projectileStartPosition = new Vector2(player.Position.X + xOffset, player.Position.Y + yOffset);
 
-            PlayerProjectile newProjectile = new PlayerProjectile(textureSize: 10, position: projectileStartPosition, texture: game.Content.Load<Texture2D>("laserGreen"), )
-
-            
-            
-        
+            PlayerProjectile newProjectile = new PlayerProjectile(textureSize: 10, position: projectileStartPosition, texture: game.Content.Load<Texture2D>("laserGreen"), direction: new Vector2(0, -1), speed: 200f, damage: 10);
             player.LaserSound.Play();
+            projectileManager.AddProjectile(newProjectile);
         }
         
 

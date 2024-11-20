@@ -63,7 +63,7 @@ public class Player : GameObject
     public int BaseDamage {get; set;}
     public int BaseShield {get; set;}
     public SoundEffect LaserSound {get; set;}
-    public float ShootCooldown{get; set;} = 0.3f;
+    public float ShootCooldown{get; set;} = 0.7f;
     public float ShootTimer{get; set;} = 0;
     private List<Projectile> projectiles = new List<Projectile>();
     private Texture2D projectileTexture;
@@ -176,7 +176,9 @@ public class Player : GameObject
                 }
             }
         }
+        Hitbox.Update(Position);
     }
+    
     public void DrawProjectile(SpriteBatch spriteBatch) //Ritar ut projectilerna.
     // OBS:för både Player och Enemys projectiler, Behöver byta namn för mer klarhet just nu kan man tolka det som att den bara ritar ut Playerns Attck medn används även för Enemys.
     {
@@ -220,6 +222,8 @@ public class SmallEnemy : GameObject
         MathHelper.Clamp(Position.X + xMovement, 0, ScreenWidth - Texture.Width),
         Position.Y + yMovement
         );
+
+        Hitbox.Update(Position);
     }
 }
 #endregion
@@ -263,6 +267,7 @@ public class MediumEnemy : GameObject
             MathHelper.Clamp(Position.X + xMovement, 0, ScreenWidth - Texture.Width),
             Position.Y + yMovement
         );
+        Hitbox.Update(Position);
     }
     public void DrawProjectile(SpriteBatch spriteBatch) //Ritar ut projectilerna.
     // OBS:för både Player och Enemys projectiler, Behöver byta namn för mer klarhet just nu kan man tolka det som att den bara ritar ut Playerns Attck medn används även för Enemys.
@@ -323,6 +328,7 @@ public class BigEnemy : GameObject
                 movingRight = true; // Byt riktning
             }
         }
+        Hitbox.Update(Position);
     }
      public void DrawProjectile(SpriteBatch spriteBatch) //Ritar ut projectilerna.
     // OBS:för både Player och Enemys projectiler, Behöver byta namn för mer klarhet just nu kan man tolka det som att den bara ritar ut Playerns Attck medn används även för Enemys.
@@ -360,7 +366,6 @@ public class HeartItem : GameObject
 public class Projectile : GameObject
 {
     public Vector2 Direction { get; set; }
-    public float Speed { get; set; }
     public int Damage { get; set; }
     
     public Projectile(int textureSize, Vector2 position, Texture2D texture, int baseHealth, Vector2 direction, float speed, int damage)
