@@ -135,6 +135,7 @@ public class Game1 : Game
         //Spellogik för respektive klass
         
         utilityMethods.PlayerUpdate(player, gameTime, this, projectileManager);
+        utilityMethods.MediumEnemyProjectileUpdate(mediumEnemy, player, gameTime, this, projectileManager);
         //player.Update(gameTime);
         smallEnemy.Update(gameTime);
         mediumEnemy.Update(gameTime);

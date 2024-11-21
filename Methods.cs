@@ -104,10 +104,36 @@
                 }
             }
         }
-
+        
     }
+    public void MediumEnemyProjectileUpdate(MediumEnemy mediumEnemy,Player player, GameTime gameTime, Game1 game, ProjectileManager projectileManager)
+    {
+        mediumEnemy.timeSinceLastShot += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+        // Skjut projektil om tiden har gått
+        if (mediumEnemy.timeSinceLastShot < mediumEnemy.shootCooldown)
+        {
+            return;
+        }
+        mediumEnemy.timeSinceLastShot = 0f;
+
+        // Skapa en ny fiendeprojektil
+        Vector2 projectileStartPosition = new Vector2(mediumEnemy.Position.X + mediumEnemy.Texture.Width / 2, mediumEnemy.Position.Y + mediumEnemy.Texture.Height / 2);
+        Vector2 directionToPlayer = Vector2.Normalize(player.Position - projectileStartPosition);  // Riktning mot spelaren
+
+        // Skapa fiendeprojektilen
+        EnemyProjectile newProjectile = new EnemyProjectile(textureSize: 10,
+            position: projectileStartPosition,
+            texture: game.Content.Load<Texture2D>("laserRed"), baseHealth: 0,
+            direction: directionToPlayer,
+            speed: 400f,
+            damage: 5
+        );
+
+        // Lägg till projektilen i ProjectileManager
+        projectileManager.AddProjectile(newProjectile);
+    }
+
 }
-
-
 //using System.ComponentModel.Design;
 
