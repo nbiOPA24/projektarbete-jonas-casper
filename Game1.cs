@@ -63,8 +63,8 @@ public class Game1 : Game
         //Här berättar vi för spelet vad det är som ska laddas in när spelet startas. 
         
         
-        heart = new HeartItem(32, new Vector2(0,0), null, 10, 0);
-        player = new Player(64, null, new Vector2(940, 1000), 100, 300, 100, 25, null, this);//baseHealth, baseDamage, baseShield, speed
+        heart = new HeartItem(textureSize, new Vector2(0,0), null, 10, 0);
+        player = new Player(textureSize, null, new Vector2(940, 1000), 25, 300, 100, 25, null, this);//baseHealth, baseDamage, baseShield, speed
         smallEnemy = new SmallEnemy(64, null, new Vector2(400, 100), 40, 10, 15, screenWidth:1920, 0);
         mediumEnemy = new MediumEnemy(64, null, new Vector2(400, 100), 100, 25, 20, screenWidth:1920, 0, laserSound: null);
         bigEnemy = new BigEnemy (64, null, new Vector2(400,200), 150, 50, 5, screenWidth:1920, 0);
@@ -134,8 +134,7 @@ public class Game1 : Game
     {
         //Spellogik för respektive klass
         
-        //utilityMethods.PlayerUpdate(player, gameTime, this, projectileManager);
-        utilityMethods.MediumEnemyProjectileUpdate(mediumEnemy, player, gameTime, this, projectileManager);
+        utilityMethods.PlayerUpdate(player, gameTime, this, projectileManager);
         //player.Update(gameTime);
         smallEnemy.Update(gameTime);
         mediumEnemy.Update(gameTime);

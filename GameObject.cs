@@ -177,7 +177,7 @@ public class Player : GameObject
                 }
             }
         }
-        
+        Hitbox.Update(Position);
     }
     
     public void DrawProjectile(SpriteBatch spriteBatch) //Ritar ut projectilerna.
