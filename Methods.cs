@@ -26,36 +26,36 @@
     //      return enemy.Hitbox.Bounds.Intersects(projectile.Hitbox.Bounds);
     //  }
 
-    // public void PlayerUpdate(Player player, GameTime gameTime, Game1 game, ProjectileManager projectileManager)
-    // {
-    //     if (player.BaseHealth <= 0)
-    //     {
-    //         if (player.BaseHealth <= 0)
-    //         {
-    //             game.Exit();
-    //         }
-    //     }
-    //     //Logik för hur spelaren rör på sig, "pil upp" för uppåt tex
-    //     float movementSpeed = player.Speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-    //     //Sparar var spelaren är 
-    //     var playerPosition = player.Position;
-    //     //Läser av vilken tangentsom trycks ned
-    //     var keyboardState = Keyboard.GetState();
+    public void PlayerUpdate(Player player, GameTime gameTime, Game1 game, ProjectileManager projectileManager)
+    {
+        if (player.BaseHealth <= 0)
+        {
+            if (player.BaseHealth <= 0)
+            {
+                game.Exit();
+            }
+        }
+        //Logik för hur spelaren rör på sig, "pil upp" för uppåt tex
+        float movementSpeed = player.Speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+        //Sparar var spelaren är 
+        var playerPosition = player.Position;
+        //Läser av vilken tangentsom trycks ned
+        var keyboardState = Keyboard.GetState();
     
-    //     //Hur man styr spelaren
-    //     if (keyboardState.IsKeyDown(Keys.Left))
-    //     playerPosition.X -= movementSpeed;
+        //Hur man styr spelaren
+        if (keyboardState.IsKeyDown(Keys.Left))
+        playerPosition.X -= movementSpeed;
 
-    //     if (keyboardState.IsKeyDown(Keys.Right))
-    //     playerPosition.X += movementSpeed;
+        if (keyboardState.IsKeyDown(Keys.Right))
+        playerPosition.X += movementSpeed;
 
-    //     if (keyboardState.IsKeyDown(Keys.Down))
-    //     playerPosition.Y += movementSpeed;
+        if (keyboardState.IsKeyDown(Keys.Down))
+        playerPosition.Y += movementSpeed;
 
-    //     if (keyboardState.IsKeyDown(Keys.Up))
-    //     playerPosition.Y -= movementSpeed;
+        if (keyboardState.IsKeyDown(Keys.Up))
+        playerPosition.Y -= movementSpeed;
         
-       // hitbox.Update(player.Position); 
+       
         //Escape stänger ned spelet
         if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             game.Exit();
@@ -75,11 +75,11 @@
             PlayerProjectile newProjectile = new PlayerProjectile(textureSize: 10, position: projectileStartPosition, texture: game.Content.Load<Texture2D>("laserGreen"), direction: new Vector2(0, -1), speed: 200f, damage: 10);
             player.LaserSound.Play();
             projectileManager.AddProjectile(newProjectile);
-        }
+        
         
 
-    //     player.Position = playerPosition;
-    //     GameObject.Hitbox.Update(player.Position);
+        player.Position = playerPosition;
+        
 
 
         foreach (var obj in game.nonPlayerObjects)
