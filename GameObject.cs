@@ -30,10 +30,7 @@ public abstract class GameObject
         BaseHealth = baseHealth;
         Speed = speed;
 
-        int width = texture?.Width ?? textureSize;
-        int height = texture?.Height ?? textureSize;
-
-        Hitbox = new Hitbox(position, width, height);
+        Hitbox = new Hitbox(position, textureSize, textureSize);
     }
     //Logik för att skapa hitboxes
    
@@ -86,6 +83,7 @@ public class Player : GameObject
         Texture = content.Load<Texture2D>("player");
         projectileTexture = content.Load<Texture2D>("laserGreen");
         LaserSound = content.Load<SoundEffect>("laserSound");
+        Hitbox = new Hitbox(Position, Texture.Width, Texture.Height);
     }
     // Player Update håller playerlogik som ska laddas in i Game1 LoadContent
     public override void Update(GameTime gameTime)
@@ -116,6 +114,9 @@ public class Player : GameObject
 
         if (keyboardState.IsKeyDown(Keys.Up))
         playerPosition.Y -= movementSpeed;
+
+        Position = playerPosition;
+        Hitbox.Update(Position);
         
         //Escape stänger ned spelet
         if (Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -149,7 +150,7 @@ public class Player : GameObject
 
         projectiles.RemoveAll(p => !p.IsActive);
 
-        Position = playerPosition;
+        
 
         foreach (var obj in game.nonPlayerObjects)
         {
@@ -176,7 +177,7 @@ public class Player : GameObject
                 }
             }
         }
-        Hitbox.Update(Position);
+        
     }
     
     public void DrawProjectile(SpriteBatch spriteBatch) //Ritar ut projectilerna.
@@ -385,6 +386,7 @@ public class Projectile : GameObject
         {
              IsActive = false;
         }
+        Hitbox.Update(Position);
     }
 
     public override void LoadContent(ContentManager content)
