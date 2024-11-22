@@ -15,7 +15,7 @@ namespace JcGame;
 
 public class Game1 : Game
 {
-    
+    // Hej Jonas
     private SpriteFont font;
     private Player player;
     private EnemySpawnManager enemySpawnManager;
